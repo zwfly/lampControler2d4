@@ -2,25 +2,17 @@
 #define _BSP_H
 
 #include <stdio.h>
-#include <N76E616.h>
+#include <N76E003.h>
 #include "Version.h"
-#include "Typedef.h"
-#include "Define.h"
+#include "Function_Define.h"
 #include "SFR_Macro.h"
 #include "Common.h"
 #include "Delay.h"
-//#include "Display.h"
 
-#include "bsp_beep.h"
-#include "bsp_key.h"
-#include "bsp_bright.h"
-#include "bsp_display.h"
-#include "bsp_hall.h"
 #include "bsp_bt.h"
 #include "bsp_uart.h"
 #include "bsp_timer0.h"
 #include "bsp_timer1.h"
-#include "bsp_adc.h"
 
 
 #ifndef TRUE

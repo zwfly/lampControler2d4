@@ -15,9 +15,6 @@
 #include "bsp.h"
 #include "app_repeat_exe.h"
 #include "app_work.h"
-#include "app_key.h"
-#include "app_charge.h"
-#include "app_battery.h"
 
 
 //typedef struct _DEVICE_T {

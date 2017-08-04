@@ -12,13 +12,11 @@
 //***********************************************************************************************************
 
 #include <stdio.h>
-#include <N76E616.h>
+#include <N76E003.h>
 #include "Version.h"
-#include "Typedef.h"
-#include "Define.h"
+#include "Function_Define.h"
 #include "Common.h"
 #include "Delay.h"
-#include "Display.h"
 
 #define FW_Version_Major                    0x01
 #define FW_Version_Minor                    0x00

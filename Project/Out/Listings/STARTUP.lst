@@ -1,4 +1,4 @@
-A51 MACRO ASSEMBLER  STARTUP                                                              08/01/2017 22:22:46 PAGE     1
+A51 MACRO ASSEMBLER  STARTUP                                                              08/04/2017 22:11:35 PAGE     1
 
 
 MACRO ASSEMBLER A51 V8.2.5.0
@@ -62,7 +62,7 @@ LOC  OBJ            LINE     SOURCE
 
   0000                27     XDATASTART      EQU     0H      ; the absolute start-address of XDATA memory
 
-  00FF                28     XDATALEN        EQU     0FFH     ; the length of XDATA memory in bytes.
+  02FF                28     XDATALEN        EQU     2FFH     ; the length of XDATA memory in bytes.
 
                       29     ;
 
@@ -122,7 +122,7 @@ LOC  OBJ            LINE     SOURCE
 
                       57     ;  Page Definition for Using the Compact Model with 64 KByte xdata RAM
 
-A51 MACRO ASSEMBLER  STARTUP                                                              08/01/2017 22:22:46 PAGE     2
+A51 MACRO ASSEMBLER  STARTUP                                                              08/04/2017 22:11:35 PAGE     2
 
                       58     ;
 
@@ -226,7 +226,7 @@ LOC  OBJ            LINE     SOURCE
 
                      108       IF (LOW (XDATALEN)) <> 0
 
-000B 7E01            109                     MOV     R6,#(HIGH (XDATALEN)) +1
+000B 7E03            109                     MOV     R6,#(HIGH (XDATALEN)) +1
 
                      110       ELSE
 
@@ -256,7 +256,7 @@ LOC  OBJ            LINE     SOURCE
 
                      123     
 
-A51 MACRO ASSEMBLER  STARTUP                                                              08/01/2017 22:22:46 PAGE     3
+A51 MACRO ASSEMBLER  STARTUP                                                              08/04/2017 22:11:35 PAGE     3
 
                      124     IF PDATALEN <> 0
 
@@ -326,7 +326,7 @@ LOC  OBJ            LINE     SOURCE
 
                      157                     END
 
-A51 MACRO ASSEMBLER  STARTUP                                                              08/01/2017 22:22:46 PAGE     4
+A51 MACRO ASSEMBLER  STARTUP                                                              08/04/2017 22:11:35 PAGE     4
 
 SYMBOL TABLE LISTING
 ------ ----- -------
@@ -357,7 +357,7 @@ SP . . . . . . . .  D ADDR   0081H   A
 STARTUP1 . . . . .  C ADDR   0000H   R   SEG=?C_C51STARTUP
 XBPSTACK . . . . .  N NUMB   0000H   A   
 XBPSTACKTOP. . . .  N NUMB   0000H   A   
-XDATALEN . . . . .  N NUMB   00FFH   A   
+XDATALEN . . . . .  N NUMB   02FFH   A   
 XDATALOOP. . . . .  C ADDR   000EH   R   SEG=?C_C51STARTUP
 XDATASTART . . . .  N NUMB   0000H   A   
 

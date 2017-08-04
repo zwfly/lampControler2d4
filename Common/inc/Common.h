@@ -1,33 +1,42 @@
+#ifndef _COMMON_H_
+#define _COMMON_H_
 
-typedef enum {
-	E_HXTEN,  //External 2~16MHz, HXT
-	E_LXTEN,  //External 32.768KHz, LXT
-	E_HIRCEN, //Internal 11.0592MHz, HIRC
-	E_LIRCEN, //Internal 10KHz
-	E_OSCEN,  //External OSC
-} E_SYSTEM_CLOCK;
+typedef bit                   BIT;
+typedef unsigned char         UINT8;
+typedef unsigned int          UINT16;
+typedef unsigned long         UINT32;
 
-void InitialUART0_Timer1_Type1(UINT32 u32Baudrate); //T1M = 0, SMOD = 0
-void InitialUART0_Timer1_Type2(UINT32 u32Baudrate); //T1M = 0, SMOD = 1
-void InitialUART0_Timer1_Type3(UINT32 u32Baudrate); //T1M = 1, SMOD = 0
-void InitialUART0_Timer1_Type4(UINT32 u32Baudrate); //T1M = 1, SMOD = 1
-void InitialUART0_Timer3_Type5(UINT32 u32Baudrate); //Timer3 as Baudrate, SMOD=0, Prescale=0
-void InitialUART0_Timer3_Type6(UINT32 u32Baudrate); //Timer3 as Baudrate, SMOD=1, Prescale=0
-void InitialUART1_Timer3(UINT32 u32Baudrate);
-void Send_Data_To_UART0(UINT8 c);
+typedef unsigned char         uint8_t;
+typedef unsigned int          uint16_t;
+typedef unsigned long         uint32_t;
+
+
+
+
+#define     CID_READ				0x0B
+#define     DID_READ				0x0C
+
+#define     ERASE_APROM				0x22
+#define     READ_APROM				0x00
+#define     PROGRAM_APROM			0x21
+#define     ERASE_LDROM				
+#define     READ_LDROM				
+#define     PROGRAM_LDROM			
+#define     READ_CFG					0xC0
+#define     PROGRAM_CFG				0xE1
+#define			READ_UID					0x04
+
+
+void  InitialUART0_Timer1(UINT32 u32Baudrate); //T1M = 1, SMOD = 1
+void  InitialUART0_Timer3(UINT32 u32Baudrate); //Timer3 as Baudrate, SMOD=1, Prescale=0
+void  InitialUART1_Timer3(UINT32 u32Baudrate);
+void  Send_Data_To_UART0(UINT8 c);
 UINT8 Receive_Data_From_UART0(void);
-void Send_Data_To_UART1(UINT8 c);
+void  Send_Data_To_UART1(UINT8 c);
 UINT8 Receive_Data_From_UART1(void);
-
-void InitialUART1(UINT32 u32Baudrate);
-void Set_All_GPIO_Quasi_Mode(void);
-void Set_All_GPIO_Input_Mode(void);
-void SW_Reset(void);
-void System_Clock_Select(E_SYSTEM_CLOCK clock);
-void Fsys_Clock_Output_On_P26(void);
+void  InitialUART1(UINT32 u32Baudrate);
 
 extern bit BIT_TMP;
 
-#define DEBUG_PORT   1          /* 0:UART0, 1:UART1 */
 
-
+#endif
