@@ -29,11 +29,12 @@ void main(void) {
 	bsp_Init();
 
 	/****************/
-	work_Init();
+	app_2d4_init();
+//	work_Init();
 
 
 	/****************/
-	Show_FW_Version_Number_To_PC();
+//	Show_FW_Version_Number_To_PC();
 
 	while (1) {
 
@@ -44,8 +45,9 @@ void main(void) {
 		if (Task_time.flag_100ms) {
 			Task_time.flag_100ms = 0;
 			//////////////////
-			app_work_100ms_pro();
-			Repeat_Pro();
+			app_2d4_pro();
+//			app_work_100ms_pro();
+//			Repeat_Pro();
 
 		}
 		if (Task_time.flag_1s) {
@@ -54,7 +56,7 @@ void main(void) {
 			Task_time.flag_1s = 0;
 			//////////////////
 
-			app_work_1s_pro();
+//			app_work_1s_pro();
 
 
 		

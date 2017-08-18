@@ -26,6 +26,16 @@ typedef struct _WORK_T {
 } WORK_T;
 extern WORK_T g_tWork;
 
+typedef struct _SEQ_T {
+	E_TRAINING_MODE mode;
+	char reps_mode;
+	uint16_t sum;
+	uint8_t reps_num;
+	uint16_t pulls_num;
+	uint16_t cal_num;
+
+} SEQ_T;
+
 extern const uint8_t Rep_Pull_num[4][2];
 
 void work_Init(void);

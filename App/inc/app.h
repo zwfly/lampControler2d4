@@ -15,7 +15,7 @@
 #include "bsp.h"
 #include "app_repeat_exe.h"
 #include "app_work.h"
-
+#include "app_2d4.h"
 
 //typedef struct _DEVICE_T {
 ////	BIT de;

@@ -9,11 +9,12 @@
 #include "Common.h"
 #include "Delay.h"
 
-#include "bsp_bt.h"
+#include "bsp_2d4.h"
 #include "bsp_uart.h"
 #include "bsp_timer0.h"
 #include "bsp_timer1.h"
-
+#include "bsp_light.h"
+#include "bsp_relay.h"
 
 #ifndef TRUE
 #define TRUE  1
