@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   BSP_LIGHT                                                         08/18/2017 23:11:05 PAGE 1   
+C51 COMPILER V9.56.0.0   BSP_LIGHT                                                         08/20/2017 22:54:59 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE BSP_LIGHT
@@ -36,67 +36,72 @@ line level    source
   25   1              PWM5_P03_OUTPUT_ENABLE;
   26   1      
   27   1              PWM_IMDEPENDENT_MODE;
-  28   1              PWM_CLOCK_DIV_128;
-  29   1              PWMPH = 0x03;
-  30   1              PWMPL = 0xE8;
-  31   1              /**********************************************************************
-  32   1               PWM frequency = Fpwm/((PWMPH,PWMPL) + 1) <Fpwm = Fsys/PWM_CLOCK_DIV>
-  33   1               = (16MHz/8)/(0x7CF + 1)
-  34   1               = 1KHz (1ms)
-  35   1               ***********************************************************************/
-  36   1      
-  37   1              PWM0H = 0x01;
-  38   1              PWM0L = 0xF4;
-  39   1      
-  40   1      //      set_SFRPAGE
-  41   1      //      ;                                               //PWM4 and PWM5 duty seting is in SFP page 1
-  42   1              PWM3H = 0x01;
-  43   1              PWM3L = 0xD4;
-  44   1              PWM5H = 0x01;
-  45   1              PWM5L = 0xA4;
-  46   1      //      clr_SFRPAGE
-  47   1      //      ;
-  48   1              // PWM output inversly enable
-  49   1      //      PWM2_OUTPUT_INVERSE;
-  50   1      
-  51   1              //-------- PWM start run--------------
-  52   1              set_LOAD;
-  53   1              set_PWMRUN;
-C51 COMPILER V9.56.0.0   BSP_LIGHT                                                         08/18/2017 23:11:05 PAGE 2   
+  28   1              PWM_CLOCK_DIV_8
+  29   1              ;
+  30   1              PWMPH = 0x07;
+  31   1              PWMPL = 0xD0;
+  32   1              /**********************************************************************
+  33   1               PWM frequency = Fpwm/((PWMPH,PWMPL) + 1) <Fpwm = Fsys/PWM_CLOCK_DIV>
+  34   1               = (16MHz/8)/(0x7CF + 1)
+  35   1               = 1KHz (1ms)
+  36   1               ***********************************************************************/
+  37   1      
+  38   1              PWM0H = 0x01;
+  39   1              PWM0L = 0xF4;
+  40   1      
+  41   1      //      set_SFRPAGE
+  42   1      //      ;                                               //PWM4 and PWM5 duty seting is in SFP page 1
+  43   1              PWM3H = 0x01;
+  44   1              PWM3L = 0xD4;
+  45   1              PWM5H = 0x01;
+  46   1              PWM5L = 0xA4;
+  47   1      //      clr_SFRPAGE
+  48   1      //      ;
+  49   1              // PWM output inversly enable
+  50   1      //      PWM2_OUTPUT_INVERSE;
+  51   1      
+  52   1              //-------- PWM start run--------------
+  53   1              set_LOAD;
+C51 COMPILER V9.56.0.0   BSP_LIGHT                                                         08/20/2017 22:54:59 PAGE 2   
 
-  54   1      
-  55   1      }
-  56          void Light_Red_set(uint8_t duty) {
-  57   1              uint16_t d = 0;
-  58   1              d = duty * 10;
-  59   1      
-  60   1              PWM5H = (d >> 8) & 0xFF;
-  61   1              PWM5L = d & 0xFF;
-  62   1      }
-  63          void Light_Green_set(uint8_t duty) {
-  64   1              uint16_t d = 0;
-  65   1              d = duty * 10;
-  66   1      
-  67   1              PWM3H = (d >> 8) & 0xFF;
-  68   1              PWM3L = d & 0xFF;
-  69   1      }
-  70          void Light_Blue_set(uint8_t duty) {
-  71   1              uint16_t d = 0;
-  72   1              d = duty * 10;
-  73   1      
-  74   1              PWM0H = (d >> 8) & 0xFF;
-  75   1              PWM0L = d & 0xFF;
-  76   1      }
-  77          
-  78          void Light_RGB_set(uint8_t r, uint8_t g, uint8_t b) {
-  79   1              Light_Red_set(r);
-  80   1              Light_Green_set(g);
-  81   1              Light_Blue_set(b);
-  82   1      }
+  54   1              set_PWMRUN;
+  55   1      
+  56   1              Light_RGB_set(0, 0, 0);
+  57   1      }
+  58          void Light_Red_set(uint8_t duty) {
+  59   1              uint16_t d = 0;
+  60   1              d = duty * 10;
+  61   1      
+  62   1              PWM5H = (d >> 8) & 0xFF;
+  63   1              PWM5L = d & 0xFF;
+  64   1              set_LOAD;
+  65   1      }
+  66          void Light_Green_set(uint8_t duty) {
+  67   1              uint16_t d = 0;
+  68   1              d = duty * 10;
+  69   1      
+  70   1              PWM3H = (d >> 8) & 0xFF;
+  71   1              PWM3L = d & 0xFF;
+  72   1              set_LOAD;
+  73   1      }
+  74          void Light_Blue_set(uint8_t duty) {
+  75   1              uint16_t d = 0;
+  76   1              d = duty * 10;
+  77   1      
+  78   1              PWM0H = (d >> 8) & 0xFF;
+  79   1              PWM0L = d & 0xFF;
+  80   1              set_LOAD;
+  81   1      }
+  82          
+  83          void Light_RGB_set(uint8_t r, uint8_t g, uint8_t b) {
+  84   1              Light_Red_set(r);
+  85   1              Light_Green_set(g);
+  86   1              Light_Blue_set(b);
+  87   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    159    ----
+   CODE SIZE        =    174    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

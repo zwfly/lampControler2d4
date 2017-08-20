@@ -25,9 +25,10 @@ void Light_InitHard(void) {
 	PWM5_P03_OUTPUT_ENABLE;
 
 	PWM_IMDEPENDENT_MODE;
-	PWM_CLOCK_DIV_128;
-	PWMPH = 0x03;
-	PWMPL = 0xE8;
+	PWM_CLOCK_DIV_8
+	;
+	PWMPH = 0x07;
+	PWMPL = 0xD0;
 	/**********************************************************************
 	 PWM frequency = Fpwm/((PWMPH,PWMPL) + 1) <Fpwm = Fsys/PWM_CLOCK_DIV>
 	 = (16MHz/8)/(0x7CF + 1)
@@ -52,6 +53,7 @@ void Light_InitHard(void) {
 	set_LOAD;
 	set_PWMRUN;
 
+	Light_RGB_set(0, 0, 0);
 }
 void Light_Red_set(uint8_t duty) {
 	uint16_t d = 0;
@@ -59,6 +61,7 @@ void Light_Red_set(uint8_t duty) {
 
 	PWM5H = (d >> 8) & 0xFF;
 	PWM5L = d & 0xFF;
+	set_LOAD;
 }
 void Light_Green_set(uint8_t duty) {
 	uint16_t d = 0;
@@ -66,6 +69,7 @@ void Light_Green_set(uint8_t duty) {
 
 	PWM3H = (d >> 8) & 0xFF;
 	PWM3L = d & 0xFF;
+	set_LOAD;
 }
 void Light_Blue_set(uint8_t duty) {
 	uint16_t d = 0;
@@ -73,6 +77,7 @@ void Light_Blue_set(uint8_t duty) {
 
 	PWM0H = (d >> 8) & 0xFF;
 	PWM0L = d & 0xFF;
+	set_LOAD;
 }
 
 void Light_RGB_set(uint8_t r, uint8_t g, uint8_t b) {

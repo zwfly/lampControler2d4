@@ -13,10 +13,10 @@ void Relay_InitHard(void) {
 
 }
 void Relay_on(void) {
-	P04 = 1;
+	P14 = 1;
 }
 void Relay_off(void) {
-	P04 = 0;
+	P14 = 0;
 }
 void Relay_set(uint8_t s) {
 	if (s) {

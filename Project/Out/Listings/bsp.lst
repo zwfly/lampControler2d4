@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   BSP                                                               08/18/2017 23:11:05 PAGE 1   
+C51 COMPILER V9.56.0.0   BSP                                                               08/20/2017 22:54:59 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE BSP
@@ -21,22 +21,21 @@ line level    source
   10   1      //      Set_All_GPIO_Input_Mode();
   11   1      
   12   1              Wireless2d4_InitHard();
-  13   1      
-  14   1              Timer0_InitHard();
-  15   1      //      Timer1_InitHard();
-  16   1      
-  17   1      //      Uart_InitHard();
-  18   1      
-  19   1              Light_InitHard();
-  20   1      
-  21   1              set_EA;         //enable interrupts
-  22   1      
-  23   1      }
-  24          
+  13   1              Relay_InitHard();
+  14   1      //      Timer1_InitHard();
+  15   1      
+  16   1      //      Uart_InitHard();
+  17   1      
+  18   1              Light_InitHard();
+  19   1              Timer0_InitHard();
+  20   1              set_EA;         //enable interrupts
+  21   1      
+  22   1      }
+  23          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     12    ----
+   CODE SIZE        =     15    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

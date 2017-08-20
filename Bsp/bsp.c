@@ -10,14 +10,13 @@ void bsp_Init(void) {
 //	Set_All_GPIO_Input_Mode();
 
 	Wireless2d4_InitHard();
-
-	Timer0_InitHard();
+	Relay_InitHard();
 //	Timer1_InitHard();
 
 //	Uart_InitHard();
 
 	Light_InitHard();
-
+	Timer0_InitHard();
 	set_EA;         //enable interrupts
 
 }
