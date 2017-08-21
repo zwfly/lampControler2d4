@@ -10,7 +10,7 @@ void app_2d4_init(void) {
 	RF_Init();
 //	RF_Carrier(1);
 
-#if 0
+#if 1
 	RF_RxMode();
 #else
 	RF_TxMode();
@@ -20,7 +20,7 @@ uint8_t n = 0;
 void app_2d4_pro(void) {
 
 	uint8_t ucPayload[8] = { 1, 2, 3, 4, 5, 6, 7, 8 };
-#if 1
+#if 0
 	//send data
 	switch (ucRF_GetStatus()) {
 	case TX_DS_FLAG: 		// 普通型发送完成 或 增强型发送成功

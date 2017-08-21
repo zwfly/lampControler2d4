@@ -23,7 +23,7 @@ void main(void) {
 		if (Task_time.flag_100ms) {
 			Task_time.flag_100ms = 0;
 			//////////////////
-//			app_2d4_pro();
+			app_2d4_pro();
 //			app_work_100ms_pro();
 //			Repeat_Pro();
 
@@ -31,7 +31,7 @@ void main(void) {
 		if (Task_time.flag_1s) {
 			Task_time.flag_1s = 0;
 			//////////////////
-			app_2d4_pro();
+//			app_2d4_pro();
 //			app_work_1s_pro();
 
 		}
