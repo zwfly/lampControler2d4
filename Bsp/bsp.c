@@ -11,12 +11,14 @@ void bsp_Init(void) {
 
 	Wireless2d4_InitHard();
 	Relay_InitHard();
+
 //	Timer1_InitHard();
 
-//	Uart_InitHard();
+	InitialUART0_Timer1(115200);
 
 	Light_InitHard();
 	Timer0_InitHard();
+
 	set_EA;         //enable interrupts
 
 }

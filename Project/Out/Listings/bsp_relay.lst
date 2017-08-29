@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   BSP_RELAY                                                         08/20/2017 22:55:00 PAGE 1   
+C51 COMPILER V9.56.0.0   BSP_RELAY                                                         08/29/2017 22:42:34 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE BSP_RELAY
@@ -29,17 +29,23 @@ line level    source
   18          void Relay_off(void) {
   19   1              P14 = 0;
   20   1      }
-  21          void Relay_set(uint8_t s) {
-  22   1              if (s) {
-  23   2                      Relay_on();
-  24   2              } else {
-  25   2                      Relay_off();
-  26   2              }
-  27   1      }
+  21          void Relay_toggle(void) {
+  22   1              P14 = ~P14;
+  23   1      }
+  24          uint8_t Relay_IsOn(void) {
+  25   1              return P14;
+  26   1      }
+  27          void Relay_set(uint8_t s) {
+  28   1              if (s) {
+  29   2                      Relay_on();
+  30   2              } else {
+  31   2                      Relay_off();
+  32   2              }
+  33   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     23    ----
+   CODE SIZE        =     32    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

@@ -5,7 +5,6 @@
 ".\Out\Objects\bsp.obj",
 ".\Out\Objects\bsp_uart.obj",
 ".\Out\Objects\bsp_timer0.obj",
-".\Out\Objects\bsp_timer1.obj",
 ".\Out\Objects\bsp_2d4.obj",
 ".\Out\Objects\bsp_light.obj",
 ".\Out\Objects\bsp_relay.obj",

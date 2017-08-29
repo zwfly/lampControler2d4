@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   MAIN                                                              08/20/2017 22:54:59 PAGE 1   
+C51 COMPILER V9.56.0.0   MAIN                                                              08/29/2017 22:42:33 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE MAIN
@@ -34,7 +34,7 @@ line level    source
   23   2                      if (Task_time.flag_100ms) {
   24   3                              Task_time.flag_100ms = 0;
   25   3                              //////////////////
-  26   3      //                      app_2d4_pro();
+  26   3                              app_2d4_pro();
   27   3      //                      app_work_100ms_pro();
   28   3      //                      Repeat_Pro();
   29   3      
@@ -42,7 +42,7 @@ line level    source
   31   2                      if (Task_time.flag_1s) {
   32   3                              Task_time.flag_1s = 0;
   33   3                              //////////////////
-  34   3                              app_2d4_pro();
+  34   3      
   35   3      //                      app_work_1s_pro();
   36   3      
   37   3                      }

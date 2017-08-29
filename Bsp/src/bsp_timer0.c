@@ -21,7 +21,7 @@ void Timer0_InitHard(void) {
 	TIMER0_MODE1_ENABLE
 	;
 
-	clr_T1M;
+	clr_T0M;
 
 	u8TH0_tmp = (65536 - TH0_INIT) / 256;
 	u8TL0_tmp = (65536 - TL0_INIT) % 256;
@@ -52,7 +52,6 @@ interrupt 1              //interrupt address is 0x000B
 	TH0 = u8TH0_tmp;
 	TL0 = u8TL0_tmp;
 
-	
 	
 	if (++Task_time.cnt_10ms >= 10) {
 		Task_time.cnt_10ms = 0;

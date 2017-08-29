@@ -174,6 +174,14 @@ void RF_TxMode(void) {
 	nop
 	nop
 	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
+	nop
 }
 
 /******************************************************************************/

@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   BSP_TIMER0                                                        08/20/2017 22:54:59 PAGE 1   
+C51 COMPILER V9.56.0.0   BSP_TIMER0                                                        08/29/2017 22:42:34 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE BSP_TIMER0
@@ -32,7 +32,7 @@ line level    source
   21   1              TIMER0_MODE1_ENABLE
   22   1              ;
   23   1      
-  24   1              clr_T1M;
+  24   1              clr_T0M;
   25   1      
   26   1              u8TH0_tmp = (65536 - TH0_INIT) / 256;
   27   1              u8TL0_tmp = (65536 - TL0_INIT) % 256;
@@ -62,29 +62,28 @@ line level    source
   51          {
   52   1              TH0 = u8TH0_tmp;
   53   1              TL0 = u8TL0_tmp;
-C51 COMPILER V9.56.0.0   BSP_TIMER0                                                        08/20/2017 22:54:59 PAGE 2   
+C51 COMPILER V9.56.0.0   BSP_TIMER0                                                        08/29/2017 22:42:34 PAGE 2   
 
   54   1      
   55   1              
-  56   1              
-  57   1              if (++Task_time.cnt_10ms >= 10) {
-  58   2                      Task_time.cnt_10ms = 0;
-  59   2                      Task_time.flag_10ms = 1;
-  60   2      
-  61   2              }
-  62   1              if (++Task_time.cnt_100ms >= 100) {
-  63   2                      Task_time.cnt_100ms = 0;
-  64   2                      Task_time.flag_100ms = 1;
-  65   2      
-  66   2              }
-  67   1              if (++Task_time.cnt_1s >= 1000) {
-  68   2                      Task_time.cnt_1s = 0;
-  69   2                      Task_time.flag_1s = 1;
-  70   2      
-  71   2              }
-  72   1      
-  73   1      }
-  74          
+  56   1              if (++Task_time.cnt_10ms >= 10) {
+  57   2                      Task_time.cnt_10ms = 0;
+  58   2                      Task_time.flag_10ms = 1;
+  59   2      
+  60   2              }
+  61   1              if (++Task_time.cnt_100ms >= 100) {
+  62   2                      Task_time.cnt_100ms = 0;
+  63   2                      Task_time.flag_100ms = 1;
+  64   2      
+  65   2              }
+  66   1              if (++Task_time.cnt_1s >= 1000) {
+  67   2                      Task_time.cnt_1s = 0;
+  68   2                      Task_time.flag_1s = 1;
+  69   2      
+  70   2              }
+  71   1      
+  72   1      }
+  73          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE

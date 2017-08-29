@@ -18,6 +18,12 @@ void Relay_on(void) {
 void Relay_off(void) {
 	P14 = 0;
 }
+void Relay_toggle(void) {
+	P14 = ~P14;
+}
+uint8_t Relay_IsOn(void) {
+	return P14;
+}
 void Relay_set(uint8_t s) {
 	if (s) {
 		Relay_on();
