@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   BSP                                                               08/30/2017 21:49:38 PAGE 1   
+C51 COMPILER V9.56.0.0   BSP                                                               08/30/2017 23:30:09 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE BSP
@@ -25,15 +25,16 @@ line level    source
   14   1      
   15   1      //      Timer1_InitHard();
   16   1      
-  17   1              InitialUART0_Timer1(115200);
+  17   1      //      InitialUART0_Timer1(115200);
   18   1      
   19   1              Light_InitHard();
   20   1              Timer0_InitHard();
   21   1      
-  22   1              set_EA;         //enable interrupts
-  23   1      
-  24   1      }
-  25          
+  22   1              InitialUART0_Timer1(115200);
+  23   1              set_EA;         //enable interrupts
+  24   1      
+  25   1      }
+  26          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
