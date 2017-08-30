@@ -7,8 +7,8 @@
 
 #include "bsp.h"
 
-#define TH0_INIT        665
-#define TL0_INIT        665
+#define TH0_INIT        1340
+#define TL0_INIT        1340
 
 static uint8_t u8TH0_tmp = 0, u8TL0_tmp = 0;
 

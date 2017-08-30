@@ -9,7 +9,7 @@ void main(void) {
 
 	/****************/
 	app_2d4_init();
-//	work_Init();
+	app_work_Init();
 
 	/****************/
 //	Show_FW_Version_Number_To_PC();
@@ -31,6 +31,8 @@ void main(void) {
 		if (Task_time.flag_1s) {
 			Task_time.flag_1s = 0;
 			//////////////////
+
+			printf("I am alive\r\n");
 
 //			app_work_1s_pro();
 

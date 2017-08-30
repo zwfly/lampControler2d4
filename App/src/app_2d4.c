@@ -8,9 +8,14 @@
 #include <string.h>
 #include <ctype.h>
 
+#include "app_2d4.h"
+
 static uint8_t sendRcv_flag = 0; //0 rcv， 1 send
 static uint8_t rcvBuf[PAYLOAD_WIDTH] = { 0 };
 static uint8_t sendBuf[PAYLOAD_WIDTH] = { 0 };
+
+static uint8_t test_vol = 0;
+static uint8_t test_yinxiang_status = 0;
 
 void app_2d4_init(void) {
 
@@ -19,7 +24,14 @@ void app_2d4_init(void) {
 	memset(sendBuf, 0, sizeof(sendBuf));
 
 	RF_Init();
+#if 1
+
 	RF_RxMode();
+#else
+	RF_TxMode();
+	sendRcv_flag = 1;
+#endif
+
 //	RF_Carrier(1);
 
 }
@@ -29,9 +41,16 @@ void app_2d4_send(uint8_t *d, uint8_t len) {
 		return;
 	}
 
+	nop
+	nop
+	nop
+	nop
 	RF_TxMode();
 	sendRcv_flag = 1;
-
+	nop
+	nop
+	nop
+	nop
 	if (sendBuf != d) {
 		memset(sendBuf, 0, sizeof(sendBuf));
 		memcpy(sendBuf, d, len);
@@ -70,6 +89,26 @@ static void app_2d4_Rcv(uint8_t *buf) {
 		break;
 	case POWER_LONG_CMD:
 
+		if (buf[3] == 1) {
+			test_yinxiang_status = 1;
+		} else if (buf[3] == 2) {
+			test_yinxiang_status = 0;
+		} else if (buf[3] == 3) {
+			if (test_yinxiang_status) {
+				test_yinxiang_status = 0;
+			} else {
+				test_yinxiang_status = 1;
+			}
+		}
+		sendBuf[index++] = LAMP2LCD_HEADER;
+		sendBuf[index++] = 0x02;
+		sendBuf[index++] = buf[2];
+		sendBuf[index++] = test_yinxiang_status;
+		for (i = 0; i < (sendBuf[1] + 1); i++) {
+			sendBuf[index] += sendBuf[i + 1];
+		}
+
+		printf("POWER_LONG_CMD\r\n");
 		break;
 	case ACC_CMD:
 
@@ -107,10 +146,46 @@ static void app_2d4_Rcv(uint8_t *buf) {
 		break;
 	case VOL_ADD_CMD:
 
+		if (buf[3] == 1) {
+			test_vol++;
+			if (test_vol > 30) {
+				test_vol = 30;
+			}
+		} else if (buf[3] == 2) {
+			if (test_vol) {
+				test_vol--;
+			}
+		}
+
+		sendBuf[index++] = LAMP2LCD_HEADER;
+		sendBuf[index++] = 0x02;
+		sendBuf[index++] = buf[2];
+		sendBuf[index++] = test_vol;
+		for (i = 0; i < (sendBuf[1] + 1); i++) {
+			sendBuf[index] += sendBuf[i + 1];
+		}
+
 		printf("VOL_ADD_CMD\r\n");
 		break;
 	case VOL_MINUS_CMD:
+		if (buf[3] == 1) {
+			test_vol++;
+			if (test_vol > 30) {
+				test_vol = 30;
+			}
+		} else if (buf[3] == 2) {
+			if (test_vol) {
+				test_vol--;
+			}
+		}
 
+		sendBuf[index++] = LAMP2LCD_HEADER;
+		sendBuf[index++] = 0x02;
+		sendBuf[index++] = buf[2];
+		sendBuf[index++] = test_vol;
+		for (i = 0; i < (sendBuf[1] + 1); i++) {
+			sendBuf[index] += sendBuf[i + 1];
+		}
 		printf("VOL_MINUS_CMD\r\n");
 		break;
 	case PLAY_CMD:
@@ -119,12 +194,49 @@ static void app_2d4_Rcv(uint8_t *buf) {
 		break;
 	case MODE_CMD:
 
+		if (buf[3] == 1) {
+			switch (g_tWork.mode) {
+			case 'B':
+				g_tWork.mode = 'F';
+				break;
+			case 'F':
+				g_tWork.mode = 'A';
+				break;
+			case 'A':
+				g_tWork.mode = 'U';
+				break;
+			case 'U':
+				g_tWork.mode = 'B';
+				break;
+			}
+		}
+
+		sendBuf[index++] = LAMP2LCD_HEADER;
+		sendBuf[index++] = 0x02;
+		sendBuf[index++] = buf[2];
+		sendBuf[index++] = g_tWork.mode;
+		for (i = 0; i < (sendBuf[1] + 1); i++) {
+			sendBuf[index] += sendBuf[i + 1];
+		}
+
 		printf("MODE_CMD\r\n");
 		break;
 	}
 	if (index) {
 		index++;
-		app_2d4_send(sendBuf, index);
+
+		nop
+		nop
+		nop
+		nop
+
+		RF_TxMode();
+		sendRcv_flag = 1;
+		nop
+		nop
+		nop
+		nop
+
 	}
 
 }
@@ -138,6 +250,8 @@ void app_2d4_pro(void) {
 
 			RF_ClearFIFO();
 			RF_ClearStatus();
+
+//			printf("Send OK\r\n");
 
 			sendRcv_flag = 0;
 			RF_RxMode();
@@ -156,7 +270,7 @@ void app_2d4_pro(void) {
 		default:		// rf 处于空闲状态才发送数据
 
 			RF_TxData(sendBuf, sizeof(sendBuf));
-			sendRcv_flag = 0;
+
 			break;
 		}
 
