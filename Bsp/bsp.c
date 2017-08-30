@@ -14,11 +14,12 @@ void bsp_Init(void) {
 
 //	Timer1_InitHard();
 
-	InitialUART0_Timer1(115200);
+//	InitialUART0_Timer1(115200);
 
 	Light_InitHard();
 	Timer0_InitHard();
 
+	InitialUART0_Timer1(115200);
 	set_EA;         //enable interrupts
 
 }
