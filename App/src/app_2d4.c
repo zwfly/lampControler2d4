@@ -124,7 +124,7 @@ static void app_2d4_Rcv(uint8_t *buf) {
 	}
 	if (index) {
 		index++;
-		app_2d4_send(sendBuf, index);
+//		app_2d4_send(sendBuf, index);
 	}
 
 }
