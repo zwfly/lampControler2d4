@@ -1,0 +1,135 @@
+C51 COMPILER V9.56.0.0   APP_UART                                                          09/01/2017 00:56:18 PAGE 1   
+
+
+C51 COMPILER V9.56.0.0, COMPILATION OF MODULE APP_UART
+OBJECT MODULE PLACED IN .\Out\Objects\app_uart.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE ..\App\src\app_uart.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(..\Common\in
+                    -c;..\App\inc;..\Bsp\inc;..\Startup;..\Bsp) DEFINE(FOSC_160000) DEBUG OBJECTEXTEND PRINT(.\Out\Listings\app_uart.lst) OBJ
+                    -ECT(.\Out\Objects\app_uart.obj)
+
+line level    source
+
+   1          /*
+   2           * app_uart.c
+   3           *
+   4           *  Created on: 2017Äê8ÔÂ31ÈÕ
+   5           *      Author: fly
+   6           */
+   7          
+   8          #include "app.h"
+   9          #include <string.h>
+  10          
+  11          static uint8_t index = 0;
+  12          static uint8_t len = 0;
+  13          static uint8_t i = 0;
+  14          
+  15          static uint8_t uart_sendBuf[16] = { 0 };
+  16          
+  17          void app_uart_Init(void) {
+  18   1              index = 0;
+  19   1              len = 0;
+  20   1              i = 0;
+  21   1      }
+  22          
+  23          void app_uart_send(uint8_t cmd, uint8_t *ptr, uint8_t len) {
+  24   1              index = 0;
+  25   1      
+  26   1              uart_sendBuf[index++] = 0x55;
+  27   1              uart_sendBuf[index++] = 0xAA;
+  28   1              uart_sendBuf[index++] = len + 1;
+  29   1              uart_sendBuf[index++] = cmd;
+  30   1              for (i = 0; i < len; i++) {
+  31   2                      uart_sendBuf[index++] = *(ptr + i);
+  32   2              }
+  33   1              uart_sendBuf[index++] = app_CalcCRC8(uart_sendBuf, len + 4);
+  34   1      
+  35   1              for (i = 0; i < (len + 5); i++) {
+  36   2                      Send_Data_To_UART0(uart_sendBuf[i]);
+  37   2              }
+  38   1      }
+  39          
+  40          void app_uart_pro(void) {
+  41   1      
+  42   1              if (riflag) {
+  43   2                      riflag = 0;
+  44   2      
+  45   2                      if ((rcv_T.pWrite + RCV_BUFSIZE - rcv_T.pRead) % RCV_BUFSIZE > 4) {
+  46   3      
+  47   3                              if (((rcv_T.rxBuf[rcv_T.pRead]) == 0x55)
+  48   3                                              && ((rcv_T.rxBuf[(rcv_T.pRead + 1) % RCV_BUFSIZE]) == 0xAA)) {
+  49   4      
+  50   4                                      len = rcv_T.rxBuf[(rcv_T.pRead + 2) % RCV_BUFSIZE];
+  51   4      
+  52   4                                      if ((rcv_T.pWrite + RCV_BUFSIZE - rcv_T.pRead) % RCV_BUFSIZE
+  53   4                                                      >= (len + 4)) {
+C51 COMPILER V9.56.0.0   APP_UART                                                          09/01/2017 00:56:18 PAGE 2   
+
+  54   5      
+  55   5                                              if (rcv_T.rxBuf[(rcv_T.pRead + len + 3) % RCV_BUFSIZE]
+  56   5                                                              != app_CalcCRC8_cycle(rcv_T.rxBuf + rcv_T.pRead,
+  57   5                                                                              len + 3, rcv_T.pRead, RCV_BUFSIZE)) {
+  58   6      //                                              printf("check error\r\n");
+  59   6                                                      rcv_T.pRead++;
+  60   6      
+  61   6                                              } else {
+  62   6                                                      index = 0;
+  63   6                                                      memset(sendBuf,0,PAYLOAD_WIDTH);
+  64   6                                                      switch (rcv_T.rxBuf[(rcv_T.pRead + 3) % RCV_BUFSIZE]) {
+  65   7                                                      case VOL_ADD_UART_CMD:
+  66   7      
+  67   7                                                              sendBuf[index++] = LAMP2LCD_HEADER;
+  68   7                                                              sendBuf[index++] = 0x02;
+  69   7                                                              sendBuf[index++] = VOL_ADD_CMD;
+  70   7                                                              sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 4)
+  71   7                                                                              % RCV_BUFSIZE];
+  72   7                                                              for (i = 0; i < (sendBuf[1] + 1); i++) {
+  73   8                                                                      sendBuf[index] += sendBuf[i + 1];
+  74   8                                                              }
+  75   7                                                              index++;
+  76   7                                                              app_2d4_send(sendBuf, index);
+  77   7                                                              break;
+  78   7                                                      case VOL_MINUS_UART_CMD:
+  79   7      
+  80   7                                                              sendBuf[index++] = LAMP2LCD_HEADER;
+  81   7                                                              sendBuf[index++] = 0x02;
+  82   7                                                              sendBuf[index++] = VOL_MINUS_CMD;
+  83   7                                                              sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 4)
+  84   7                                                                              % RCV_BUFSIZE];
+  85   7                                                              for (i = 0; i < (sendBuf[1] + 1); i++) {
+  86   8                                                                      sendBuf[index] += sendBuf[i + 1];
+  87   8                                                              }
+  88   7                                                              index++;
+  89   7                                                              app_2d4_send(sendBuf, index);
+  90   7      
+  91   7                                                              break;
+  92   7                                                      default:
+  93   7                                                              break;
+  94   7                                                      }
+  95   6                                                      rcv_T.pRead += len + 4;
+  96   6                                              }
+  97   5                                      }
+  98   4      
+  99   4                              } else {
+ 100   4                                      rcv_T.pRead++;
+ 101   4                              }
+ 102   3                              rcv_T.pRead = rcv_T.pRead % RCV_BUFSIZE;
+ 103   3                      }
+ 104   2              }
+ 105   1      
+ 106   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    958    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =     19       5
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+C51 COMPILER V9.56.0.0   APP_UART                                                          09/01/2017 00:56:18 PAGE 3   
+
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

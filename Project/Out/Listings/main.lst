@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   MAIN                                                              08/30/2017 23:30:09 PAGE 1   
+C51 COMPILER V9.56.0.0   MAIN                                                              09/01/2017 00:56:17 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE MAIN
@@ -21,44 +21,49 @@ line level    source
   10   1              /****************/
   11   1              app_2d4_init();
   12   1              app_work_Init();
-  13   1      
+  13   1              app_uart_Init();
   14   1              /****************/
   15   1      //      Show_FW_Version_Number_To_PC();
   16   1              while (1) {
   17   2      
-  18   2                      if (Task_time.flag_10ms) {
-  19   3                              Task_time.flag_10ms = 0;
-  20   3                              //////////////////
-  21   3      
-  22   3                      }
-  23   2                      if (Task_time.flag_100ms) {
-  24   3                              Task_time.flag_100ms = 0;
-  25   3                              //////////////////
-  26   3                              app_2d4_pro();
-  27   3      //                      app_work_100ms_pro();
-  28   3      //                      Repeat_Pro();
-  29   3      
-  30   3                      }
-  31   2                      if (Task_time.flag_1s) {
-  32   3                              Task_time.flag_1s = 0;
-  33   3                              //////////////////
-  34   3      
-  35   3                              printf("I am alive\r\n");
-  36   3      
-  37   3      //                      app_work_1s_pro();
-  38   3      
-  39   3                      }
-  40   2              }
-  41   1      }
+  18   2                      app_uart_pro();
+  19   2      
+  20   2                      if (Task_time.flag_10ms) {
+  21   3                              Task_time.flag_10ms = 0;
+  22   3                              //////////////////
+  23   3      
+  24   3                      }
+  25   2                      if (Task_time.flag_100ms) {
+  26   3                              Task_time.flag_100ms = 0;
+  27   3                              //////////////////
+  28   3                              app_2d4_pro();
+  29   3      //                      app_work_100ms_pro();
+  30   3      //                      Repeat_Pro();
+  31   3      
+  32   3                      }
+  33   2                      if (Task_time.flag_1s) {
+  34   3                              Task_time.flag_1s = 0;
+  35   3                              //////////////////
+  36   3      #if DEBUG
+                                      printf("I am alive\r\n");
+              #endif
+  39   3      
+  40   3      //                      app_work_1s_pro();
+  41   3      
+  42   3                      }
+  43   2              }
+  44   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     47    ----
-   CONSTANT SIZE    =     13    ----
+   CODE SIZE        =     44    ----
+   CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =      1    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
+C51 COMPILER V9.56.0.0   MAIN                                                              09/01/2017 00:56:17 PAGE 2   
+
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
 

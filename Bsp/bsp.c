@@ -20,7 +20,9 @@ void bsp_Init(void) {
 	Light_InitHard();
 	Timer0_InitHard();
 
-	InitialUART0_Timer1(115200);
+
+	Uart_InitHard();
+
 	set_EA;         //enable interrupts
 
 }

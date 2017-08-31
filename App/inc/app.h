@@ -8,19 +8,16 @@
 #ifndef APP_INC_APP_H_
 #define APP_INC_APP_H_
 
+#define DEBUG   0
+
 //#include <stdio.h>
 //#include <N76E616.h>
-
 
 #include "bsp.h"
 #include "app_repeat_exe.h"
 #include "app_work.h"
 #include "app_2d4.h"
-
-//typedef struct _DEVICE_T {
-////	BIT de;
-//
-//} DEVICE_T;
-//extern DEVICE_T g_tDevice;
+#include "app_uart.h"
+#include "app_crc.h"
 
 #endif /* APP_INC_APP_H_ */

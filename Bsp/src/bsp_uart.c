@@ -7,48 +7,31 @@
 
 #include "bsp.h"
 
-BIT riflag;
+RCV_T rcv_T;
+
+BIT riflag = 0;
 
 void Uart_InitHard(void) {
-
-//	P5M1 &= ~SET_BIT7;
-//	P5M2 |= SET_BIT7;
-
-	InitialUART1_Timer3(9600);
-//	set_ES_1;
-//	set_ET1;
+	riflag = 0;
+	InitialUART0_Timer1(9600);
 }
-#if 1
-BIT Get_Data_From_UART1(uint8_t *c) {
-	BIT b;
 
-	if (RI_1) {
-		*c = SBUF_1;
-		RI_1 = 0;
-		b = TRUE;
-	} else {
-		b = FALSE;
-	}
-	return b;
-}
-#endif
-
-#if 0
-void serial_IT(void)
-interrupt 15
+void SerialPort0_ISR(void)
+interrupt 4
 {
-	if (RI_1) { /* if reception occur */
-		clr_RI_1; /* clear reception flag for next reception */
-		if (SBUF_1) {
-			BEEP_Start(0, 5, 5, 2);
-		} else {
-			BEEP_Start(0, 5, 5, 1);
+	if (RI == 1) { /* if reception occur */
+		clr_RI; /* clear reception flag for next reception */
+		rcv_T.rxBuf[rcv_T.pWrite++] = SBUF;
+		if (rcv_T.pWrite >= RCV_BUFSIZE) {
+			rcv_T.pWrite = 0;
 		}
+		riflag = 1;
 
-		//	riflag = 1;
+		
+
 	}
-	if (TI_1) {
-		clr_TI_1; /* if emission occur */
+	if (TI == 1) {
+		clr_TI; /* if emission occur */
 	}
 }
-#endif
+

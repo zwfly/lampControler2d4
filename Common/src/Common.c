@@ -38,8 +38,15 @@ void InitialUART0_Timer1(UINT32 u32Baudrate)    //T1M = 1, SMOD = 1
 #ifdef FOSC_166000
 	TH1 = 256 - (1037500/u32Baudrate); /*16.6 MHz */
 #endif
+	
+
+	
 	set_TR1;
+//				set_RB8;					//This bit is for setting the stop bit 2 high/low status, 
+
 	set_TI;						//For printf function must setting TI = 1
+    set_ES;           //enable UART interrupt
+
 }
 //---------------------------------------------------------------
 void InitialUART0_Timer3(UINT32 u32Baudrate) //use timer3 as Baudrate generator

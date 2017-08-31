@@ -25,6 +25,8 @@
 #define PLAY_CMD       0xB2
 #define MODE_CMD       0xB8
 
+extern uint8_t sendBuf[PAYLOAD_WIDTH];
+
 void app_2d4_init(void);
 void app_2d4_send(uint8_t *d, uint8_t len);
 void app_2d4_pro(void);

@@ -8,8 +8,19 @@
 #ifndef BSP_INC_BSP_UART_H_
 #define BSP_INC_BSP_UART_H_
 
-void Uart_InitHard(void);
+#define RCV_BUFSIZE  64
 
-BIT Get_Data_From_UART1(uint8_t *c);
+typedef struct _RCV_T {
+
+	uint8_t rxBuf[RCV_BUFSIZE];
+	uint8_t pWrite;
+	uint8_t pRead;
+
+} RCV_T;
+
+extern RCV_T rcv_T;
+extern BIT riflag;
+
+void Uart_InitHard(void);
 
 #endif /* BSP_INC_BSP_UART_H_ */

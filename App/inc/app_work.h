@@ -9,6 +9,21 @@
 #define APP_INC_APP_WORK_H_
 
 typedef struct _WORK_T {
+
+	union {
+		uint8_t allbits;
+		struct {
+			unsigned relay :1;
+			unsigned speaker :1;
+			unsigned BT :1;
+			unsigned FM :1;
+			unsigned AUX :1;
+			unsigned USB :1;
+			unsigned ra6 :1;
+			unsigned ra9 :1;
+		} bits;
+	} status;
+
 	char mode;
 
 } WORK_T;

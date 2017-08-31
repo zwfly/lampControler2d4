@@ -12,7 +12,7 @@
 
 static uint8_t sendRcv_flag = 0; //0 rcv， 1 send
 static uint8_t rcvBuf[PAYLOAD_WIDTH] = { 0 };
-static uint8_t sendBuf[PAYLOAD_WIDTH] = { 0 };
+uint8_t sendBuf[PAYLOAD_WIDTH] = { 0 };
 
 static uint8_t test_vol = 0;
 static uint8_t test_yinxiang_status = 0;
@@ -37,31 +37,40 @@ void app_2d4_init(void) {
 }
 
 void app_2d4_send(uint8_t *d, uint8_t len) {
-	if (len > sizeof(sendBuf)) {
-		return;
+//	if (len > PAYLOAD_WIDTH) {
+//		return;
+//	}
+	uint8_t i = 0;
+	for (i = 0; i < 120; i++) {
+		nop
+		nop
+		nop
+		nop
 	}
-
-	nop
-	nop
-	nop
-	nop
 	RF_TxMode();
 	sendRcv_flag = 1;
-	nop
-	nop
-	nop
-	nop
+
+	for (i = 0; i < 120; i++) {
+		nop
+		nop
+		nop
+		nop
+	}
+
 	if (sendBuf != d) {
-		memset(sendBuf, 0, sizeof(sendBuf));
+		memset(sendBuf, 0, PAYLOAD_WIDTH);
 		memcpy(sendBuf, d, len);
 	}
+
 }
-idata char sss[32] = { 0 };
+#if DEBUG
+idata char sss[32] = {0};
+#endif
 static void app_2d4_Rcv(uint8_t *buf) {
 	uint8_t i = 0;
 	uint8_t index = 0;
 	uint8_t check = 0;
-#if 1
+#if DEBUG
 	sprintf(sss, "rcv %02X %02X %02X %02X %02X %02X\r\n", (uint16_t) buf[0],
 			(uint16_t) buf[1], (uint16_t) buf[2], (uint16_t) buf[3],
 			(uint16_t) buf[4], (uint16_t) buf[5]);
@@ -80,12 +89,13 @@ static void app_2d4_Rcv(uint8_t *buf) {
 		return;
 	}
 
-	memset(sendBuf, 0, sizeof(sendBuf));
+	memset(sendBuf, 0, PAYLOAD_WIDTH);
 	index = 0;
 	switch (buf[2]) {
 	case POWER_SHORT_CMD:
-
+#if DEBUG
 		printf("POWER_SHORT_CMD\r\n");
+#endif
 		break;
 	case POWER_LONG_CMD:
 
@@ -107,8 +117,9 @@ static void app_2d4_Rcv(uint8_t *buf) {
 		for (i = 0; i < (sendBuf[1] + 1); i++) {
 			sendBuf[index] += sendBuf[i + 1];
 		}
-
+#if DEBUG
 		printf("POWER_LONG_CMD\r\n");
+#endif
 		break;
 	case ACC_CMD:
 
@@ -131,21 +142,24 @@ static void app_2d4_Rcv(uint8_t *buf) {
 		for (i = 0; i < (sendBuf[1] + 1); i++) {
 			sendBuf[index] += sendBuf[i + 1];
 		}
-
+#if DEBUG
 		printf("ACC_CMD\r\n");
+#endif
 		break;
 	case UP_CMD:
-
+#if DEBUG
 		printf("UP_CMD\r\n");
+#endif
 		break;
 	case DOWN_CMD:
-
+#if DEBUG
 		printf("DOWN_CMD\r\n");
+#endif
 		break;
 	case DOME_CMD:
 		break;
 	case VOL_ADD_CMD:
-
+#if 0
 		if (buf[3] == 1) {
 			test_vol++;
 			if (test_vol > 30) {
@@ -165,9 +179,18 @@ static void app_2d4_Rcv(uint8_t *buf) {
 			sendBuf[index] += sendBuf[i + 1];
 		}
 
+#else
+
+		app_uart_send(VOL_ADD_UART_CMD, 0, 0);
+
+#endif
+
+#if DEBUG
 		printf("VOL_ADD_CMD\r\n");
+#endif
 		break;
 	case VOL_MINUS_CMD:
+#if 0
 		if (buf[3] == 1) {
 			test_vol++;
 			if (test_vol > 30) {
@@ -186,11 +209,67 @@ static void app_2d4_Rcv(uint8_t *buf) {
 		for (i = 0; i < (sendBuf[1] + 1); i++) {
 			sendBuf[index] += sendBuf[i + 1];
 		}
+#else
+		app_uart_send(VOL_MINUS_UART_CMD, 0, 0);
+#endif
+
+#if DEBUG
 		printf("VOL_MINUS_CMD\r\n");
+#endif
 		break;
 	case PLAY_CMD:
 
+		sendBuf[index++] = LAMP2LCD_HEADER;
+		sendBuf[index++] = 0x03;
+		sendBuf[index++] = buf[2];
+		sendBuf[index++] = (uint8_t) g_tWork.mode;
+
+		if (buf[3] == 3) {
+
+			switch (g_tWork.mode) {
+			case 'B':
+
+				if (g_tWork.status.bits.BT) {
+					g_tWork.status.bits.BT = 0;
+				} else {
+					g_tWork.status.bits.BT = 1;
+				}
+				sendBuf[index++] = g_tWork.status.bits.BT;
+				break;
+			case 'F':
+				if (g_tWork.status.bits.FM) {
+					g_tWork.status.bits.FM = 0;
+				} else {
+					g_tWork.status.bits.FM = 1;
+				}
+				sendBuf[index++] = g_tWork.status.bits.FM;
+				break;
+			case 'A':
+				if (g_tWork.status.bits.AUX) {
+					g_tWork.status.bits.AUX = 0;
+				} else {
+					g_tWork.status.bits.AUX = 1;
+				}
+				sendBuf[index++] = g_tWork.status.bits.AUX;
+				break;
+			case 'U':
+				if (g_tWork.status.bits.USB) {
+					g_tWork.status.bits.USB = 0;
+				} else {
+					g_tWork.status.bits.USB = 1;
+				}
+				sendBuf[index++] = g_tWork.status.bits.USB;
+				break;
+			}
+
+		}
+
+		for (i = 0; i < (sendBuf[1] + 1); i++) {
+			sendBuf[index] += sendBuf[i + 1];
+		}
+#if DEBUG
 		printf("PLAY_CMD\r\n");
+#endif
 		break;
 	case MODE_CMD:
 
@@ -218,13 +297,14 @@ static void app_2d4_Rcv(uint8_t *buf) {
 		for (i = 0; i < (sendBuf[1] + 1); i++) {
 			sendBuf[index] += sendBuf[i + 1];
 		}
-
+#if DEBUG
 		printf("MODE_CMD\r\n");
+#endif
 		break;
 	}
 	if (index) {
 		index++;
-
+#if 0
 		nop
 		nop
 		nop
@@ -232,11 +312,15 @@ static void app_2d4_Rcv(uint8_t *buf) {
 
 		RF_TxMode();
 		sendRcv_flag = 1;
-		nop
-		nop
-		nop
-		nop
-
+		for (i = 0; i < 120; i++) {
+			nop
+			nop
+			nop
+			nop
+		}
+#else
+		app_2d4_send(sendBuf, index);
+#endif
 	}
 
 }
@@ -253,8 +337,12 @@ void app_2d4_pro(void) {
 
 //			printf("Send OK\r\n");
 
+
 			sendRcv_flag = 0;
 			RF_RxMode();
+
+//			Relay_toggle();
+
 
 			break;
 		case RX_DR_FLAG:		//发送成功且收到payload
@@ -281,4 +369,23 @@ void app_2d4_pro(void) {
 
 		}
 	}
+}
+
+void app_2d4_1S_pro(void) {
+
+	switch (g_tWork.mode) {
+	case 'B':
+
+		break;
+	case 'F':
+
+		break;
+	case 'A':
+
+		break;
+	case 'U':
+
+		break;
+	}
+
 }

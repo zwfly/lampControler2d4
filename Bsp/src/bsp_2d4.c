@@ -173,15 +173,6 @@ void RF_TxMode(void) {
 	nop
 	nop
 	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
 }
 
 /******************************************************************************/
@@ -194,7 +185,7 @@ void RF_RxMode(void) {
 	RF_WriteReg(W_REGISTER + CONFIG, 0X8F);						// 将RF设置成RX模式
 	CE_HIGH;										// Set CE pin high 开始接收数据
 //	delay_ms(2);
-	for (i = 0; i < 2000; i++) {
+	for (i = 0; i < 5000; i++) {
 		nop
 	}
 
