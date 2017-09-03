@@ -159,6 +159,7 @@ static void app_2d4_Rcv(uint8_t *buf) {
 
 		app_uart_send(UP_UART_CMD, 0, 0);
 
+
 #if DEBUG
 		printf("UP_CMD\r\n");
 #endif
