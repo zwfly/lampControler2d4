@@ -7,7 +7,7 @@
 
 #include "bsp.h"
 
-RCV_T rcv_T;
+idata RCV_T rcv_T;
 
 BIT riflag = 0;
 
@@ -26,8 +26,6 @@ interrupt 4
 			rcv_T.pWrite = 0;
 		}
 		riflag = 1;
-
-		
 
 	}
 	if (TI == 1) {

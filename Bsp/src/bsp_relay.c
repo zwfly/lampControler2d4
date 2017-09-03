@@ -11,6 +11,7 @@ void Relay_InitHard(void) {
 	clr_P1M1_4;
 	P1M2 |= SET_BIT4;
 
+	Relay_off();
 }
 void Relay_on(void) {
 	P14 = 1;
