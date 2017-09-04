@@ -60,12 +60,12 @@ void app_uart_pro(void) {
 
 					} else {
 						index = 0;
-						memset(sendBuf,0,PAYLOAD_WIDTH);
+						memset(sendBuf, 0, PAYLOAD_WIDTH);
 						switch (rcv_T.rxBuf[(rcv_T.pRead + 3) % RCV_BUFSIZE]) {
 						case VOL_ADD_UART_CMD:
 
 							sendBuf[index++] = LAMP2LCD_HEADER;
-							sendBuf[index++] = 0x02;
+							sendBuf[index++] = len;
 							sendBuf[index++] = VOL_ADD_CMD;
 							sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 4)
 									% RCV_BUFSIZE];
@@ -76,12 +76,102 @@ void app_uart_pro(void) {
 							app_2d4_send(sendBuf, index);
 							break;
 						case VOL_MINUS_UART_CMD:
-
 							sendBuf[index++] = LAMP2LCD_HEADER;
-							sendBuf[index++] = 0x02;
+							sendBuf[index++] = len;
 							sendBuf[index++] = VOL_MINUS_CMD;
 							sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 4)
 									% RCV_BUFSIZE];
+							for (i = 0; i < (sendBuf[1] + 1); i++) {
+								sendBuf[index] += sendBuf[i + 1];
+							}
+							index++;
+							app_2d4_send(sendBuf, index);
+
+							break;
+						case UP_UART_CMD:
+
+							break;
+						case DOWN_UART_CMD:
+
+							break;
+						case DOME_UART_CMD:
+
+							break;
+						case MODE_UART_CMD:   //MODE
+							sendBuf[index++] = LAMP2LCD_HEADER;
+							sendBuf[index++] = len;
+							sendBuf[index++] = MODE_CMD;
+							sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 4)
+									% RCV_BUFSIZE];
+							switch (rcv_T.rxBuf[(rcv_T.pRead + 4) % RCV_BUFSIZE]) {
+							case 0x01:  //BT
+								sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 5)
+										% RCV_BUFSIZE];
+								break;
+							case 0x02:  //FM
+								sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 5)
+										% RCV_BUFSIZE];
+								sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 6)
+										% RCV_BUFSIZE];
+								break;
+							case 0x03:  //AUX
+								sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 5)
+										% RCV_BUFSIZE];
+								break;
+							case 0x04:  //USB
+								sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 5)
+										% RCV_BUFSIZE];
+								sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 6)
+										% RCV_BUFSIZE];
+								break;
+							default:
+								break;
+							}
+
+							break;
+						case PLAY_UART_CMD:
+							sendBuf[index++] = LAMP2LCD_HEADER;
+							sendBuf[index++] = len;
+							sendBuf[index++] = PLAY_CMD;
+							sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 4)
+									% RCV_BUFSIZE];
+							switch (rcv_T.rxBuf[(rcv_T.pRead + 4) % RCV_BUFSIZE]) {
+							case 0x01:  //BT
+								sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 5)
+										% RCV_BUFSIZE];
+								break;
+							case 0x02:  //FM
+								sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 5)
+										% RCV_BUFSIZE];
+								if (1
+										== rcv_T.rxBuf[(rcv_T.pRead + 5)
+												% RCV_BUFSIZE]) {
+									sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead
+											+ 6) % RCV_BUFSIZE];
+									sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead
+											+ 7) % RCV_BUFSIZE];
+								}
+								break;
+							case 0x03:  //AUX
+								sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 5)
+										% RCV_BUFSIZE];
+								break;
+							case 0x04:  //USB
+								sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 5)
+										% RCV_BUFSIZE];
+								if (1
+										== rcv_T.rxBuf[(rcv_T.pRead + 5)
+												% RCV_BUFSIZE]) {
+									sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead
+											+ 6) % RCV_BUFSIZE];
+									sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead
+											+ 7) % RCV_BUFSIZE];
+								}
+								break;
+							default:
+								break;
+							}
+
 							for (i = 0; i < (sendBuf[1] + 1); i++) {
 								sendBuf[index] += sendBuf[i + 1];
 							}
