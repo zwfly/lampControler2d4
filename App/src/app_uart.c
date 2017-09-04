@@ -57,7 +57,6 @@ void app_uart_pro(void) {
 									len + 3, rcv_T.pRead, RCV_BUFSIZE)) {
 //						printf("check error\r\n");
 						rcv_T.pRead++;
-
 					} else {
 						index = 0;
 						memset(sendBuf, 0, PAYLOAD_WIDTH);
