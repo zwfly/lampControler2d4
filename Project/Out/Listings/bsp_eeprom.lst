@@ -1,0 +1,123 @@
+C51 COMPILER V9.56.0.0   BSP_EEPROM                                                        09/08/2017 22:41:05 PAGE 1   
+
+
+C51 COMPILER V9.56.0.0, COMPILATION OF MODULE BSP_EEPROM
+OBJECT MODULE PLACED IN .\Out\Objects\bsp_eeprom.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE ..\Bsp\src\bsp_eeprom.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(..\Common\
+                    -inc;..\App\inc;..\Bsp\inc;..\Startup;..\Bsp) DEFINE(FOSC_160000) DEBUG OBJECTEXTEND PRINT(.\Out\Listings\bsp_eeprom.lst)
+                    - OBJECT(.\Out\Objects\bsp_eeprom.obj)
+
+line level    source
+
+   1          /*
+   2           * bsp_eeprom.c
+   3           *
+   4           *  Created on: 2017Äê9ÔÂ8ÈÕ
+   5           *      Author: fly
+   6           */
+   7          #include "bsp.h"
+   8          
+   9          static UINT8 looptmp = 0, u8_addrl_r;
+  10          static UINT8 code *cd_longaddr;
+  11          static UINT8 xdata *xd_tmp;
+  12          
+  13          void EEPROM_InitHard(void) {
+  14   1      
+  15   1      }
+  16          
+  17          /*********************************************************************************************************
+             -********
+  18           write_DATAFLASH_BYTE :
+  19           user can copy all this subroutine into project, then call this function in main.
+  20           *********************************************************************************************************
+             -*********/
+  21          void write_DATAFLASH_BYTE(UINT16 u16_addr, UINT8 u8_data) {
+  22   1      
+  23   1      //Check page start address
+  24   1              u8_addrl_r = u16_addr;
+  25   1              if (u8_addrl_r < 0x80) {
+  26   2                      u8_addrl_r = 0;
+  27   2              } else {
+  28   2                      u8_addrl_r = 0x80;
+  29   2              }
+  30   1      //Save APROM data to XRAM
+  31   1              xd_tmp = 0x80;
+  32   1              cd_longaddr = (u16_addr & 0xff00) + u8_addrl_r;
+  33   1              while (xd_tmp != 0x100) {
+  34   2                      *xd_tmp = *cd_longaddr;
+  35   2                      looptmp++;
+  36   2                      xd_tmp++;
+  37   2                      cd_longaddr++;
+  38   2              }
+  39   1      // Modify customer data in XRAM
+  40   1              u8_addrl_r = u16_addr;
+  41   1              if (u8_addrl_r < 0x80) {
+  42   2                      xd_tmp = u8_addrl_r + 0x80;
+  43   2              } else {
+  44   2                      xd_tmp = u8_addrl_r + 0;
+  45   2              }
+  46   1              *xd_tmp = u8_data;
+  47   1      //Erase APROM DATAFLASH page
+  48   1              IAPAL = u16_addr;
+  49   1              IAPAH = u16_addr >> 8;
+  50   1              IAPFD = 0xFF;
+  51   1              set_IAPEN
+C51 COMPILER V9.56.0.0   BSP_EEPROM                                                        09/08/2017 22:41:05 PAGE 2   
+
+  52   1              ;
+  53   1              set_APUEN
+  54   1              ;
+  55   1              IAPCN = 0x22;
+  56   1              set_IAPGO
+  57   1              ;
+  58   1      //Save changed RAM data to APROM DATAFLASH
+  59   1              u8_addrl_r = u16_addr;
+  60   1              if (u8_addrl_r < 0x80) {
+  61   2                      u8_addrl_r = 0;
+  62   2              } else {
+  63   2                      u8_addrl_r = 0x80;
+  64   2              }
+  65   1              xd_tmp = 0x80;
+  66   1              IAPAL = u8_addrl_r;
+  67   1              IAPAH = u16_addr >> 8;
+  68   1              set_IAPEN
+  69   1              ;
+  70   1              set_APUEN
+  71   1              ;
+  72   1              IAPCN = 0x21;
+  73   1              while (xd_tmp != 0xFF) {
+  74   2                      IAPFD = *xd_tmp;
+  75   2                      set_IAPGO
+  76   2                      ;
+  77   2                      IAPAL++;
+  78   2                      xd_tmp++;
+  79   2              }
+  80   1              clr_APUEN
+  81   1              ;
+  82   1              clr_IAPEN
+  83   1              ;
+  84   1      }
+  85          
+  86          //-------------------------------------------------------------------------
+  87          UINT8 read_APROM_BYTE(UINT16 code *u16_addr){
+  88   1              UINT8 rdata;
+  89   1              rdata = *u16_addr>>8;
+  90   1              return rdata;
+  91   1      }
+  92          
+  93          /*********************************************************************************************************
+             -*********/
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    426    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =      6    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

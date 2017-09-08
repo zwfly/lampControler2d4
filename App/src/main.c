@@ -8,6 +8,7 @@ void main(void) {
 	bsp_Init();
 
 	/****************/
+	app_eeprom_Init();
 	app_2d4_init();
 	app_work_Init();
 	app_uart_Init();
@@ -28,6 +29,12 @@ void main(void) {
 			app_2d4_pro();
 //			app_work_100ms_pro();
 //			Repeat_Pro();
+
+		}
+		if (Task_time.flag_500ms) {
+			Task_time.flag_500ms = 0;
+			//////////////////
+
 
 		}
 		if (Task_time.flag_1s) {

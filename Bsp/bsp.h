@@ -15,8 +15,7 @@
 #include "bsp_timer1.h"
 #include "bsp_light.h"
 #include "bsp_relay.h"
-
-
+#include "bsp_eeprom.h"
 
 #ifndef TRUE
 #define TRUE  1
@@ -27,7 +26,6 @@
 #endif
 
 void bsp_Init(void);
-
 
 #endif
 

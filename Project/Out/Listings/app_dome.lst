@@ -1,0 +1,64 @@
+C51 COMPILER V9.56.0.0   APP_DOME                                                          09/08/2017 22:41:04 PAGE 1   
+
+
+C51 COMPILER V9.56.0.0, COMPILATION OF MODULE APP_DOME
+OBJECT MODULE PLACED IN .\Out\Objects\app_dome.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE ..\App\src\app_dome.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(..\Common\in
+                    -c;..\App\inc;..\Bsp\inc;..\Startup;..\Bsp) DEFINE(FOSC_160000) DEBUG OBJECTEXTEND PRINT(.\Out\Listings\app_dome.lst) OBJ
+                    -ECT(.\Out\Objects\app_dome.obj)
+
+line level    source
+
+   1          /*
+   2           * app_dome.c
+   3           *
+   4           *  Created on: 2017Äê9ÔÂ8ÈÕ
+   5           *      Author: fly
+   6           */
+   7          
+   8          #include "app.h"
+   9          
+  10          static SUBDOME_T subDome;
+  11          
+  12          void app_dome_Init(void) {
+  13   1      
+  14   1      }
+  15          
+  16          void app_dome_1s_pro(void) {
+  17   1      
+  18   1      }
+  19          void app_dome_500ms_pro(void) {
+  20   1      
+  21   1      }
+  22          uint16_t app_dome_get_status(void) {
+  23   1      
+  24   1              return 0;
+  25   1      }
+  26          void app_dome_stop_current(void) {
+  27   1      
+  28   1      }
+  29          void app_dome_start(uint8_t index) {
+  30   1      
+  31   1              app_eeprom_get_dome_with_index(&subDome, index);
+*** WARNING C182 IN LINE 31 OF ..\App\src\app_dome.c: pointer to different objects
+  32   1      }
+  33          void app_dome_interrupter(void) {
+  34   1      
+  35   1      
+  36   1      
+  37   1      
+  38   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     20    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =     13    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

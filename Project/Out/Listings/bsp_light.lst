@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   BSP_LIGHT                                                         09/04/2017 21:46:17 PAGE 1   
+C51 COMPILER V9.56.0.0   BSP_LIGHT                                                         09/08/2017 22:41:05 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE BSP_LIGHT
@@ -62,7 +62,7 @@ line level    source
   51   1      
   52   1              //-------- PWM start run--------------
   53   1              set_LOAD;
-C51 COMPILER V9.56.0.0   BSP_LIGHT                                                         09/04/2017 21:46:17 PAGE 2   
+C51 COMPILER V9.56.0.0   BSP_LIGHT                                                         09/08/2017 22:41:05 PAGE 2   
 
   54   1              set_PWMRUN;
   55   1      

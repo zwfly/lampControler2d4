@@ -6,6 +6,7 @@
  */
 
 #include "bsp.h"
+#include "app_dome.h"
 
 #define TH0_INIT        1340
 #define TL0_INIT        1340
@@ -52,7 +53,9 @@ interrupt 1              //interrupt address is 0x000B
 	TH0 = u8TH0_tmp;
 	TL0 = u8TL0_tmp;
 
-	
+
+	app_dome_interrupter();
+
 	if (++Task_time.cnt_10ms >= 10) {
 		Task_time.cnt_10ms = 0;
 		Task_time.flag_10ms = 1;
@@ -61,8 +64,12 @@ interrupt 1              //interrupt address is 0x000B
 	if (++Task_time.cnt_100ms >= 100) {
 		Task_time.cnt_100ms = 0;
 		Task_time.flag_100ms = 1;
-
 	}
+	if (++Task_time.cnt_500ms >= 500) {
+		Task_time.cnt_500ms = 0;
+		Task_time.flag_500ms = 1;
+	}
+
 	if (++Task_time.cnt_1s >= 1000) {
 		Task_time.cnt_1s = 0;
 		Task_time.flag_1s = 1;

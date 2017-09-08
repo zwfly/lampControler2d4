@@ -8,7 +8,7 @@
 #ifndef BSP_INC_BSP_UART_H_
 #define BSP_INC_BSP_UART_H_
 
-#define RCV_BUFSIZE  64
+#define RCV_BUFSIZE  128
 
 typedef struct _RCV_T {
 
