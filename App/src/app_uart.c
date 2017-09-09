@@ -126,7 +126,11 @@ void app_uart_pro(void) {
 							default:
 								break;
 							}
-
+							for (i = 0; i < (sendBuf[1] + 1); i++) {
+								sendBuf[index] += sendBuf[i + 1];
+							}
+							index++;
+							app_2d4_send(sendBuf, index);
 							break;
 						case PLAY_UART_CMD:
 							sendBuf[index++] = LAMP2LCD_HEADER;

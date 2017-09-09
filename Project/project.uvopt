@@ -138,7 +138,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>App\src\APP_EEPROM.C</Filename>
+          <Filename>E:\mywork\myProject\lifuxiao\LCD2.4\project\lampControler2d4\Project\App\src\APP_EEPROM.C</Filename>
           <ExecCommand></ExecCommand>
           <Expression>\\project\APP_EEPROM\17</Expression>
         </Bp>

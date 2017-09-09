@@ -28,13 +28,13 @@ void app_dome_stop_current(void) {
 }
 void app_dome_start(uint8_t index) {
 
-	app_eeprom_get_dome_with_index(&subDome, index);
+//	app_eeprom_get_dome_with_index(&subDome, index);
 
 	count = subDome.repeate;
 }
 void app_dome_interrupter(void) {
 	uint16_t cnt = 0;
 
-	(subDome.color1.R - subDome.color2.R);
+//	(subDome.color1.R - subDome.color2.R);
 
 }
