@@ -12,6 +12,7 @@ void main(void) {
 	app_2d4_init();
 	app_work_Init();
 	app_uart_Init();
+	app_dome_Init();
 	/****************/
 //	Show_FW_Version_Number_To_PC();
 	while (1) {
@@ -21,7 +22,7 @@ void main(void) {
 		if (Task_time.flag_10ms) {
 			Task_time.flag_10ms = 0;
 			//////////////////
-
+			app_dome_interrupter();
 		}
 		if (Task_time.flag_100ms) {
 			Task_time.flag_100ms = 0;

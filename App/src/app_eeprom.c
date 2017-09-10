@@ -16,9 +16,6 @@ void app_eeprom_Init(void) {
 void app_eeprom_get_dome_with_index(DOME_HEADER_T* d, uint8_t index) {
 
 
-
-	//read_APROM_BYTE();
-
 }
 void app_eeprom_100ms_pro(void) {
 
