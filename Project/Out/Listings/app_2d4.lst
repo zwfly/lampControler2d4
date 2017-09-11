@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   APP_2D4                                                           09/10/2017 22:41:19 PAGE 1   
+C51 COMPILER V9.56.0.0   APP_2D4                                                           09/12/2017 01:20:21 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE APP_2D4
@@ -25,97 +25,116 @@ line level    source
   14          static uint8_t rcvBuf[PAYLOAD_WIDTH] = { 0 };
   15          uint8_t sendBuf[PAYLOAD_WIDTH] = { 0 };
   16          
-  17          static uint8_t test_vol = 0;
-  18          static uint8_t test_yinxiang_status = 0;
-  19          
-  20          void app_2d4_init(void) {
-  21   1      
-  22   1              sendRcv_flag = 0;
-  23   1              memset(rcvBuf, 0, sizeof(rcvBuf));
-  24   1              memset(sendBuf, 0, sizeof(sendBuf));
-  25   1      
-  26   1              RF_Init();
-  27   1      #if 1
-  28   1      
-  29   1              RF_RxMode();
-  30   1      #else
+  17          uint8_t tmpBuf[8] = { 0 };
+  18          
+  19          //static uint8_t test_vol = 0;
+  20          //static uint8_t test_yinxiang_status = 0;
+  21          
+  22          void app_2d4_init(void) {
+  23   1      
+  24   1              sendRcv_flag = 0;
+  25   1              memset(rcvBuf, 0, sizeof(rcvBuf));
+  26   1              memset(sendBuf, 0, sizeof(sendBuf));
+  27   1      
+  28   1              RF_Init();
+  29   1      #if 1
+  30   1      
+  31   1              RF_RxMode();
+  32   1      #else
                       RF_TxMode();
                       sendRcv_flag = 1;
               #endif
-  34   1      
-  35   1      //      RF_Carrier(1);
   36   1      
-  37   1      }
-  38          
-  39          void app_2d4_send(uint8_t *d, uint8_t len) {
-  40   1      //      if (len > PAYLOAD_WIDTH) {
-  41   1      //              return;
-  42   1      //      }
-  43   1              uint8_t i = 0;
-  44   1              for (i = 0; i < 120; i++) {
-  45   2                      nop
-  46   2                      nop
+  37   1      //      RF_Carrier(1);
+  38   1      
+  39   1      }
+  40          
+  41          void app_2d4_send(uint8_t *d, uint8_t len) {
+  42   1      //      if (len > PAYLOAD_WIDTH) {
+  43   1      //              return;
+  44   1      //      }
+  45   1              uint8_t i = 0;
+  46   1              for (i = 0; i < 120; i++) {
   47   2                      nop
   48   2                      nop
-  49   2              }
-  50   1              RF_TxMode();
-  51   1              sendRcv_flag = 1;
-  52   1      
-  53   1              for (i = 0; i < 120; i++) {
-C51 COMPILER V9.56.0.0   APP_2D4                                                           09/10/2017 22:41:19 PAGE 2   
+  49   2                      nop
+  50   2                      nop
+  51   2              }
+  52   1              RF_TxMode();
+  53   1              sendRcv_flag = 1;
+C51 COMPILER V9.56.0.0   APP_2D4                                                           09/12/2017 01:20:21 PAGE 2   
 
-  54   2                      nop
-  55   2                      nop
+  54   1      
+  55   1              for (i = 0; i < 120; i++) {
   56   2                      nop
   57   2                      nop
-  58   2              }
-  59   1      
-  60   1              if (sendBuf != d) {
-  61   2                      memset(sendBuf, 0, PAYLOAD_WIDTH);
-  62   2                      memcpy(sendBuf, d, len);
-  63   2              }
-  64   1      
-  65   1      }
-  66          #if DEBUG
+  58   2                      nop
+  59   2                      nop
+  60   2              }
+  61   1      
+  62   1              if (sendBuf != d) {
+  63   2                      memset(sendBuf, 0, PAYLOAD_WIDTH);
+  64   2                      memcpy(sendBuf, d, len);
+  65   2              }
+  66   1      
+  67   1      }
+  68          #if DEBUG
               idata char sss[32] = {0};
               #endif
-  69          static void app_2d4_Rcv(uint8_t *buf) {
-  70   1              uint8_t tmp = 0;
-  71   1              uint8_t i = 0;
-  72   1              uint8_t index = 0;
-  73   1              uint8_t check = 0;
-  74   1      #if DEBUG
+  71          static void app_2d4_Rcv(uint8_t *buf) {
+  72   1              uint8_t tmp = 0;
+  73   1              uint8_t i = 0;
+  74   1              uint8_t index = 0;
+  75   1              uint8_t check = 0;
+  76   1      #if DEBUG
                       sprintf(sss, "rcv %02X %02X %02X %02X %02X %02X\r\n", (uint16_t) buf[0],
                                       (uint16_t) buf[1], (uint16_t) buf[2], (uint16_t) buf[3],
                                       (uint16_t) buf[4], (uint16_t) buf[5]);
                       printf(sss);
               #endif
-  80   1              if (buf[0] != LCD2LAMP_HEADER) {
-  81   2                      return;
-  82   2              }
-  83   1              if (buf[1] > sizeof(rcvBuf)) {
-  84   2                      return;
-  85   2              }
-  86   1              for (i = 0; i < (buf[1] + 1); i++) {
-  87   2                      check += buf[i + 1];
-  88   2              }
-  89   1              if (check != buf[buf[1] + 2]) {
-  90   2                      return;
-  91   2              }
-  92   1      
-  93   1              memset(sendBuf, 0, PAYLOAD_WIDTH);
-  94   1              index = 0;
-  95   1              switch (buf[2]) {
-  96   2              case POWER_SHORT_CMD:
-  97   2                      tmp = 0x03;
-  98   2                      app_uart_send(POWER_SHORT_UART_CMD, &tmp, 1);
+  82   1              if (buf[0] != LCD2LAMP_HEADER) {
+  83   2                      return;
+  84   2              }
+  85   1              if (buf[1] > sizeof(rcvBuf)) {
+  86   2                      return;
+  87   2              }
+  88   1              for (i = 0; i < (buf[1] + 1); i++) {
+  89   2                      check += buf[i + 1];
+  90   2              }
+  91   1              if (check != buf[buf[1] + 2]) {
+  92   2                      return;
+  93   2              }
+  94   1      
+  95   1              memset(sendBuf, 0, PAYLOAD_WIDTH);
+  96   1              index = 0;
+  97   1              switch (buf[2]) {
+  98   2              case POWER_SHORT_CMD:
   99   2      
- 100   2      #if DEBUG
+ 100   2                      if (g_tWork.status.bits.DOME) {
+ 101   3                              g_tWork.status.bits.DOME = 0;
+ 102   3      
+ 103   3                              sendBuf[index++] = LAMP2LCD_HEADER;
+ 104   3                              sendBuf[index++] = 11;
+ 105   3                              sendBuf[index++] = DOME_CMD;
+ 106   3                              sendBuf[index++] = g_tWork.status.bits.DOME;
+ 107   3                              sendBuf[index++] = g_tWork.status.bits.pause;
+ 108   3                              app_dome_get_current_Name(sendBuf + index, 8);
+ 109   3                              index += 8;
+ 110   3                              for (i = 0; i < (sendBuf[1] + 1); i++) {
+ 111   4                                      sendBuf[index] += sendBuf[i + 1];
+ 112   4                              }
+ 113   3                              index++;
+ 114   3                              app_2d4_send(sendBuf, index);
+ 115   3                      }
+C51 COMPILER V9.56.0.0   APP_2D4                                                           09/12/2017 01:20:21 PAGE 3   
+
+ 116   2      
+ 117   2      #if DEBUG
                               printf("POWER_SHORT_CMD\r\n");
               #endif
- 103   2                      break;
- 104   2              case POWER_LONG_CMD:
- 105   2      #if 0
+ 120   2                      break;
+ 121   2              case POWER_LONG_CMD:
+ 122   2      #if 0
                               if (buf[3] == 1) {
                                       test_yinxiang_status = 1;
                               } else if (buf[3] == 2) {
@@ -126,8 +145,6 @@ line level    source
                                       } else {
                                               test_yinxiang_status = 1;
                                       }
-C51 COMPILER V9.56.0.0   APP_2D4                                                           09/10/2017 22:41:19 PAGE 3   
-
                               }
                               sendBuf[index++] = LAMP2LCD_HEADER;
                               sendBuf[index++] = 0x02;
@@ -137,66 +154,122 @@ line level    source
                                       sendBuf[index] += sendBuf[i + 1];
                               }
               #else
- 125   2      
- 126   2      #endif
- 127   2      
- 128   2      #if DEBUG
+ 142   2                      tmp = 0x03;
+ 143   2                      app_uart_send(POWER_LONG_UART_CMD, &tmp, 1);
+ 144   2      
+ 145   2      #endif
+ 146   2      
+ 147   2      #if DEBUG
                               printf("POWER_LONG_CMD\r\n");
               #endif
- 131   2                      break;
- 132   2              case ACC_CMD:
- 133   2      
- 134   2                      if (buf[3] == 1) {
- 135   3                              Relay_on();
- 136   3                      } else if (buf[3] == 2) {
- 137   3                              Relay_off();
- 138   3                      } else if (buf[3] == 3) {
- 139   3                              Relay_toggle();
- 140   3                      }
- 141   2      
- 142   2                      sendBuf[index++] = LAMP2LCD_HEADER;
- 143   2                      sendBuf[index++] = 0x02;
- 144   2                      sendBuf[index++] = buf[2];
- 145   2                      if (Relay_IsOn()) {
- 146   3                              sendBuf[index++] = 0x01;
- 147   3                      } else {
- 148   3                              sendBuf[index++] = 0x02;
- 149   3                      }
- 150   2                      for (i = 0; i < (sendBuf[1] + 1); i++) {
- 151   3                              sendBuf[index] += sendBuf[i + 1];
- 152   3                      }
- 153   2      
- 154   2      #if DEBUG
+ 150   2                      break;
+ 151   2              case ACC_CMD:
+ 152   2      
+ 153   2                      if (buf[3] == 1) {
+ 154   3                              Relay_on();
+ 155   3                      } else if (buf[3] == 2) {
+ 156   3                              Relay_off();
+ 157   3                      } else if (buf[3] == 3) {
+ 158   3                              Relay_toggle();
+ 159   3                      }
+ 160   2      
+ 161   2                      sendBuf[index++] = LAMP2LCD_HEADER;
+ 162   2                      sendBuf[index++] = 0x02;
+ 163   2                      sendBuf[index++] = buf[2];
+ 164   2                      if (Relay_IsOn()) {
+ 165   3                              sendBuf[index++] = 0x01;
+ 166   3                      } else {
+ 167   3                              sendBuf[index++] = 0x02;
+ 168   3                      }
+ 169   2                      for (i = 0; i < (sendBuf[1] + 1); i++) {
+ 170   3                              sendBuf[index] += sendBuf[i + 1];
+ 171   3                      }
+ 172   2      
+ 173   2      #if DEBUG
                               printf("ACC_CMD\r\n");
               #endif
- 157   2                      break;
- 158   2              case UP_CMD:
- 159   2      
- 160   2                      app_uart_send(UP_UART_CMD, 0, 0);
- 161   2      
- 162   2      
- 163   2      #if DEBUG
+ 176   2                      break;
+ 177   2              case UP_CMD:
+C51 COMPILER V9.56.0.0   APP_2D4                                                           09/12/2017 01:20:21 PAGE 4   
+
+ 178   2                      if (g_tWork.status.bits.DOME) {
+ 179   3      
+ 180   3                              if (g_tWork.status.bits.pause == 0) {
+ 181   4      
+ 182   4                                      app_dome_previous();
+ 183   4                                      sendBuf[index++] = LAMP2LCD_HEADER;
+ 184   4                                      sendBuf[index++] = 10;
+ 185   4                                      sendBuf[index++] = UP_CMD;
+ 186   4                                      sendBuf[index++] = 0x05;
+ 187   4                                      app_dome_get_current_Name(sendBuf + index, 8);
+ 188   4                                      index += 8;
+ 189   4                                      for (i = 0; i < (sendBuf[1] + 1); i++) {
+ 190   5                                              sendBuf[index] += sendBuf[i + 1];
+ 191   5                                      }
+ 192   4                                      index++;
+ 193   4                                      app_2d4_send(sendBuf, index);
+ 194   4                              }
+ 195   3                      } else {
+ 196   3                              app_uart_send(UP_UART_CMD, 0, 0);
+ 197   3                      }
+ 198   2      
+ 199   2      #if DEBUG
                               printf("UP_CMD\r\n");
               #endif
- 166   2                      break;
- 167   2              case DOWN_CMD:
- 168   2      
- 169   2                      app_uart_send(DOWN_UART_CMD, 0, 0);
- 170   2      
- 171   2      #if DEBUG
+ 202   2                      break;
+ 203   2              case DOWN_CMD:
+ 204   2                      if (g_tWork.status.bits.DOME) {
+ 205   3                              if (g_tWork.status.bits.pause == 0) {
+ 206   4                                      app_dome_next();
+ 207   4                                      sendBuf[index++] = LAMP2LCD_HEADER;
+ 208   4                                      sendBuf[index++] = 10;
+ 209   4                                      sendBuf[index++] = UP_CMD;
+ 210   4                                      sendBuf[index++] = 0x05;
+ 211   4                                      app_dome_get_current_Name(sendBuf + index, 8);
+ 212   4                                      index += 8;
+ 213   4                                      for (i = 0; i < (sendBuf[1] + 1); i++) {
+ 214   5                                              sendBuf[index] += sendBuf[i + 1];
+ 215   5                                      }
+ 216   4                                      index++;
+ 217   4                                      app_2d4_send(sendBuf, index);
+ 218   4                              }
+ 219   3                      } else {
+ 220   3                              app_uart_send(DOWN_UART_CMD, 0, 0);
+ 221   3                      }
+ 222   2      
+ 223   2      #if DEBUG
                               printf("DOWN_CMD\r\n");
               #endif
- 174   2                      break;
- 175   2              case DOME_CMD:
- 176   2      
- 177   2                      tmp = 0x03;
-C51 COMPILER V9.56.0.0   APP_2D4                                                           09/10/2017 22:41:19 PAGE 4   
+ 226   2                      break;
+ 227   2              case DOME_CMD:
+ 228   2      
+ 229   2      //              tmp = 0x03;
+ 230   2      //              app_uart_send(DOME_UART_CMD, &tmp, 1);
+ 231   2      
+ 232   2                      if (g_tWork.status.bits.DOME) {
+ 233   3                              g_tWork.status.bits.DOME = 0;
+ 234   3      
+ 235   3                      } else {
+ 236   3                              g_tWork.status.bits.DOME = 1;
+ 237   3                      }
+ 238   2                      sendBuf[index++] = LAMP2LCD_HEADER;
+ 239   2                      sendBuf[index++] = 11;
+C51 COMPILER V9.56.0.0   APP_2D4                                                           09/12/2017 01:20:21 PAGE 5   
 
- 178   2                      app_uart_send(DOME_UART_CMD, &tmp, 1);
- 179   2      
- 180   2                      break;
- 181   2              case VOL_ADD_CMD:
- 182   2      #if 0
+ 240   2                      sendBuf[index++] = DOME_CMD;
+ 241   2                      sendBuf[index++] = g_tWork.status.bits.DOME;
+ 242   2                      sendBuf[index++] = g_tWork.status.bits.pause;
+ 243   2                      app_dome_get_current_Name(sendBuf + index, 8);
+ 244   2                      index += 8;
+ 245   2                      for (i = 0; i < (sendBuf[1] + 1); i++) {
+ 246   3                              sendBuf[index] += sendBuf[i + 1];
+ 247   3                      }
+ 248   2                      index++;
+ 249   2                      app_2d4_send(sendBuf, index);
+ 250   2      
+ 251   2                      break;
+ 252   2              case VOL_ADD_CMD:
+ 253   2      #if 0
                               if (buf[3] == 1) {
                                       test_vol++;
                                       if (test_vol > 30) {
@@ -217,17 +290,17 @@ line level    source
                               }
               
               #else
- 203   2      
- 204   2                      app_uart_send(VOL_ADD_UART_CMD, 0, 0);
- 205   2      
- 206   2      #endif
- 207   2      
- 208   2      #if DEBUG
+ 274   2      
+ 275   2                      app_uart_send(VOL_ADD_UART_CMD, 0, 0);
+ 276   2      
+ 277   2      #endif
+ 278   2      
+ 279   2      #if DEBUG
                               printf("VOL_ADD_CMD\r\n");
               #endif
- 211   2                      break;
- 212   2              case VOL_MINUS_CMD:
- 213   2      #if 0
+ 282   2                      break;
+ 283   2              case VOL_MINUS_CMD:
+ 284   2      #if 0
                               if (buf[3] == 1) {
                                       test_vol++;
                                       if (test_vol > 30) {
@@ -245,19 +318,19 @@ line level    source
                               sendBuf[index++] = test_vol;
                               for (i = 0; i < (sendBuf[1] + 1); i++) {
                                       sendBuf[index] += sendBuf[i + 1];
+C51 COMPILER V9.56.0.0   APP_2D4                                                           09/12/2017 01:20:21 PAGE 6   
+
                               }
               #else
- 233   2                      app_uart_send(VOL_MINUS_UART_CMD, 0, 0);
- 234   2      #endif
- 235   2      
- 236   2      #if DEBUG
+ 304   2                      app_uart_send(VOL_MINUS_UART_CMD, 0, 0);
+ 305   2      #endif
+ 306   2      
+ 307   2      #if DEBUG
                               printf("VOL_MINUS_CMD\r\n");
               #endif
- 239   2                      break;
-C51 COMPILER V9.56.0.0   APP_2D4                                                           09/10/2017 22:41:19 PAGE 5   
-
- 240   2              case PLAY_CMD:
- 241   2      #if 0
+ 310   2                      break;
+ 311   2              case PLAY_CMD:
+ 312   2      #if 0
                               sendBuf[index++] = LAMP2LCD_HEADER;
                               sendBuf[index++] = 0x03;
                               sendBuf[index++] = buf[2];
@@ -307,19 +380,44 @@ line level    source
                                       sendBuf[index] += sendBuf[i + 1];
                               }
               #else
- 291   2                      app_uart_send(PLAY_UART_CMD, 0, 0);
- 292   2      #endif
- 293   2      #if DEBUG
+ 362   2                      if (g_tWork.status.bits.DOME) {
+ 363   3                              if (g_tWork.status.bits.pause) {
+C51 COMPILER V9.56.0.0   APP_2D4                                                           09/12/2017 01:20:21 PAGE 7   
+
+ 364   4                                      g_tWork.status.bits.pause = 0;
+ 365   4                                      app_dome_start_current();
+ 366   4                              } else {
+ 367   4                                      g_tWork.status.bits.pause = 1;
+ 368   4                                      app_dome_stop_current();
+ 369   4                              }
+ 370   3      
+ 371   3                              sendBuf[index++] = LAMP2LCD_HEADER;
+ 372   3                              sendBuf[index++] = 11;
+ 373   3                              sendBuf[index++] = PLAY_CMD;
+ 374   3                              sendBuf[index++] = 0x05;
+ 375   3                              sendBuf[index++] = g_tWork.status.bits.pause;
+ 376   3                              app_dome_get_current_Name(sendBuf + index, 8);
+ 377   3                              index += 8;
+ 378   3                              for (i = 0; i < (sendBuf[1] + 1); i++) {
+ 379   4                                      sendBuf[index] += sendBuf[i + 1];
+ 380   4                              }
+ 381   3                              index++;
+ 382   3                              app_2d4_send(sendBuf, index);
+ 383   3      
+ 384   3                      } else {
+ 385   3                              app_uart_send(PLAY_UART_CMD, 0, 0);
+ 386   3                      }
+ 387   2      
+ 388   2      #endif
+ 389   2      #if DEBUG
                               printf("PLAY_CMD\r\n");
               #endif
- 296   2                      break;
- 297   2              case MODE_CMD:
- 298   2      #if 0
+ 392   2                      break;
+ 393   2              case MODE_CMD:
+ 394   2      #if 0
                               if (buf[3] == 1) {
                                       switch (g_tWork.mode) {
                                               case 'B':
-C51 COMPILER V9.56.0.0   APP_2D4                                                           09/10/2017 22:41:19 PAGE 6   
-
                                               g_tWork.mode = 'F';
                                               break;
                                               case 'F':
@@ -342,17 +440,19 @@ line level    source
                                       sendBuf[index] += sendBuf[i + 1];
                               }
               #else
- 324   2                      app_uart_send(MODE_UART_CMD, 0, 0);
- 325   2      #endif
- 326   2      
- 327   2      #if DEBUG
+ 420   2                      app_uart_send(MODE_UART_CMD, 0, 0);
+ 421   2      #endif
+ 422   2      
+ 423   2      #if DEBUG
                               printf("MODE_CMD\r\n");
               #endif
- 330   2                      break;
- 331   2              }
- 332   1              if (index) {
- 333   2                      index++;
- 334   2      #if 0
+C51 COMPILER V9.56.0.0   APP_2D4                                                           09/12/2017 01:20:21 PAGE 8   
+
+ 426   2                      break;
+ 427   2              }
+ 428   1              if (index) {
+ 429   2                      index++;
+ 430   2      #if 0
                               nop
                               nop
                               nop
@@ -367,87 +467,67 @@ line level    source
                                       nop
                               }
               #else
- 349   2                      app_2d4_send(sendBuf, index);
- 350   2      #endif
- 351   2              }
- 352   1      
- 353   1      }
- 354          
- 355          void app_2d4_pro(void) {
- 356   1      
- 357   1              if (sendRcv_flag) {
- 358   2      
- 359   2                      switch (ucRF_GetStatus()) {
- 360   3                      case TX_DS_FLAG:                // 普通型发送完成 或 增强型发送成功
- 361   3      
- 362   3                              RF_ClearFIFO();
- 363   3                              RF_ClearStatus();
-C51 COMPILER V9.56.0.0   APP_2D4                                                           09/10/2017 22:41:19 PAGE 7   
+ 445   2                      app_2d4_send(sendBuf, index);
+ 446   2      #endif
+ 447   2              }
+ 448   1      
+ 449   1      }
+ 450          
+ 451          void app_2d4_pro(void) {
+ 452   1      
+ 453   1              if (sendRcv_flag) {
+ 454   2      
+ 455   2                      switch (ucRF_GetStatus()) {
+ 456   3                      case TX_DS_FLAG:                // 普通型发送完成 或 增强型发送成功
+ 457   3      
+ 458   3                              RF_ClearFIFO();
+ 459   3                              RF_ClearStatus();
+ 460   3      
+ 461   3      //                      printf("Send OK\r\n");
+ 462   3      
+ 463   3                              sendRcv_flag = 0;
+ 464   3                              RF_RxMode();
+ 465   3      
+ 466   3      //                      Relay_toggle();
+ 467   3      
+ 468   3                              break;
+ 469   3                      case RX_DR_FLAG:                //发送成功且收到payload
+ 470   3      
+ 471   3                              RF_ClearFIFO();
+ 472   3                              RF_ClearStatus();
+ 473   3                              break;
+ 474   3                      case MAX_RT_FLAG:               // 增强型发送超时失败
+ 475   3      
+ 476   3                              RF_ClearFIFO();
+ 477   3                              RF_ClearStatus();
+ 478   3                              break;
+ 479   3                      default:                // rf 处于空闲状态才发送数据
+ 480   3      
+ 481   3                              RF_TxData(sendBuf, sizeof(sendBuf));
+ 482   3      
+ 483   3                              break;
+ 484   3                      }
+ 485   2      
+ 486   2              } else {
+ 487   2                      if (ucRF_DumpRxData(rcvBuf, sizeof(rcvBuf))) {
+C51 COMPILER V9.56.0.0   APP_2D4                                                           09/12/2017 01:20:21 PAGE 9   
 
- 364   3      
- 365   3      //                      printf("Send OK\r\n");
- 366   3      
- 367   3                              sendRcv_flag = 0;
- 368   3                              RF_RxMode();
- 369   3      
- 370   3      //                      Relay_toggle();
- 371   3      
- 372   3                              break;
- 373   3                      case RX_DR_FLAG:                //发送成功且收到payload
- 374   3      
- 375   3                              RF_ClearFIFO();
- 376   3                              RF_ClearStatus();
- 377   3                              break;
- 378   3                      case MAX_RT_FLAG:               // 增强型发送超时失败
- 379   3      
- 380   3                              RF_ClearFIFO();
- 381   3                              RF_ClearStatus();
- 382   3                              break;
- 383   3                      default:                // rf 处于空闲状态才发送数据
- 384   3      
- 385   3                              RF_TxData(sendBuf, sizeof(sendBuf));
- 386   3      
- 387   3                              break;
- 388   3                      }
- 389   2      
- 390   2              } else {
- 391   2                      if (ucRF_DumpRxData(rcvBuf, sizeof(rcvBuf))) {
- 392   3      
- 393   3                              app_2d4_Rcv(rcvBuf);
- 394   3      
- 395   3                      }
- 396   2              }
- 397   1      }
- 398          
- 399          void app_2d4_1S_pro(void) {
- 400   1      
- 401   1              switch (g_tWork.mode) {
- 402   2              case 'B':
- 403   2      
- 404   2                      break;
- 405   2              case 'F':
- 406   2      
- 407   2                      break;
- 408   2              case 'A':
- 409   2      
- 410   2                      break;
- 411   2              case 'U':
- 412   2      
- 413   2                      break;
- 414   2              }
- 415   1      
- 416   1      }
+ 488   3      
+ 489   3                              app_2d4_Rcv(rcvBuf);
+ 490   3      
+ 491   3                      }
+ 492   2              }
+ 493   1      }
+ 494          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    911    ----
+   CODE SIZE        =   1986    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =     35      11
+   XDATA SIZE       =     41      11
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
-C51 COMPILER V9.56.0.0   APP_2D4                                                           09/10/2017 22:41:19 PAGE 8   
-
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
 

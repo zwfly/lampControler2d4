@@ -130,17 +130,7 @@
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>domeHeader,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>1</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>dome_default,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>2</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>subDome,0x0A</ItemText>
+          <ItemText>dome_default</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>

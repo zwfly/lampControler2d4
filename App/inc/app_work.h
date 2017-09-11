@@ -13,18 +13,18 @@ typedef struct _WORK_T {
 	union {
 		uint8_t allbits;
 		struct {
-			unsigned relay :1;
-			unsigned speaker :1;
-			unsigned BT :1;
-			unsigned FM :1;
-			unsigned AUX :1;
-			unsigned USB :1;
+			unsigned DOME :1;
+			unsigned pause :1;
+			unsigned ra4 :1;
+			unsigned ra5 :1;
 			unsigned ra6 :1;
+			unsigned ra7 :1;
+			unsigned ra8 :1;
 			unsigned ra9 :1;
 		} bits;
 	} status;
 
-	char mode;
+//	uint8_t mode;
 
 } WORK_T;
 extern WORK_T g_tWork;

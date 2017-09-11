@@ -14,8 +14,10 @@ static uint8_t sendRcv_flag = 0; //0 rcv£¬ 1 send
 static uint8_t rcvBuf[PAYLOAD_WIDTH] = { 0 };
 uint8_t sendBuf[PAYLOAD_WIDTH] = { 0 };
 
-static uint8_t test_vol = 0;
-static uint8_t test_yinxiang_status = 0;
+uint8_t tmpBuf[8] = { 0 };
+
+//static uint8_t test_vol = 0;
+//static uint8_t test_yinxiang_status = 0;
 
 void app_2d4_init(void) {
 
@@ -94,8 +96,23 @@ static void app_2d4_Rcv(uint8_t *buf) {
 	index = 0;
 	switch (buf[2]) {
 	case POWER_SHORT_CMD:
-		tmp = 0x03;
-		app_uart_send(POWER_SHORT_UART_CMD, &tmp, 1);
+
+		if (g_tWork.status.bits.DOME) {
+			g_tWork.status.bits.DOME = 0;
+
+			sendBuf[index++] = LAMP2LCD_HEADER;
+			sendBuf[index++] = 11;
+			sendBuf[index++] = DOME_CMD;
+			sendBuf[index++] = g_tWork.status.bits.DOME;
+			sendBuf[index++] = g_tWork.status.bits.pause;
+			app_dome_get_current_Name(sendBuf + index, 8);
+			index += 8;
+			for (i = 0; i < (sendBuf[1] + 1); i++) {
+				sendBuf[index] += sendBuf[i + 1];
+			}
+			index++;
+			app_2d4_send(sendBuf, index);
+		}
 
 #if DEBUG
 		printf("POWER_SHORT_CMD\r\n");
@@ -122,6 +139,8 @@ static void app_2d4_Rcv(uint8_t *buf) {
 			sendBuf[index] += sendBuf[i + 1];
 		}
 #else
+		tmp = 0x03;
+		app_uart_send(POWER_LONG_UART_CMD, &tmp, 1);
 
 #endif
 
@@ -156,17 +175,50 @@ static void app_2d4_Rcv(uint8_t *buf) {
 #endif
 		break;
 	case UP_CMD:
+		if (g_tWork.status.bits.DOME) {
 
-		app_uart_send(UP_UART_CMD, 0, 0);
+			if (g_tWork.status.bits.pause == 0) {
 
+				app_dome_previous();
+				sendBuf[index++] = LAMP2LCD_HEADER;
+				sendBuf[index++] = 10;
+				sendBuf[index++] = UP_CMD;
+				sendBuf[index++] = 0x05;
+				app_dome_get_current_Name(sendBuf + index, 8);
+				index += 8;
+				for (i = 0; i < (sendBuf[1] + 1); i++) {
+					sendBuf[index] += sendBuf[i + 1];
+				}
+				index++;
+				app_2d4_send(sendBuf, index);
+			}
+		} else {
+			app_uart_send(UP_UART_CMD, 0, 0);
+		}
 
 #if DEBUG
 		printf("UP_CMD\r\n");
 #endif
 		break;
 	case DOWN_CMD:
-
-		app_uart_send(DOWN_UART_CMD, 0, 0);
+		if (g_tWork.status.bits.DOME) {
+			if (g_tWork.status.bits.pause == 0) {
+				app_dome_next();
+				sendBuf[index++] = LAMP2LCD_HEADER;
+				sendBuf[index++] = 10;
+				sendBuf[index++] = UP_CMD;
+				sendBuf[index++] = 0x05;
+				app_dome_get_current_Name(sendBuf + index, 8);
+				index += 8;
+				for (i = 0; i < (sendBuf[1] + 1); i++) {
+					sendBuf[index] += sendBuf[i + 1];
+				}
+				index++;
+				app_2d4_send(sendBuf, index);
+			}
+		} else {
+			app_uart_send(DOWN_UART_CMD, 0, 0);
+		}
 
 #if DEBUG
 		printf("DOWN_CMD\r\n");
@@ -174,8 +226,27 @@ static void app_2d4_Rcv(uint8_t *buf) {
 		break;
 	case DOME_CMD:
 
-		tmp = 0x03;
-		app_uart_send(DOME_UART_CMD, &tmp, 1);
+//		tmp = 0x03;
+//		app_uart_send(DOME_UART_CMD, &tmp, 1);
+
+		if (g_tWork.status.bits.DOME) {
+			g_tWork.status.bits.DOME = 0;
+
+		} else {
+			g_tWork.status.bits.DOME = 1;
+		}
+		sendBuf[index++] = LAMP2LCD_HEADER;
+		sendBuf[index++] = 11;
+		sendBuf[index++] = DOME_CMD;
+		sendBuf[index++] = g_tWork.status.bits.DOME;
+		sendBuf[index++] = g_tWork.status.bits.pause;
+		app_dome_get_current_Name(sendBuf + index, 8);
+		index += 8;
+		for (i = 0; i < (sendBuf[1] + 1); i++) {
+			sendBuf[index] += sendBuf[i + 1];
+		}
+		index++;
+		app_2d4_send(sendBuf, index);
 
 		break;
 	case VOL_ADD_CMD:
@@ -288,7 +359,32 @@ static void app_2d4_Rcv(uint8_t *buf) {
 			sendBuf[index] += sendBuf[i + 1];
 		}
 #else
-		app_uart_send(PLAY_UART_CMD, 0, 0);
+		if (g_tWork.status.bits.DOME) {
+			if (g_tWork.status.bits.pause) {
+				g_tWork.status.bits.pause = 0;
+				app_dome_start_current();
+			} else {
+				g_tWork.status.bits.pause = 1;
+				app_dome_stop_current();
+			}
+
+			sendBuf[index++] = LAMP2LCD_HEADER;
+			sendBuf[index++] = 11;
+			sendBuf[index++] = PLAY_CMD;
+			sendBuf[index++] = 0x05;
+			sendBuf[index++] = g_tWork.status.bits.pause;
+			app_dome_get_current_Name(sendBuf + index, 8);
+			index += 8;
+			for (i = 0; i < (sendBuf[1] + 1); i++) {
+				sendBuf[index] += sendBuf[i + 1];
+			}
+			index++;
+			app_2d4_send(sendBuf, index);
+
+		} else {
+			app_uart_send(PLAY_UART_CMD, 0, 0);
+		}
+
 #endif
 #if DEBUG
 		printf("PLAY_CMD\r\n");
@@ -396,21 +492,3 @@ void app_2d4_pro(void) {
 	}
 }
 
-void app_2d4_1S_pro(void) {
-
-	switch (g_tWork.mode) {
-	case 'B':
-
-		break;
-	case 'F':
-
-		break;
-	case 'A':
-
-		break;
-	case 'U':
-
-		break;
-	}
-
-}

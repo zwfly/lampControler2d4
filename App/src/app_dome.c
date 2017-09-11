@@ -8,41 +8,44 @@
 #include "app.h"
 #include <stdlib.h>
 
-static SUBDOME_T subDome;
+static idata SUBDOME_T subDome;
 static DOME_HEADER_T domeHeader;
 static SUBDOME_ASSIST_T subDome_Assist;
+static DOME_PRO_T domePro;
+///////////////////
 
 code const DOME_DEFAULT_T dome_default[DEFAULT_DOME_NUM] = {  //
 		{ //start big dome0
 				{  //start header0
-						"HOME", 3  //header0 body
+						"    DOME", 1  //header0 body
 						},//end header0
 						{  //start dome0
-
-						{ 0x04, { 0, 0, 255 }, { 0, 0, 0 }, 1, 200, 100, 0 }, //subdome0
-								{ 0x04, { 255, 0, 0 }, { 0, 0, 0 }, 1, 200, 100,
+								{ 0x05, { 255, 255, 255 }, { 0, 0, 0 }, 1, 200,
+										100, 0 }, //subdome0
+								{ 0x14, { 255, 0, 0 }, { 0, 0, 0 }, 1, 200, 100,
 										0 },  //subdome1
-								{ 0x04, { 0, 255, 0 }, { 0, 0, 0 }, 1, 200, 100,
+								{ 0x24, { 0, 255, 0 }, { 0, 0, 0 }, 1, 200, 100,
 										0 },  //subdome2
-								{ 0x04, { 0, 255, 0 }, { 0, 0, 0 }, 1, 200, 100,
+								{ 0x34, { 0, 255, 0 }, { 0, 0, 0 }, 1, 200, 100,
 										0 },   //subdome3
-								{ 0x04, { 0, 255, 0 }, { 0, 0, 0 }, 1, 200, 100,
+								{ 0x44, { 0, 255, 0 }, { 0, 0, 0 }, 1, 200, 100,
 										0 },  //subdome4
-								{ 0x04, { 0, 255, 0 }, { 0, 0, 0 }, 1, 200, 100,
+								{ 0x54, { 0, 255, 0 }, { 0, 0, 0 }, 1, 200, 100,
 										0 },  //subdome5
-								{ 0x04, { 0, 255, 0 }, { 0, 0, 0 }, 1, 200, 100,
+								{ 0x64, { 0, 255, 0 }, { 0, 0, 0 }, 1, 200, 100,
 										0 },  //subdome6
-								{ 0x04, { 0, 255, 0 }, { 0, 0, 0 }, 1, 200, 100,
+								{ 0x74, { 0, 255, 0 }, { 0, 0, 0 }, 1, 200, 100,
 										0 }    //subdome7
 						}  //end dome0
 				},  // end big dome0
 				{ //start big dome1
 				{  //start header0
-						"FOO", 3 }, //end header0
+						"     LSU", 2 }, //end header0
 						{  //start dome0
-						{ 0x04, { 255, 0, 0 }, { 0, 0, 0 }, 1, 200, 100, 0 }, //subdome0
-								{ 0x04, { 0, 255, 0 }, { 0, 0, 0 }, 1, 200, 100,
-										0 },  //subdome1
+						{ 0x03, { 160, 32, 240 }, { 255, 165, 0 }, 1, 200, 100,
+								0 }, //subdome0
+								{ 0x13, { 255, 165, 0 }, { 160, 32, 240 }, 1,
+										200, 100, 0 },  //subdome1
 								{ 0x04, { 0, 0, 255 }, { 0, 0, 0 }, 1, 200, 100,
 										0 },  //subdome2
 								{ 0x04, { 0, 0, 255 }, { 0, 0, 0 }, 1, 200, 100,
@@ -58,15 +61,15 @@ code const DOME_DEFAULT_T dome_default[DEFAULT_DOME_NUM] = {  //
 
 						}  //end dome0
 				},  // end big dome1
-				{ //start big dome0
+				{ //start big dome2
 				{  //start header0
-						"BAR", 1 }, //end header0
+						"    XMAS", 3 }, //end header0
 						{  //start dome0
-						{ 0x04, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100, 0 }, //subdome0
-								{ 0x04, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
-										0 },  //subdome1
-								{ 0x04, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
-										0 },  //subdome2
+						{ 0x03, { 255, 0, 0 }, { 0, 255, 0 }, 1, 200, 100, 0 }, //subdome0
+								{ 0x13, { 0, 255, 0 }, { 255, 255, 255 }, 1,
+										200, 100, 0 },  //subdome1
+								{ 0x23, { 255, 255, 255 }, { 255, 0, 0 }, 1,
+										200, 100, 0 },  //subdome2
 								{ 0x04, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
 										0 },   //subdome3
 								{ 0x04, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
@@ -79,62 +82,371 @@ code const DOME_DEFAULT_T dome_default[DEFAULT_DOME_NUM] = {  //
 										0 }    //subdome7
 
 						}  //end dome0
-				}  // end big dome0
+				},  // end big dome2
+				{ //start big dome3
+				{  //start header0
+						"   MARDI", 4 }, //end header0
+						{  //start dome0
+						{ 0x03, { 255, 0, 0 }, { 0, 255, 0 }, 1, 100, 100, 0 }, //subdome0
+								{ 0x13, { 0, 255, 0 }, { 160, 32, 240 }, 1, 100,
+										100, 0 },  //subdome1
+								{ 0x23, { 160, 32, 240 }, { 255, 255, 0 }, 1,
+										100, 100, 0 },  //subdome2
+								{ 0x33, { 255, 255, 0 }, { 255, 0, 0 }, 1, 100,
+										100, 0 },   //subdome3
+								{ 0x44, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 },  //subdome4
+								{ 0x54, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 },  //subdome5
+								{ 0x64, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 },  //subdome6
+								{ 0x74, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 }    //subdome7
+
+						}  //end dome0
+				},  // end big dome3
+				{ //start big dome4
+				{  //start header0
+						"   FADE1", 1 }, //end header0
+						{  //start dome0
+						{ 0x04, { 255, 0, 0 }, { 0, 0, 0 }, 1, 200, 100, 0 }, //subdome0
+								{ 0x13, { 0, 255, 0 }, { 160, 32, 240 }, 1, 100,
+										100, 0 },  //subdome1
+								{ 0x23, { 160, 32, 240 }, { 255, 255, 0 }, 1,
+										100, 100, 0 },  //subdome2
+								{ 0x33, { 255, 255, 0 }, { 255, 0, 0 }, 1, 100,
+										100, 0 },   //subdome3
+								{ 0x44, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 },  //subdome4
+								{ 0x54, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 },  //subdome5
+								{ 0x64, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 },  //subdome6
+								{ 0x74, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 }    //subdome7
+
+						}  //end dome0
+				},  // end big dome4
+				{ //start big dome4
+				{  //start header0
+						"   FADE2", 1 }, //end header0
+						{  //start dome0
+						{ 0x04, { 0, 255, 0 }, { 0, 0, 0 }, 1, 200, 100, 0 }, //subdome0
+								{ 0x13, { 0, 255, 0 }, { 160, 32, 240 }, 1, 100,
+										100, 0 },  //subdome1
+								{ 0x23, { 160, 32, 240 }, { 255, 255, 0 }, 1,
+										100, 100, 0 },  //subdome2
+								{ 0x33, { 255, 255, 0 }, { 255, 0, 0 }, 1, 100,
+										100, 0 },   //subdome3
+								{ 0x44, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 },  //subdome4
+								{ 0x54, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 },  //subdome5
+								{ 0x64, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 },  //subdome6
+								{ 0x74, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 }    //subdome7
+
+						}  //end dome0
+				}, // end big dome4
+				{ //start big dome4
+				{  //start header0
+						"   FADE3", 1 }, //end header0
+						{  //start dome0
+						{ 0x04, { 0, 0, 255 }, { 0, 0, 0 }, 1, 200, 100, 0 }, //subdome0
+								{ 0x13, { 0, 255, 0 }, { 160, 32, 240 }, 1, 100,
+										100, 0 },  //subdome1
+								{ 0x23, { 160, 32, 240 }, { 255, 255, 0 }, 1,
+										100, 100, 0 },  //subdome2
+								{ 0x33, { 255, 255, 0 }, { 255, 0, 0 }, 1, 100,
+										100, 0 },   //subdome3
+								{ 0x44, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 },  //subdome4
+								{ 0x54, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 },  //subdome5
+								{ 0x64, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 },  //subdome6
+								{ 0x74, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 }    //subdome7
+
+						}  //end dome0
+				},  // end big dome4
+				{ //start big dome4
+				{  //start header0
+						"   FADE4", 1 }, //end header0
+						{  //start dome0
+						{ 0x04, { 160, 32, 240 }, { 0, 0, 0 }, 1, 200, 100, 0 }, //subdome0
+								{ 0x13, { 0, 255, 0 }, { 160, 32, 240 }, 1, 100,
+										100, 0 },  //subdome1
+								{ 0x23, { 160, 32, 240 }, { 255, 255, 0 }, 1,
+										100, 100, 0 },  //subdome2
+								{ 0x33, { 255, 255, 0 }, { 255, 0, 0 }, 1, 100,
+										100, 0 },   //subdome3
+								{ 0x44, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 },  //subdome4
+								{ 0x54, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 },  //subdome5
+								{ 0x64, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 },  //subdome6
+								{ 0x74, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 }    //subdome7
+
+						}  //end dome0
+				},  // end big dome4
+				{ //start big dome4
+				{  //start header0
+						"   FADE5", 1 }, //end header0
+						{  //start dome0
+						{ 0x04, { 255, 165, 0 }, { 0, 0, 0 }, 1, 200, 100, 0 }, //subdome0
+								{ 0x13, { 0, 255, 0 }, { 160, 32, 240 }, 1, 100,
+										100, 0 },  //subdome1
+								{ 0x23, { 160, 32, 240 }, { 255, 255, 0 }, 1,
+										100, 100, 0 },  //subdome2
+								{ 0x33, { 255, 255, 0 }, { 255, 0, 0 }, 1, 100,
+										100, 0 },   //subdome3
+								{ 0x44, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 },  //subdome4
+								{ 0x54, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 },  //subdome5
+								{ 0x64, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 },  //subdome6
+								{ 0x74, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 }    //subdome7
+
+						}  //end dome0
+				},  // end big dome4
+				{ //start big dome4
+				{  //start header0
+						"  SHARP1", 1 }, //end header0
+						{  //start dome0
+						{ 0x05, { 255, 0, 0 }, { 0, 0, 0 }, 1, 100, 100, 100 }, //subdome0
+								{ 0x13, { 0, 255, 0 }, { 160, 32, 240 }, 1, 100,
+										100, 0 },  //subdome1
+								{ 0x23, { 160, 32, 240 }, { 255, 255, 0 }, 1,
+										100, 100, 0 },  //subdome2
+								{ 0x33, { 255, 255, 0 }, { 255, 0, 0 }, 1, 100,
+										100, 0 },   //subdome3
+								{ 0x44, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 },  //subdome4
+								{ 0x54, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 },  //subdome5
+								{ 0x64, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 },  //subdome6
+								{ 0x74, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 }    //subdome7
+
+						}  //end dome0
+				},  // end big dome4
+				{ //start big dome4
+				{  //start header0
+						"  SHARP2", 1 }, //end header0
+						{  //start dome0
+						{ 0x05, { 0, 255, 0 }, { 0, 0, 0 }, 1, 100, 100, 100 }, //subdome0
+								{ 0x13, { 0, 255, 0 }, { 160, 32, 240 }, 1, 100,
+										100, 0 },  //subdome1
+								{ 0x23, { 160, 32, 240 }, { 255, 255, 0 }, 1,
+										100, 100, 0 },  //subdome2
+								{ 0x33, { 255, 255, 0 }, { 255, 0, 0 }, 1, 100,
+										100, 0 },   //subdome3
+								{ 0x44, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 },  //subdome4
+								{ 0x54, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 },  //subdome5
+								{ 0x64, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 },  //subdome6
+								{ 0x74, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 }    //subdome7
+
+						}  //end dome0
+				}, // end big dome4
+				{ //start big dome4
+				{  //start header0
+						"  SHARP3", 1 }, //end header0
+						{  //start dome0
+						{ 0x05, { 0, 0, 255 }, { 0, 0, 0 }, 1, 100, 100, 100 }, //subdome0
+								{ 0x13, { 0, 255, 0 }, { 160, 32, 240 }, 1, 100,
+										100, 0 },  //subdome1
+								{ 0x23, { 160, 32, 240 }, { 255, 255, 0 }, 1,
+										100, 100, 0 },  //subdome2
+								{ 0x33, { 255, 255, 0 }, { 255, 0, 0 }, 1, 100,
+										100, 0 },   //subdome3
+								{ 0x44, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 },  //subdome4
+								{ 0x54, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 },  //subdome5
+								{ 0x64, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 },  //subdome6
+								{ 0x74, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 }    //subdome7
+
+						}  //end dome0
+				},  // end big dome4
+				{ //start big dome4
+				{  //start header0
+						"  SHARP4", 1 }, //end header0
+						{  //start dome0
+						{ 0x05, { 160, 32, 240 }, { 0, 0, 0 }, 1, 100, 100, 100 }, //subdome0
+								{ 0x13, { 0, 255, 0 }, { 160, 32, 240 }, 1, 100,
+										100, 0 },  //subdome1
+								{ 0x23, { 160, 32, 240 }, { 255, 255, 0 }, 1,
+										100, 100, 0 },  //subdome2
+								{ 0x33, { 255, 255, 0 }, { 255, 0, 0 }, 1, 100,
+										100, 0 },   //subdome3
+								{ 0x44, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 },  //subdome4
+								{ 0x54, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 },  //subdome5
+								{ 0x64, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 },  //subdome6
+								{ 0x74, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 }    //subdome7
+
+						}  //end dome0
+				},  // end big dome4
+				{ //start big dome4
+				{  //start header0
+						"  SHARP5", 1 }, //end header0
+						{  //start dome0
+								{ 0x05, { 255, 165, 0 }, { 0, 0, 0 }, 1, 100,
+										100, 100 }, //subdome0
+								{ 0x13, { 0, 255, 0 }, { 160, 32, 240 }, 1, 100,
+										100, 100 },  //subdome1
+								{ 0x23, { 160, 32, 240 }, { 255, 255, 0 }, 1,
+										100, 100, 100 },  //subdome2
+								{ 0x33, { 255, 255, 0 }, { 255, 0, 0 }, 1, 100,
+										100, 0 },   //subdome3
+								{ 0x44, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 },  //subdome4
+								{ 0x54, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 },  //subdome5
+								{ 0x64, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 },  //subdome6
+								{ 0x74, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 }    //subdome7
+
+						}  //end dome0
+				}, // end big dome4
+				{ //start big dome4
+				{  //start header0
+						" GRADIEN", 7 }, //end header0
+						{  //start dome0
+								{ 0x03, { 255, 0, 0 }, { 255, 0x7F, 0 }, 1, 100,
+										100, 0 }, //subdome0
+								{ 0x13, { 255, 0x7F, 0 }, { 255, 255, 0 }, 1,
+										100, 100, 0 },  //subdome1
+								{ 0x23, { 255, 255, 0 }, { 0, 255, 0 }, 1, 100,
+										100, 0 },  //subdome2
+								{ 0x33, { 0, 255, 0 }, { 0, 255, 255 }, 1, 100,
+										100, 0 },   //subdome3
+								{ 0x43, { 0, 255, 255 }, { 0, 0, 255 }, 1, 100,
+										100, 0 },  //subdome4
+								{ 0x53, { 0, 0, 255 }, { 0x8B, 0, 255 }, 1, 100,
+										100, 0 },  //subdome5
+								{ 0x63, { 0x8B, 0, 255 }, { 255, 0, 0 }, 1, 100,
+										100, 0 },  //subdome6
+								{ 0x73, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
+										0 }    //subdome7
+
+						}  //end dome0
+				}  // end big dome4
 		};
 
+//////////////////
 void app_dome_start(uint8_t index);
 void app_dome_Init(void) {
 
 	memset((uint8_t *) &subDome_Assist, 0, sizeof(subDome_Assist));
 
-	strcpy(domeHeader.name, "HOME");
-	domeHeader.number = 4;
-
-	subDome.mode = 0x05;
-
-	subDome.color1.R = 200;
-	subDome.color2.R = 0;
-
-	subDome.color1.G = 180;
-	subDome.color2.G = 0;
-
-	subDome.color1.B = 120;
-	subDome.color2.B = 0;
-
-	subDome.repeate = 30;
-	subDome.bright = 90;
-
-	subDome.speed = 3;
-	subDome.offtime = 60;
+	memset((uint8_t *) &domePro, 0, sizeof(domePro));
 
 	app_dome_start(0);
 
 }
+void app_dome_previous(void) {
+	if (domePro.currentDomeIndex) {
+		domePro.currentDomeIndex--;
+	} else {
+		domePro.currentDomeIndex = DEFAULT_DOME_NUM - 1;
+	}
+	app_dome_start(domePro.currentDomeIndex);
+}
+void app_dome_next(void) {
+	domePro.currentDomeIndex++;
+	if (domePro.currentDomeIndex >= DEFAULT_DOME_NUM) {
+		domePro.currentDomeIndex = 0;
+	}
 
-void app_dome_500ms_pro(void) {
+	app_dome_start(domePro.currentDomeIndex);
 
 }
-uint16_t app_dome_get_status(void) {
 
-	return 0;
+void app_dome_get_current_Name(char *name, uint8_t len) {
+	if (len > sizeof(dome_default[domePro.currentDomeIndex].header.name)) {
+		name = 0;
+		return;
+	}
+	memcpy((uint8_t *) name,
+			(uint8_t *) dome_default[domePro.currentDomeIndex].header.name,
+			len);
+}
+void app_dome_start_current(void) {
+
+	app_dome_start(domePro.currentDomeIndex);
+
 }
 void app_dome_stop_current(void) {
 
+	subDome.repeate = 0;
+	subDome.offtime = 0;
+	Light_RGB_set(0, 0, 0);
+
 }
-void app_dome_start(uint8_t index) {
+void app_dome_single_cycle(uint8_t subIndex) {
+	if (dome_default[domePro.currentDomeIndex].header.number
+			== (subIndex + 1)) {
+		subIndex = 0;
+		memcpy((uint8_t*) &subDome,
+				(uint8_t*) &dome_default[domePro.currentDomeIndex].subdome[subIndex],
+				sizeof(subDome));
+	} else {
+		memcpy((uint8_t*) &subDome,
+				(uint8_t*) &dome_default[domePro.currentDomeIndex].subdome[subIndex
+						+ 1], sizeof(subDome));
+	}
+
+	memcpy((uint8_t*) &domeHeader,
+			(uint8_t*) &dome_default[domePro.currentDomeIndex].header,
+			sizeof(domeHeader));
+
+}
+void app_dome_start(uint8_t domeIndex) {
 	subDome_Assist.switch_flag = 0;
 	subDome_Assist.msCnt = 0;
 	subDome_Assist.stopTime = 50;
 
-	memcpy((uint8_t*) &domeHeader, (uint8_t*) &dome_default[1].header,
-			sizeof(domeHeader));
+//	app_dome_single_cycle(domeIndex);
 
-	memcpy((uint8_t*) &subDome, (uint8_t*) &dome_default[1].subdome[0],
+	domePro.currentDomeIndex = domeIndex;
+
+	memcpy((uint8_t*) &subDome,
+			(uint8_t*) &dome_default[domePro.currentDomeIndex].subdome[0],
 			sizeof(subDome));
 
-//	app_eeprom_get_dome_with_index(&subDome, index);
+	memcpy((uint8_t*) &domeHeader,
+			(uint8_t*) &dome_default[domePro.currentDomeIndex].header,
+			sizeof(domeHeader));
 
 }
+
+static void app_dome_subDome_pro(uint8_t subIndex) {
+	subDome_Assist.switch_flag = 0;
+	subDome_Assist.msCnt = 0;
+	subDome_Assist.stopTime = 0;
+
+	app_dome_single_cycle(subIndex);
+
+}
+
 static uint32_t tmp = 0;
 static uint8_t tmp_color = 0;
 
@@ -205,7 +517,7 @@ void app_dome_interrupter(void) {
 
 		if (subDome_Assist.msCnt >= subDome.speed) {
 			subDome_Assist.msCnt = 0;
-
+#if 0
 			tmp_color = subDome.color2.R;
 			subDome.color2.R = subDome.color1.R;
 			subDome.color1.R = tmp_color;
@@ -228,15 +540,22 @@ void app_dome_interrupter(void) {
 					subDome.repeate--;
 				}
 			}
+#else
+
+			if (subDome.repeate) {
+				subDome.repeate--;
+			}
+
+#endif
 		}
 		if (subDome.repeate == 0) {
-			Light_RGB_set(0, 0, 0);
+//			Light_RGB_set(0, 0, 0);
 
 			if (subDome.offtime) {
 				subDome.offtime--;
 			}
 			if (subDome.offtime == 0) {
-				app_dome_start(subDome.mode);
+				app_dome_subDome_pro(subDome.mode >> 4);
 			}
 
 		}
@@ -276,12 +595,12 @@ void app_dome_interrupter(void) {
 			}
 		}
 		if (subDome.repeate == 0) {
-			Light_RGB_set(0, 0, 0);
+//			Light_RGB_set(0, 0, 0);
 			if (subDome.offtime) {
 				subDome.offtime--;
 			}
 			if (subDome.offtime == 0) {
-				app_dome_start(subDome.mode);
+				app_dome_subDome_pro(subDome.mode >> 4);
 			}
 		}
 	}
@@ -319,12 +638,12 @@ void app_dome_interrupter(void) {
 
 		}
 		if (subDome.repeate == 0) {
-			Light_RGB_set(0, 0, 0);
+//			Light_RGB_set(0, 0, 0);
 			if (subDome.offtime) {
 				subDome.offtime--;
 			}
 			if (subDome.offtime == 0) {
-				app_dome_start(subDome.mode);
+				app_dome_subDome_pro(subDome.mode >> 4);
 			}
 		}
 	}

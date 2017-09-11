@@ -8,7 +8,7 @@
 #ifndef APP_INC_APP_UART_H_
 #define APP_INC_APP_UART_H_
 
-#define POWER_SHORT_UART_CMD      0x31
+#define POWER_LONG_UART_CMD      0x31
 //#define POWER_LONG_UART_CMD      0xBA
 
 #define DOME_UART_CMD      0x32

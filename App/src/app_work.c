@@ -12,7 +12,7 @@ WORK_T g_tWork;
 
 void app_work_Init(void) {
 
-	g_tWork.mode = 'B';
+//	g_tWork.mode = 'B';
 
 
 

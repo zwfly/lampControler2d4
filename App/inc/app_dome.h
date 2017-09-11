@@ -8,20 +8,18 @@
 #ifndef APP_INC_APP_DOME_H_
 #define APP_INC_APP_DOME_H_
 
-#define DEFAULT_DOME_NUM   3
+#define DEFAULT_DOME_NUM   15
 
+typedef struct _DOME_PRO_T {
+	uint8_t currentDomeIndex;
+//	uint8_t currentSubDomeIndex;
 
-
-
-
+} DOME_PRO_T;
 
 typedef struct _SUBDOME_ASSIST_T {
 	uint8_t switch_flag;
 	uint32_t msCnt;
-//	uint8_t color;
 	uint8_t stopTime;
-
-//	uint8_t bright;
 } SUBDOME_ASSIST_T;
 ///////
 typedef struct _COLOR_T {
@@ -45,15 +43,19 @@ typedef struct _DOME_HEADER_T {
 
 } DOME_HEADER_T;
 
-
 typedef struct _DOME_DEFAULT_T {
 	DOME_HEADER_T header;
 	SUBDOME_T subdome[8];
 
 } DOME_DEFAULT_T;
 
-
 void app_dome_Init(void);
+
+void app_dome_previous(void);
+void app_dome_next(void);
+void app_dome_get_current_Name(char *name, uint8_t len);
+void app_dome_start_current(void);
+void app_dome_stop_current(void);
 void app_dome_interrupter(void);
 
 #endif /* APP_INC_APP_DOME_H_ */
