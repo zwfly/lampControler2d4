@@ -13,7 +13,7 @@ BIT riflag = 0;
 
 void Uart_InitHard(void) {
 	riflag = 0;
-	InitialUART0_Timer1(9600);
+	InitialUART0_Timer1(115200);
 }
 
 void SerialPort0_ISR(void)
@@ -26,7 +26,6 @@ interrupt 4
 			rcv_T.pWrite = 0;
 		}
 		riflag = 1;
-
 	}
 	if (TI == 1) {
 		clr_TI; /* if emission occur */

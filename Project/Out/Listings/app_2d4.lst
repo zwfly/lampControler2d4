@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   APP_2D4                                                           09/12/2017 01:20:21 PAGE 1   
+C51 COMPILER V9.56.0.0   APP_2D4                                                           10/18/2017 22:15:53 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE APP_2D4
@@ -62,7 +62,7 @@ line level    source
   51   2              }
   52   1              RF_TxMode();
   53   1              sendRcv_flag = 1;
-C51 COMPILER V9.56.0.0   APP_2D4                                                           09/12/2017 01:20:21 PAGE 2   
+C51 COMPILER V9.56.0.0   APP_2D4                                                           10/18/2017 22:15:53 PAGE 2   
 
   54   1      
   55   1              for (i = 0; i < 120; i++) {
@@ -126,7 +126,7 @@ line level    source
  113   3                              index++;
  114   3                              app_2d4_send(sendBuf, index);
  115   3                      }
-C51 COMPILER V9.56.0.0   APP_2D4                                                           09/12/2017 01:20:21 PAGE 3   
+C51 COMPILER V9.56.0.0   APP_2D4                                                           10/18/2017 22:15:53 PAGE 3   
 
  116   2      
  117   2      #if DEBUG
@@ -190,7 +190,7 @@ line level    source
               #endif
  176   2                      break;
  177   2              case UP_CMD:
-C51 COMPILER V9.56.0.0   APP_2D4                                                           09/12/2017 01:20:21 PAGE 4   
+C51 COMPILER V9.56.0.0   APP_2D4                                                           10/18/2017 22:15:53 PAGE 4   
 
  178   2                      if (g_tWork.status.bits.DOME) {
  179   3      
@@ -254,7 +254,7 @@ line level    source
  237   3                      }
  238   2                      sendBuf[index++] = LAMP2LCD_HEADER;
  239   2                      sendBuf[index++] = 11;
-C51 COMPILER V9.56.0.0   APP_2D4                                                           09/12/2017 01:20:21 PAGE 5   
+C51 COMPILER V9.56.0.0   APP_2D4                                                           10/18/2017 22:15:53 PAGE 5   
 
  240   2                      sendBuf[index++] = DOME_CMD;
  241   2                      sendBuf[index++] = g_tWork.status.bits.DOME;
@@ -318,7 +318,7 @@ line level    source
                               sendBuf[index++] = test_vol;
                               for (i = 0; i < (sendBuf[1] + 1); i++) {
                                       sendBuf[index] += sendBuf[i + 1];
-C51 COMPILER V9.56.0.0   APP_2D4                                                           09/12/2017 01:20:21 PAGE 6   
+C51 COMPILER V9.56.0.0   APP_2D4                                                           10/18/2017 22:15:53 PAGE 6   
 
                               }
               #else
@@ -382,7 +382,7 @@ line level    source
               #else
  362   2                      if (g_tWork.status.bits.DOME) {
  363   3                              if (g_tWork.status.bits.pause) {
-C51 COMPILER V9.56.0.0   APP_2D4                                                           09/12/2017 01:20:21 PAGE 7   
+C51 COMPILER V9.56.0.0   APP_2D4                                                           10/18/2017 22:15:53 PAGE 7   
 
  364   4                                      g_tWork.status.bits.pause = 0;
  365   4                                      app_dome_start_current();
@@ -446,7 +446,7 @@ line level    source
  423   2      #if DEBUG
                               printf("MODE_CMD\r\n");
               #endif
-C51 COMPILER V9.56.0.0   APP_2D4                                                           09/12/2017 01:20:21 PAGE 8   
+C51 COMPILER V9.56.0.0   APP_2D4                                                           10/18/2017 22:15:53 PAGE 8   
 
  426   2                      break;
  427   2              }
@@ -510,7 +510,7 @@ line level    source
  485   2      
  486   2              } else {
  487   2                      if (ucRF_DumpRxData(rcvBuf, sizeof(rcvBuf))) {
-C51 COMPILER V9.56.0.0   APP_2D4                                                           09/12/2017 01:20:21 PAGE 9   
+C51 COMPILER V9.56.0.0   APP_2D4                                                           10/18/2017 22:15:53 PAGE 9   
 
  488   3      
  489   3                              app_2d4_Rcv(rcvBuf);
