@@ -1,8 +1,10 @@
 #include "app.h"
 
-uint8_t dd = 0;
+//uint8_t dd = 0;
+
 
 void main(void) {
+
 
 	/****************/
 	bsp_Init();
@@ -35,7 +37,6 @@ void main(void) {
 		if (Task_time.flag_500ms) {
 			Task_time.flag_500ms = 0;
 			//////////////////
-
 
 		}
 		if (Task_time.flag_1s) {

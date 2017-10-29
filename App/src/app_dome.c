@@ -17,7 +17,7 @@ static DOME_PRO_T domePro;
 code const DOME_DEFAULT_T dome_default[DEFAULT_DOME_NUM] = {  //
 		{ //start big dome0
 				{  //start header0
-						"    DOME", 1  //header0 body
+						"    DOME", 0, 0x01  //header0 body
 						},//end header0
 						{  //start dome0
 								{ 0x05, { 255, 255, 255 }, { 0, 0, 0 }, 1, 200,
@@ -40,7 +40,7 @@ code const DOME_DEFAULT_T dome_default[DEFAULT_DOME_NUM] = {  //
 				},  // end big dome0
 				{ //start big dome1
 				{  //start header0
-						"     LSU", 2 }, //end header0
+						"     LSU", 0, 0x02 }, //end header0
 						{  //start dome0
 						{ 0x03, { 160, 32, 240 }, { 255, 165, 0 }, 1, 200, 100,
 								0 }, //subdome0
@@ -63,7 +63,7 @@ code const DOME_DEFAULT_T dome_default[DEFAULT_DOME_NUM] = {  //
 				},  // end big dome1
 				{ //start big dome2
 				{  //start header0
-						"    XMAS", 3 }, //end header0
+						"    XMAS", 0, 0x03 }, //end header0
 						{  //start dome0
 						{ 0x03, { 255, 0, 0 }, { 0, 255, 0 }, 1, 200, 100, 0 }, //subdome0
 								{ 0x13, { 0, 255, 0 }, { 255, 255, 255 }, 1,
@@ -85,7 +85,7 @@ code const DOME_DEFAULT_T dome_default[DEFAULT_DOME_NUM] = {  //
 				},  // end big dome2
 				{ //start big dome3
 				{  //start header0
-						"   MARDI", 4 }, //end header0
+						"   MARDI", 0, 0x04 }, //end header0
 						{  //start dome0
 						{ 0x03, { 255, 0, 0 }, { 0, 255, 0 }, 1, 100, 100, 0 }, //subdome0
 								{ 0x13, { 0, 255, 0 }, { 160, 32, 240 }, 1, 100,
@@ -107,7 +107,7 @@ code const DOME_DEFAULT_T dome_default[DEFAULT_DOME_NUM] = {  //
 				},  // end big dome3
 				{ //start big dome4
 				{  //start header0
-						"   FADE1", 1 }, //end header0
+						"   FADE1", 0, 0x01 }, //end header0
 						{  //start dome0
 						{ 0x04, { 255, 0, 0 }, { 0, 0, 0 }, 1, 200, 100, 0 }, //subdome0
 								{ 0x13, { 0, 255, 0 }, { 160, 32, 240 }, 1, 100,
@@ -129,7 +129,7 @@ code const DOME_DEFAULT_T dome_default[DEFAULT_DOME_NUM] = {  //
 				},  // end big dome4
 				{ //start big dome4
 				{  //start header0
-						"   FADE2", 1 }, //end header0
+						"   FADE2", 0, 0x01 }, //end header0
 						{  //start dome0
 						{ 0x04, { 0, 255, 0 }, { 0, 0, 0 }, 1, 200, 100, 0 }, //subdome0
 								{ 0x13, { 0, 255, 0 }, { 160, 32, 240 }, 1, 100,
@@ -151,7 +151,7 @@ code const DOME_DEFAULT_T dome_default[DEFAULT_DOME_NUM] = {  //
 				}, // end big dome4
 				{ //start big dome4
 				{  //start header0
-						"   FADE3", 1 }, //end header0
+						"   FADE3", 0, 0x01 }, //end header0
 						{  //start dome0
 						{ 0x04, { 0, 0, 255 }, { 0, 0, 0 }, 1, 200, 100, 0 }, //subdome0
 								{ 0x13, { 0, 255, 0 }, { 160, 32, 240 }, 1, 100,
@@ -173,7 +173,7 @@ code const DOME_DEFAULT_T dome_default[DEFAULT_DOME_NUM] = {  //
 				},  // end big dome4
 				{ //start big dome4
 				{  //start header0
-						"   FADE4", 1 }, //end header0
+						"   FADE4", 0, 0x01 }, //end header0
 						{  //start dome0
 						{ 0x04, { 160, 32, 240 }, { 0, 0, 0 }, 1, 200, 100, 0 }, //subdome0
 								{ 0x13, { 0, 255, 0 }, { 160, 32, 240 }, 1, 100,
@@ -195,7 +195,7 @@ code const DOME_DEFAULT_T dome_default[DEFAULT_DOME_NUM] = {  //
 				},  // end big dome4
 				{ //start big dome4
 				{  //start header0
-						"   FADE5", 1 }, //end header0
+						"   FADE5", 0, 0x01 }, //end header0
 						{  //start dome0
 						{ 0x04, { 255, 165, 0 }, { 0, 0, 0 }, 1, 200, 100, 0 }, //subdome0
 								{ 0x13, { 0, 255, 0 }, { 160, 32, 240 }, 1, 100,
@@ -217,7 +217,7 @@ code const DOME_DEFAULT_T dome_default[DEFAULT_DOME_NUM] = {  //
 				},  // end big dome4
 				{ //start big dome4
 				{  //start header0
-						"  SHARP1", 1 }, //end header0
+						"  SHARP1", 0, 0x01 }, //end header0
 						{  //start dome0
 						{ 0x05, { 255, 0, 0 }, { 0, 0, 0 }, 1, 100, 100, 100 }, //subdome0
 								{ 0x13, { 0, 255, 0 }, { 160, 32, 240 }, 1, 100,
@@ -239,7 +239,7 @@ code const DOME_DEFAULT_T dome_default[DEFAULT_DOME_NUM] = {  //
 				},  // end big dome4
 				{ //start big dome4
 				{  //start header0
-						"  SHARP2", 1 }, //end header0
+						"  SHARP2", 0, 0x01 }, //end header0
 						{  //start dome0
 						{ 0x05, { 0, 255, 0 }, { 0, 0, 0 }, 1, 100, 100, 100 }, //subdome0
 								{ 0x13, { 0, 255, 0 }, { 160, 32, 240 }, 1, 100,
@@ -261,7 +261,7 @@ code const DOME_DEFAULT_T dome_default[DEFAULT_DOME_NUM] = {  //
 				}, // end big dome4
 				{ //start big dome4
 				{  //start header0
-						"  SHARP3", 1 }, //end header0
+						"  SHARP3", 0, 0x01 }, //end header0
 						{  //start dome0
 						{ 0x05, { 0, 0, 255 }, { 0, 0, 0 }, 1, 100, 100, 100 }, //subdome0
 								{ 0x13, { 0, 255, 0 }, { 160, 32, 240 }, 1, 100,
@@ -283,9 +283,10 @@ code const DOME_DEFAULT_T dome_default[DEFAULT_DOME_NUM] = {  //
 				},  // end big dome4
 				{ //start big dome4
 				{  //start header0
-						"  SHARP4", 1 }, //end header0
+						"  SHARP4", 0, 0x01 }, //end header0
 						{  //start dome0
-						{ 0x05, { 160, 32, 240 }, { 0, 0, 0 }, 1, 100, 100, 100 }, //subdome0
+								{ 0x05, { 160, 32, 240 }, { 0, 0, 0 }, 1, 100,
+										100, 100 }, //subdome0
 								{ 0x13, { 0, 255, 0 }, { 160, 32, 240 }, 1, 100,
 										100, 0 },  //subdome1
 								{ 0x23, { 160, 32, 240 }, { 255, 255, 0 }, 1,
@@ -305,7 +306,7 @@ code const DOME_DEFAULT_T dome_default[DEFAULT_DOME_NUM] = {  //
 				},  // end big dome4
 				{ //start big dome4
 				{  //start header0
-						"  SHARP5", 1 }, //end header0
+						"  SHARP5", 0, 0x01 }, //end header0
 						{  //start dome0
 								{ 0x05, { 255, 165, 0 }, { 0, 0, 0 }, 1, 100,
 										100, 100 }, //subdome0
@@ -328,7 +329,7 @@ code const DOME_DEFAULT_T dome_default[DEFAULT_DOME_NUM] = {  //
 				}, // end big dome4
 				{ //start big dome4
 				{  //start header0
-						" GRADIEN", 7 }, //end header0
+						" GRADIEN", 0, 0x07 }, //end header0
 						{  //start dome0
 								{ 0x03, { 255, 0, 0 }, { 255, 0x7F, 0 }, 1, 100,
 										100, 0 }, //subdome0
@@ -402,7 +403,7 @@ void app_dome_stop_current(void) {
 
 }
 void app_dome_single_cycle(uint8_t subIndex) {
-	if (dome_default[domePro.currentDomeIndex].header.number
+	if ((dome_default[domePro.currentDomeIndex].header.repeat_number & 0x0F)
 			== (subIndex + 1)) {
 		subIndex = 0;
 		memcpy((uint8_t*) &subDome,

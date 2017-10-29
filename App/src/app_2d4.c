@@ -95,14 +95,39 @@ static void app_2d4_Rcv(uint8_t *buf) {
 	memset(sendBuf, 0, PAYLOAD_WIDTH);
 	index = 0;
 	switch (buf[2]) {
-	case POWER_SHORT_CMD:
+	case KEY_POWER_SHORT_CMD:
+		if (g_tWork.status.bits.DOME) {
+			if (g_tWork.status.bits.pause) {
+				g_tWork.status.bits.pause = 0;
+				app_dome_start_current();
+			} else {
+				g_tWork.status.bits.pause = 1;
+				app_dome_stop_current();
+			}
+			sendBuf[index++] = LAMP2LCD_HEADER;
+			sendBuf[index++] = 10;
+			sendBuf[index++] = KEY_POWER_SHORT_CMD;
+//			sendBuf[index++] = 0x05;
+			sendBuf[index++] = g_tWork.status.bits.pause;
+			app_dome_get_current_Name(sendBuf + index, 8);
+			index += 8;
+			for (i = 0; i < (sendBuf[1] + 1); i++) {
+				sendBuf[index] += sendBuf[i + 1];
+			}
+			index++;
+			app_2d4_send(sendBuf, index);
 
+		} else {
+			app_uart_send(KEY_POWER_SHORT_CMD, 0, 0);
+		}
+
+#if 0
 		if (g_tWork.status.bits.DOME) {
 			g_tWork.status.bits.DOME = 0;
 
 			sendBuf[index++] = LAMP2LCD_HEADER;
 			sendBuf[index++] = 11;
-			sendBuf[index++] = DOME_CMD;
+			sendBuf[index++] = KEY_POWER_SHORT_CMD;
 			sendBuf[index++] = g_tWork.status.bits.DOME;
 			sendBuf[index++] = g_tWork.status.bits.pause;
 			app_dome_get_current_Name(sendBuf + index, 8);
@@ -112,13 +137,13 @@ static void app_2d4_Rcv(uint8_t *buf) {
 			}
 			index++;
 			app_2d4_send(sendBuf, index);
+		} else {
+			app_uart_send(KEY_POWER_SHORT_CMD, 0, 0);
 		}
-
-#if DEBUG
-		printf("POWER_SHORT_CMD\r\n");
 #endif
 		break;
-	case POWER_LONG_CMD:
+#if 0
+		case POWER_LONG_CMD:
 #if 0
 		if (buf[3] == 1) {
 			test_yinxiang_status = 1;
@@ -139,17 +164,13 @@ static void app_2d4_Rcv(uint8_t *buf) {
 			sendBuf[index] += sendBuf[i + 1];
 		}
 #else
-		tmp = 0x03;
-		app_uart_send(POWER_LONG_UART_CMD, &tmp, 1);
+		//	tmp = 0x03;
+		//	app_uart_send(POWER_LONG_UART_CMD, &tmp, 1);
 
-#endif
-
-#if DEBUG
-		printf("POWER_LONG_CMD\r\n");
 #endif
 		break;
-	case ACC_CMD:
-
+#endif
+	case KEY_ACC_CMD:
 		if (buf[3] == 1) {
 			Relay_on();
 		} else if (buf[3] == 2) {
@@ -157,7 +178,6 @@ static void app_2d4_Rcv(uint8_t *buf) {
 		} else if (buf[3] == 3) {
 			Relay_toggle();
 		}
-
 		sendBuf[index++] = LAMP2LCD_HEADER;
 		sendBuf[index++] = 0x02;
 		sendBuf[index++] = buf[2];
@@ -169,21 +189,15 @@ static void app_2d4_Rcv(uint8_t *buf) {
 		for (i = 0; i < (sendBuf[1] + 1); i++) {
 			sendBuf[index] += sendBuf[i + 1];
 		}
-
-#if DEBUG
-		printf("ACC_CMD\r\n");
-#endif
 		break;
-	case UP_CMD:
+	case KEY_UP_CMD:
 		if (g_tWork.status.bits.DOME) {
-
 			if (g_tWork.status.bits.pause == 0) {
-
 				app_dome_previous();
 				sendBuf[index++] = LAMP2LCD_HEADER;
-				sendBuf[index++] = 10;
-				sendBuf[index++] = UP_CMD;
-				sendBuf[index++] = 0x05;
+				sendBuf[index++] = 9;
+				sendBuf[index++] = KEY_UP_CMD;
+//				sendBuf[index++] = 0x05;
 				app_dome_get_current_Name(sendBuf + index, 8);
 				index += 8;
 				for (i = 0; i < (sendBuf[1] + 1); i++) {
@@ -193,21 +207,17 @@ static void app_2d4_Rcv(uint8_t *buf) {
 				app_2d4_send(sendBuf, index);
 			}
 		} else {
-			app_uart_send(UP_UART_CMD, 0, 0);
+			app_uart_send(KEY_UP_CMD, 0, 0);
 		}
-
-#if DEBUG
-		printf("UP_CMD\r\n");
-#endif
 		break;
-	case DOWN_CMD:
+	case KEY_DOWN_CMD:
 		if (g_tWork.status.bits.DOME) {
 			if (g_tWork.status.bits.pause == 0) {
 				app_dome_next();
 				sendBuf[index++] = LAMP2LCD_HEADER;
-				sendBuf[index++] = 10;
-				sendBuf[index++] = UP_CMD;
-				sendBuf[index++] = 0x05;
+				sendBuf[index++] = 9;
+				sendBuf[index++] = KEY_DOWN_CMD;
+//				sendBuf[index++] = 0x05;
 				app_dome_get_current_Name(sendBuf + index, 8);
 				index += 8;
 				for (i = 0; i < (sendBuf[1] + 1); i++) {
@@ -217,27 +227,22 @@ static void app_2d4_Rcv(uint8_t *buf) {
 				app_2d4_send(sendBuf, index);
 			}
 		} else {
-			app_uart_send(DOWN_UART_CMD, 0, 0);
+			app_uart_send(KEY_DOWN_CMD, 0, 0);
 		}
-
-#if DEBUG
-		printf("DOWN_CMD\r\n");
-#endif
 		break;
-	case DOME_CMD:
+	case KEY_DOME_CMD:
 
 //		tmp = 0x03;
 //		app_uart_send(DOME_UART_CMD, &tmp, 1);
 
 		if (g_tWork.status.bits.DOME) {
 			g_tWork.status.bits.DOME = 0;
-
 		} else {
 			g_tWork.status.bits.DOME = 1;
 		}
 		sendBuf[index++] = LAMP2LCD_HEADER;
 		sendBuf[index++] = 11;
-		sendBuf[index++] = DOME_CMD;
+		sendBuf[index++] = KEY_DOME_CMD;
 		sendBuf[index++] = g_tWork.status.bits.DOME;
 		sendBuf[index++] = g_tWork.status.bits.pause;
 		app_dome_get_current_Name(sendBuf + index, 8);
@@ -249,7 +254,7 @@ static void app_2d4_Rcv(uint8_t *buf) {
 		app_2d4_send(sendBuf, index);
 
 		break;
-	case VOL_ADD_CMD:
+	case KEY_VOL_ADD_CMD:
 #if 0
 		if (buf[3] == 1) {
 			test_vol++;
@@ -271,16 +276,10 @@ static void app_2d4_Rcv(uint8_t *buf) {
 		}
 
 #else
-
-		app_uart_send(VOL_ADD_UART_CMD, 0, 0);
-
-#endif
-
-#if DEBUG
-		printf("VOL_ADD_CMD\r\n");
+		app_uart_send(KEY_VOL_ADD_CMD, 0, 0);
 #endif
 		break;
-	case VOL_MINUS_CMD:
+	case KEY_VOL_MINUS_CMD:
 #if 0
 		if (buf[3] == 1) {
 			test_vol++;
@@ -301,64 +300,12 @@ static void app_2d4_Rcv(uint8_t *buf) {
 			sendBuf[index] += sendBuf[i + 1];
 		}
 #else
-		app_uart_send(VOL_MINUS_UART_CMD, 0, 0);
-#endif
-
-#if DEBUG
-		printf("VOL_MINUS_CMD\r\n");
+		app_uart_send(KEY_VOL_MINUS_CMD, 0, 0);
 #endif
 		break;
-	case PLAY_CMD:
+	case KEY_PLAY_SHORT_CMD:
+
 #if 0
-		sendBuf[index++] = LAMP2LCD_HEADER;
-		sendBuf[index++] = 0x03;
-		sendBuf[index++] = buf[2];
-		sendBuf[index++] = (uint8_t) g_tWork.mode;
-
-		if (buf[3] == 3) {
-
-			switch (g_tWork.mode) {
-				case 'B':
-
-				if (g_tWork.status.bits.BT) {
-					g_tWork.status.bits.BT = 0;
-				} else {
-					g_tWork.status.bits.BT = 1;
-				}
-				sendBuf[index++] = g_tWork.status.bits.BT;
-				break;
-				case 'F':
-				if (g_tWork.status.bits.FM) {
-					g_tWork.status.bits.FM = 0;
-				} else {
-					g_tWork.status.bits.FM = 1;
-				}
-				sendBuf[index++] = g_tWork.status.bits.FM;
-				break;
-				case 'A':
-				if (g_tWork.status.bits.AUX) {
-					g_tWork.status.bits.AUX = 0;
-				} else {
-					g_tWork.status.bits.AUX = 1;
-				}
-				sendBuf[index++] = g_tWork.status.bits.AUX;
-				break;
-				case 'U':
-				if (g_tWork.status.bits.USB) {
-					g_tWork.status.bits.USB = 0;
-				} else {
-					g_tWork.status.bits.USB = 1;
-				}
-				sendBuf[index++] = g_tWork.status.bits.USB;
-				break;
-			}
-
-		}
-
-		for (i = 0; i < (sendBuf[1] + 1); i++) {
-			sendBuf[index] += sendBuf[i + 1];
-		}
-#else
 		if (g_tWork.status.bits.DOME) {
 			if (g_tWork.status.bits.pause) {
 				g_tWork.status.bits.pause = 0;
@@ -370,7 +317,7 @@ static void app_2d4_Rcv(uint8_t *buf) {
 
 			sendBuf[index++] = LAMP2LCD_HEADER;
 			sendBuf[index++] = 11;
-			sendBuf[index++] = PLAY_CMD;
+			sendBuf[index++] = KEY_PLAY_SHORT_CMD;
 			sendBuf[index++] = 0x05;
 			sendBuf[index++] = g_tWork.status.bits.pause;
 			app_dome_get_current_Name(sendBuf + index, 8);
@@ -382,15 +329,12 @@ static void app_2d4_Rcv(uint8_t *buf) {
 			app_2d4_send(sendBuf, index);
 
 		} else {
-			app_uart_send(PLAY_UART_CMD, 0, 0);
-		}
+#endif
+		app_uart_send(KEY_PLAY_SHORT_CMD, 0, 0);
+//		}
 
-#endif
-#if DEBUG
-		printf("PLAY_CMD\r\n");
-#endif
 		break;
-	case MODE_CMD:
+	case KEY_MODE_CMD:
 #if 0
 		if (buf[3] == 1) {
 			switch (g_tWork.mode) {
@@ -417,12 +361,9 @@ static void app_2d4_Rcv(uint8_t *buf) {
 			sendBuf[index] += sendBuf[i + 1];
 		}
 #else
-		app_uart_send(MODE_UART_CMD, 0, 0);
+		app_uart_send(KEY_MODE_CMD, 0, 0);
 #endif
 
-#if DEBUG
-		printf("MODE_CMD\r\n");
-#endif
 		break;
 	}
 	if (index) {
@@ -485,9 +426,7 @@ void app_2d4_pro(void) {
 
 	} else {
 		if (ucRF_DumpRxData(rcvBuf, sizeof(rcvBuf))) {
-
 			app_2d4_Rcv(rcvBuf);
-
 		}
 	}
 }

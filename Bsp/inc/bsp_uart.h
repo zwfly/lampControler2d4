@@ -19,7 +19,7 @@ typedef struct _RCV_T {
 } RCV_T;
 
 extern idata RCV_T rcv_T;
-extern BIT riflag;
+extern uint8_t riflag;
 
 void Uart_InitHard(void);
 

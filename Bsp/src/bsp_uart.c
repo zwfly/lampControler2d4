@@ -6,14 +6,18 @@
  */
 
 #include "bsp.h"
+#include <string.h>
 
 idata RCV_T rcv_T;
 
-BIT riflag = 0;
+uint8_t riflag = 0;
 
 void Uart_InitHard(void) {
 	riflag = 0;
-	InitialUART0_Timer1(9600);
+
+	memset((uint8_t *) &rcv_T, 0, sizeof(RCV_T));
+
+	InitialUART0_Timer1(100700);
 }
 
 void SerialPort0_ISR(void)
@@ -25,8 +29,7 @@ interrupt 4
 		if (rcv_T.pWrite >= RCV_BUFSIZE) {
 			rcv_T.pWrite = 0;
 		}
-		riflag = 1;
-
+		riflag++;
 	}
 	if (TI == 1) {
 		clr_TI; /* if emission occur */

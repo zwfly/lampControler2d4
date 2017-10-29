@@ -37,16 +37,22 @@ typedef struct _SUBDOME_T {
 	uint8_t bright;
 	uint16_t offtime;
 } SUBDOME_T;
+//typedef union _REPEAT_NUMBER_T {
+//	uint8_t datas;
+//	struct {
+//		unsigned repeat :4;
+//		unsigned number :4;
+//	} bits;
+//} REPEAT_NUMBER_T;
 typedef struct _DOME_HEADER_T {
 	char name[8];
-	uint8_t number;
-
+	uint8_t index;  //刚加的
+	uint8_t repeat_number;  //闪法重复的次数，单元模式的数量
 } DOME_HEADER_T;
 
 typedef struct _DOME_DEFAULT_T {
 	DOME_HEADER_T header;
 	SUBDOME_T subdome[8];
-
 } DOME_DEFAULT_T;
 
 void app_dome_Init(void);
