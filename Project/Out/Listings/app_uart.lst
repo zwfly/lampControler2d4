@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   APP_UART                                                          10/29/2017 18:39:50 PAGE 1   
+C51 COMPILER V9.56.0.0   APP_UART                                                          10/29/2017 19:23:14 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE APP_UART
@@ -62,7 +62,7 @@ line level    source
   51   3                              if (((rcv_T.rxBuf[rcv_T.pRead]) == 0x55)
   52   3                                              && ((rcv_T.rxBuf[(rcv_T.pRead + 1) % RCV_BUFSIZE]) == 0xAA)) {
   53   4                                      len = rcv_T.rxBuf[(rcv_T.pRead + 2) % RCV_BUFSIZE];
-C51 COMPILER V9.56.0.0   APP_UART                                                          10/29/2017 18:39:50 PAGE 2   
+C51 COMPILER V9.56.0.0   APP_UART                                                          10/29/2017 19:23:14 PAGE 2   
 
   54   4                                      if ((rcv_T.pWrite + RCV_BUFSIZE - rcv_T.pRead) % RCV_BUFSIZE
   55   4                                                      >= (len + 4)) {
@@ -126,7 +126,7 @@ line level    source
  113   7                                                              sendBuf[index++] = len;
  114   7                                                              sendBuf[index++] = RCV_BT_STATUS_CMD;
  115   7                                                              sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 4)
-C51 COMPILER V9.56.0.0   APP_UART                                                          10/29/2017 18:39:50 PAGE 3   
+C51 COMPILER V9.56.0.0   APP_UART                                                          10/29/2017 19:23:14 PAGE 3   
 
  116   7                                                                              % RCV_BUFSIZE];
  117   7                                                              for (i = 0; i < (sendBuf[1] + 1); i++) {
@@ -190,7 +190,7 @@ line level    source
  175   8                                                                                      % RCV_BUFSIZE];
  176   8                                                                      break;
  177   8                                                              case USB_MODE:  //USB
-C51 COMPILER V9.56.0.0   APP_UART                                                          10/29/2017 18:39:50 PAGE 4   
+C51 COMPILER V9.56.0.0   APP_UART                                                          10/29/2017 19:23:14 PAGE 4   
 
  178   8      
  179   8                                                                      break;
@@ -254,7 +254,7 @@ line level    source
  237   7      
  238   7                                                              break;
  239   7                                                      default:
-C51 COMPILER V9.56.0.0   APP_UART                                                          10/29/2017 18:39:50 PAGE 5   
+C51 COMPILER V9.56.0.0   APP_UART                                                          10/29/2017 19:23:14 PAGE 5   
 
  240   7                                                              break;
  241   7                                                      }

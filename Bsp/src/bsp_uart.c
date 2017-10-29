@@ -17,7 +17,8 @@ void Uart_InitHard(void) {
 
 	memset((uint8_t *) &rcv_T, 0, sizeof(RCV_T));
 
-	InitialUART0_Timer1(100700);
+//	InitialUART0_Timer1(125200);
+	InitialUART0_Timer3(115200);
 }
 
 void SerialPort0_ISR(void)

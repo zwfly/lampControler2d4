@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   APP_DOME                                                          10/29/2017 18:39:51 PAGE 1   
+C51 COMPILER V9.56.0.0   APP_DOME                                                          10/29/2017 19:23:14 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE APP_DOME
@@ -62,7 +62,7 @@ line level    source
   51                                                                          { 0x04, { 0, 0, 255 }, { 0, 0, 0 }, 1, 200, 100,
   52                                                                                          0 },   //subdome3
   53                                                                          { 0x04, { 0, 0, 255 }, { 0, 0, 0 }, 1, 200, 100,
-C51 COMPILER V9.56.0.0   APP_DOME                                                          10/29/2017 18:39:51 PAGE 2   
+C51 COMPILER V9.56.0.0   APP_DOME                                                          10/29/2017 19:23:14 PAGE 2   
 
   54                                                                                          0 },  //subdome4
   55                                                                          { 0x04, { 0, 0, 255 }, { 0, 0, 0 }, 1, 200, 100,
@@ -126,7 +126,7 @@ line level    source
  113                                                                          { 0x13, { 0, 255, 0 }, { 160, 32, 240 }, 1, 100,
  114                                                                                          100, 0 },  //subdome1
  115                                                                          { 0x23, { 160, 32, 240 }, { 255, 255, 0 }, 1,
-C51 COMPILER V9.56.0.0   APP_DOME                                                          10/29/2017 18:39:51 PAGE 3   
+C51 COMPILER V9.56.0.0   APP_DOME                                                          10/29/2017 19:23:14 PAGE 3   
 
  116                                                                                          100, 100, 0 },  //subdome2
  117                                                                          { 0x33, { 255, 255, 0 }, { 255, 0, 0 }, 1, 100,
@@ -190,7 +190,7 @@ line level    source
  175                                          {  //start header0
  176                                                          "   FADE4", 0, 0x01 }, //end header0
  177                                                          {  //start dome0
-C51 COMPILER V9.56.0.0   APP_DOME                                                          10/29/2017 18:39:51 PAGE 4   
+C51 COMPILER V9.56.0.0   APP_DOME                                                          10/29/2017 19:23:14 PAGE 4   
 
  178                                                          { 0x04, { 160, 32, 240 }, { 0, 0, 0 }, 1, 200, 100, 0 }, //subdome0
  179                                                                          { 0x13, { 0, 255, 0 }, { 160, 32, 240 }, 1, 100,
@@ -254,7 +254,7 @@ line level    source
  237          
  238                                                          }  //end dome0
  239                                          },  // end big dome4
-C51 COMPILER V9.56.0.0   APP_DOME                                                          10/29/2017 18:39:51 PAGE 5   
+C51 COMPILER V9.56.0.0   APP_DOME                                                          10/29/2017 19:23:14 PAGE 5   
 
  240                                          { //start big dome4
  241                                          {  //start header0
@@ -318,7 +318,7 @@ line level    source
  299                                                                                          0 },  //subdome5
  300                                                                          { 0x64, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
  301                                                                                          0 },  //subdome6
-C51 COMPILER V9.56.0.0   APP_DOME                                                          10/29/2017 18:39:51 PAGE 6   
+C51 COMPILER V9.56.0.0   APP_DOME                                                          10/29/2017 19:23:14 PAGE 6   
 
  302                                                                          { 0x74, { 0, 0, 255 }, { 0, 0, 0 }, 4, 200, 100,
  303                                                                                          0 }    //subdome7
@@ -382,7 +382,7 @@ line level    source
  361   1              memset((uint8_t *) &domePro, 0, sizeof(domePro));
  362   1      
  363   1              app_dome_start(0);
-C51 COMPILER V9.56.0.0   APP_DOME                                                          10/29/2017 18:39:51 PAGE 7   
+C51 COMPILER V9.56.0.0   APP_DOME                                                          10/29/2017 19:23:14 PAGE 7   
 
  364   1      
  365   1      }
@@ -446,7 +446,7 @@ line level    source
  423          void app_dome_start(uint8_t domeIndex) {
  424   1              subDome_Assist.switch_flag = 0;
  425   1              subDome_Assist.msCnt = 0;
-C51 COMPILER V9.56.0.0   APP_DOME                                                          10/29/2017 18:39:51 PAGE 8   
+C51 COMPILER V9.56.0.0   APP_DOME                                                          10/29/2017 19:23:14 PAGE 8   
 
  426   1              subDome_Assist.stopTime = 50;
  427   1      
@@ -510,7 +510,7 @@ line level    source
  485   4                      }
  486   3                      //////
  487   3                      if (subDome.color1.G < subDome.color2.G) {
-C51 COMPILER V9.56.0.0   APP_DOME                                                          10/29/2017 18:39:51 PAGE 9   
+C51 COMPILER V9.56.0.0   APP_DOME                                                          10/29/2017 19:23:14 PAGE 9   
 
  488   4                              tmp = subDome.color1.G * 256
  489   4                                              + subDome_Assist.msCnt * 256
@@ -574,7 +574,7 @@ line level    source
  547   5                                      subDome.repeate--;
  548   5                              }
  549   4      
-C51 COMPILER V9.56.0.0   APP_DOME                                                          10/29/2017 18:39:51 PAGE 10  
+C51 COMPILER V9.56.0.0   APP_DOME                                                          10/29/2017 19:23:14 PAGE 10  
 
  550   4      #endif
  551   4                      }
@@ -638,7 +638,7 @@ line level    source
  609   2              case 0x05:  //blink
  610   2              {
  611   3                      uint32_t tt = 0xFF;
-C51 COMPILER V9.56.0.0   APP_DOME                                                          10/29/2017 18:39:51 PAGE 11  
+C51 COMPILER V9.56.0.0   APP_DOME                                                          10/29/2017 19:23:14 PAGE 11  
 
  612   3                      if (subDome_Assist.msCnt == 0) {
  613   4                              tmp = tt * subDome.color1.R * subDome.bright / 100;
