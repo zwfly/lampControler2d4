@@ -43,7 +43,7 @@ void app_uart_send(uint8_t cmd, uint8_t *ptr, uint8_t len) {
 		Send_Data_To_UART0(uart_sendBuf[i]);
 	}
 }
-//idata char testBuf[64] = { 0 };
+
 void app_uart_pro(void) {
 	while (riflag) {
 		riflag--;
@@ -56,10 +56,6 @@ void app_uart_pro(void) {
 					if (rcv_T.rxBuf[(rcv_T.pRead + len + 3) % RCV_BUFSIZE]
 							!= app_CalcCRC8_cycle(rcv_T.rxBuf + rcv_T.pRead,
 									len + 3, rcv_T.pRead, RCV_BUFSIZE)) {
-//						printf("check error\r\n");
-//						app_uart_send(0xFF, "check error\r\n",
-//								strlen("check error\r\n"));
-
 						rcv_T.pRead++;
 					} else {
 						index = 0;
@@ -74,13 +70,6 @@ void app_uart_pro(void) {
 							for (i = 0; i < (sendBuf[1] + 1); i++) {
 								sendBuf[index] += sendBuf[i + 1];
 							}
-//							memset(testBuf, 0, 64);
-//							sprintf(testBuf, "remain %d",
-//									(uint16_t) ((rcv_T.pWrite + RCV_BUFSIZE
-//											- rcv_T.pRead) % RCV_BUFSIZE));
-//							app_uart_send(0xFF, testBuf, strlen(testBuf));
-//							app_uart_send(0xFF, " hello\r\n", 7);
-//							printf("RCV_VOL_CMD\r\n");
 							index++;
 							app_2d4_send(sendBuf, index);
 							break;

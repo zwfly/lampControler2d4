@@ -2,10 +2,28 @@
 
 //uint8_t dd = 0;
 
-
 void main(void) {
 
+#if  0
 
+//	set_HIRCEN
+////	//step1: enable HIRC clock source run
+//	while ((CKSWT & SET_BIT5) == 0)
+//		;				//step2: check ready
+
+	clr_HIRCEN
+	
+	set_EXTEN1
+	set_EXTEN0
+	
+	clr_OSC1
+	//step3: switching system clock source if needed
+	set_OSC0
+
+	while ((CKEN & SET_BIT0) == 1)
+		;				//step4: check system clock switching OK or NG
+
+#endif
 	/****************/
 	bsp_Init();
 
