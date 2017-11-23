@@ -8,7 +8,10 @@
 #ifndef APP_INC_APP_DOME_H_
 #define APP_INC_APP_DOME_H_
 
-#define DEFAULT_DOME_NUM   15
+//#define DOME_SPEED_MULTIPLE   2
+//#define DEFAULT_DOME_NUM   22  //use 2.5KB
+//#define DEFAULT_DOME_NUM   26  //use 3KB
+#define DEFAULT_DOME_NUM   17  //use 2KB
 
 typedef struct _DOME_PRO_T {
 	uint8_t currentDomeIndex;
@@ -55,13 +58,31 @@ typedef struct _DOME_DEFAULT_T {
 	SUBDOME_T subdome[8];
 } DOME_DEFAULT_T;
 
+typedef struct _DOME_RUNNING_T {
+	uint8_t bright;
+	uint8_t speed;
+	struct {
+		uint16_t R;
+		uint16_t G;
+		uint16_t B;
+	} color;
+} DOME_RUNNING_T;
+
+extern DOME_DEFAULT_T dome_blink;
+extern DOME_RUNNING_T dome_running_param;
+
 void app_dome_Init(void);
 
+void app_color_blink_previous(void);
+void app_color_blink_next(void);
+
+void app_dome_start(uint8_t index, uint8_t dir);
 void app_dome_previous(void);
 void app_dome_next(void);
 void app_dome_get_current_Name(char *name, uint8_t len);
 void app_dome_start_current(void);
 void app_dome_stop_current(void);
+void app_dome_rgb(uint8_t r, uint8_t g, uint8_t b);
 void app_dome_interrupter(void);
 
 #endif /* APP_INC_APP_DOME_H_ */

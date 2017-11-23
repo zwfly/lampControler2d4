@@ -6,9 +6,15 @@
  */
 #include "bsp.h"
 
+#if 0
 static UINT8 looptmp = 0, u8_addrl_r;
 static UINT8 code *cd_longaddr;
 static UINT8 xdata *xd_tmp;
+#else
+static UINT8 u8_addrl_r;
+//static UINT8 *cd_longaddr;
+//static UINT8 *xd_tmp;
+#endif
 
 void EEPROM_InitHard(void) {
 
@@ -19,7 +25,7 @@ void EEPROM_InitHard(void) {
  user can copy all this subroutine into project, then call this function in main.
  ******************************************************************************************************************/
 void write_DATAFLASH_BYTE(UINT16 u16_addr, UINT8 u8_data) {
-
+#if 0
 //Check page start address
 	u8_addrl_r = u16_addr;
 	if (u8_addrl_r < 0x80) {
@@ -44,6 +50,7 @@ void write_DATAFLASH_BYTE(UINT16 u16_addr, UINT8 u8_data) {
 		xd_tmp = u8_addrl_r + 0;
 	}
 	*xd_tmp = u8_data;
+
 //Erase APROM DATAFLASH page
 	IAPAL = u16_addr;
 	IAPAH = u16_addr >> 8;
@@ -55,28 +62,54 @@ void write_DATAFLASH_BYTE(UINT16 u16_addr, UINT8 u8_data) {
 	IAPCN = 0x22;
 	set_IAPGO
 	;
+#endif
 //Save changed RAM data to APROM DATAFLASH
-	u8_addrl_r = u16_addr;
-	if (u8_addrl_r < 0x80) {
-		u8_addrl_r = 0;
-	} else {
-		u8_addrl_r = 0x80;
-	}
-	xd_tmp = 0x80;
-	IAPAL = u8_addrl_r;
-	IAPAH = u16_addr >> 8;
+
+	IAPAL = u16_addr & 0xFF;
+	IAPAH = (u16_addr >> 8) & 0xFF;
 	set_IAPEN
 	;
 	set_APUEN
 	;
 	IAPCN = 0x21;
-	while (xd_tmp != 0xFF) {
-		IAPFD = *xd_tmp;
+
+	IAPFD = u8_data;
+	set_IAPGO
+	;
+//	IAPAL++;
+
+	clr_APUEN
+	;
+	clr_IAPEN
+	;
+}
+void erase_DATAFLASH(UINT16 u16_addr) {
+	IAPAL = u16_addr;
+	IAPAH = u16_addr >> 8;
+	IAPFD = 0xFF;
+	set_IAPEN
+	;
+	set_APUEN
+	;
+	IAPCN = 0x22;
+	set_IAPGO
+	;
+}
+void write_DATAFLASH_BUF(UINT16 u16_addr, UINT8 *pt, uint8_t len) {
+	uint16_t i = 0;
+	IAPAL = u16_addr & 0xFF;
+	IAPAH = (u16_addr >> 8) & 0xFF;
+	set_IAPEN
+	;
+	set_APUEN
+	;
+	IAPCN = 0x21;
+	for (i = 0; i < len; ++i) {
+		IAPFD = *(pt + i);
 		set_IAPGO
 		;
-		IAPAL++;
-		xd_tmp++;
 	}
+
 	clr_APUEN
 	;
 	clr_IAPEN
@@ -84,8 +117,8 @@ void write_DATAFLASH_BYTE(UINT16 u16_addr, UINT8 u8_data) {
 }
 
 //-------------------------------------------------------------------------
-UINT8 read_APROM_BYTE(UINT16 code *u16_addr){
-	UINT8 rdata;
+uint8_t read_APROM_BYTE(uint16_t code *u16_addr) {
+	uint8_t rdata;
 	rdata = *u16_addr>>8;
 	return rdata;
 }

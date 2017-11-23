@@ -8,7 +8,7 @@
 #include "bsp.h"
 #include <string.h>
 
-idata RCV_T rcv_T;
+ RCV_T rcv_T;
 
 uint8_t riflag = 0;
 

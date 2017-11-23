@@ -10,6 +10,9 @@
 
 typedef struct {
 
+//	uint8_t cnt_1ms;
+	uint8_t flag_1ms;
+
 	uint8_t cnt_10ms;
 	uint8_t flag_10ms;
 

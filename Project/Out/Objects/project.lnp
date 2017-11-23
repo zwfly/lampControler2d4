@@ -13,6 +13,7 @@
 ".\Out\Objects\bsp_light.obj",
 ".\Out\Objects\bsp_relay.obj",
 ".\Out\Objects\bsp_eeprom.obj",
+".\Out\Objects\bsp_key.obj",
 ".\Out\Objects\Common.obj",
 ".\Out\Objects\Delay.obj",
 ".\Out\Objects\Version.obj",

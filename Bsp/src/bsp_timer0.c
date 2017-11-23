@@ -53,10 +53,11 @@ interrupt 1              //interrupt address is 0x000B
 	TH0 = u8TH0_tmp;
 	TL0 = u8TL0_tmp;
 
+	Task_time.flag_1ms = 1;
+
 	if (++Task_time.cnt_10ms >= 10) {
 		Task_time.cnt_10ms = 0;
 		Task_time.flag_10ms = 1;
-
 	}
 	if (++Task_time.cnt_100ms >= 100) {
 		Task_time.cnt_100ms = 0;

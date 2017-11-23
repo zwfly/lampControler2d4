@@ -16,6 +16,7 @@
 #include "bsp_light.h"
 #include "bsp_relay.h"
 #include "bsp_eeprom.h"
+#include "bsp_key.h"
 
 #ifndef TRUE
 #define TRUE  1

@@ -8,6 +8,8 @@
 #ifndef APP_INC_APP_UART_H_
 #define APP_INC_APP_UART_H_
 
+
+#define BLINK_METHOD_CMD   0x12
 /*
 #define POWER_LONG_UART_CMD      0x31
 //#define POWER_LONG_UART_CMD      0xBA

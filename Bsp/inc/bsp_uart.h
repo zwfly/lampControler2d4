@@ -8,7 +8,7 @@
 #ifndef BSP_INC_BSP_UART_H_
 #define BSP_INC_BSP_UART_H_
 
-#define RCV_BUFSIZE  128
+#define RCV_BUFSIZE  160
 
 typedef struct _RCV_T {
 
@@ -18,7 +18,7 @@ typedef struct _RCV_T {
 
 } RCV_T;
 
-extern idata RCV_T rcv_T;
+extern RCV_T rcv_T;
 extern uint8_t riflag;
 
 void Uart_InitHard(void);

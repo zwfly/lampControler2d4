@@ -14,9 +14,9 @@ typedef struct _WORK_T {
 		uint8_t allbits;
 		struct {
 			unsigned DOME :1;
-			unsigned pause :1;
-			unsigned ra4 :1;
-			unsigned ra5 :1;
+			unsigned ra2 :1;
+			unsigned DEMO :1;
+			unsigned blinkEnable :1;
 			unsigned ra6 :1;
 			unsigned ra7 :1;
 			unsigned ra8 :1;
