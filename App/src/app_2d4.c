@@ -169,8 +169,8 @@ static void app_2d4_Rcv(uint8_t *buf) {
 		break;
 	case KEY_UP_CMD:
 		if (g_tWork.status.bits.DOME) {
-			app_dome_start_current();
 			g_tWork.status.bits.DEMO = 0;
+			app_dome_start_current();
 			if (g_tWork.status.bits.blinkEnable) {
 				app_dome_previous();
 				sendBuf[index++] = LAMP2LCD_HEADER;
@@ -190,8 +190,8 @@ static void app_2d4_Rcv(uint8_t *buf) {
 		break;
 	case KEY_DOWN_CMD:
 		if (g_tWork.status.bits.DOME) {
-			app_dome_start_current();
 			g_tWork.status.bits.DEMO = 0;
+			app_dome_start_current();
 			if (g_tWork.status.bits.blinkEnable) {
 				app_dome_next();
 				sendBuf[index++] = LAMP2LCD_HEADER;
@@ -216,17 +216,27 @@ static void app_2d4_Rcv(uint8_t *buf) {
 
 //		tmp = 0x03;
 //		app_uart_send(DOME_UART_CMD, &tmp, 1);
-
+#if 1
 		if (g_tWork.status.bits.DOME) {
 			g_tWork.status.bits.DOME = 0;
 		} else {
 			g_tWork.status.bits.DOME = 1;
+			g_tWork.status.bits.blinkEnable = 1;
+			app_dome_start(0, 0);
 		}
+#else
+		g_tWork.status.bits.DOME = 0;
+#endif
+
 		sendBuf[index++] = LAMP2LCD_HEADER;
 		sendBuf[index++] = 11;
 		sendBuf[index++] = KEY_DOME_CMD;
 		sendBuf[index++] = g_tWork.status.bits.DOME;
-		sendBuf[index++] = g_tWork.status.bits.blinkEnable;
+		if (g_tWork.status.bits.blinkEnable) {
+			sendBuf[index++] = 0;
+		} else {
+			sendBuf[index++] = 1;
+		}
 		app_dome_get_current_Name(sendBuf + index, 8);
 		for (i = 0; i < 8; i++) {
 			if ((*(sendBuf + index + i) == 0)
@@ -284,28 +294,28 @@ static void app_2d4_Rcv(uint8_t *buf) {
 	case KEY_CARD_POWER_CMD:
 		if (g_tWork.status.bits.blinkEnable == 0) {
 			g_tWork.status.bits.blinkEnable = 1;
-			g_tWork.status.bits.DEMO = 1;
-
-			app_dome_start(0, 0);
-//			app_dome_start_current();
+			app_dome_start_current();
 		} else {
 			g_tWork.status.bits.blinkEnable = 0;
-			g_tWork.status.bits.DEMO = 0;
-
-			g_tWork.status.bits.blinkEnable = 1;
 			app_dome_stop_current();
 		}
 		sendBuf[index++] = LAMP2LCD_HEADER;
 		sendBuf[index++] = 10;
 		sendBuf[index++] = KEY_POWER_SHORT_CMD;
-		sendBuf[index++] = g_tWork.status.bits.blinkEnable;
+		if (g_tWork.status.bits.blinkEnable) {
+			sendBuf[index++] = 0;
+		} else {
+			sendBuf[index++] = 1;
+		}
 		app_dome_get_current_Name(sendBuf + index, 8);
+#if 1
 		for (i = 0; i < 8; i++) {
 			if ((*(sendBuf + index + i) == 0)
 					|| (*(sendBuf + index + i) == 0xFF)) {
 				*(sendBuf + index + i) = ' ';
 			}
 		}
+#endif
 		index += 8;
 		for (i = 0; i < (sendBuf[1] + 1); i++) {
 			sendBuf[index] += sendBuf[i + 1];

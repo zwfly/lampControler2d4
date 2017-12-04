@@ -162,16 +162,23 @@ void bsp_ClearKey(void) {
  *********************************************************************************************************
  */
 static void bsp_InitKeyHard(void) {
-
+#if 0
 	set_P3M1_0;
 	clr_P3M2_0;
 
 	set_P1M1_7;
 	P1M1 &= ~0x80;
+#else
+	clr_P3M1_0;
+	clr_P3M2_0;
 
+	clr_P1M1_7;
+	P1M1 &= ~0x80;
 
+	P30 = 1;
+	P17 = 1;
 
-
+#endif
 }
 
 /*

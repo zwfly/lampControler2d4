@@ -82,6 +82,7 @@ void app_dome_next(void);
 void app_dome_get_current_Name(char *name, uint8_t len);
 void app_dome_start_current(void);
 void app_dome_stop_current(void);
+void app_dome_start(uint8_t domeIndex, uint8_t dir);
 void app_dome_rgb(uint8_t r, uint8_t g, uint8_t b);
 void app_dome_interrupter(void);
 

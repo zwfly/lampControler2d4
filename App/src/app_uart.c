@@ -153,6 +153,9 @@ void app_uart_pro(void) {
 							break;
 #endif
 						case RCV_BT_STATUS_CMD:
+							if (g_tWork.status.bits.DOME) {
+								break;
+							}
 							sendBuf[index++] = LAMP2LCD_HEADER;
 							sendBuf[index++] = len;
 							sendBuf[index++] = RCV_BT_STATUS_CMD;
@@ -164,11 +167,12 @@ void app_uart_pro(void) {
 								sendBuf[index] += sendBuf[i + 1];
 							}
 							index++;
-							if (g_tWork.status.bits.DOME == 0) {
-								app_2d4_send(sendBuf, index);
-							}
+							app_2d4_send(sendBuf, index);
 							break;
 						case RCV_PREV_NEXT_CMD:
+							if (g_tWork.status.bits.DOME) {
+								break;
+							}
 							sendBuf[index++] = LAMP2LCD_HEADER;
 							sendBuf[index++] = len;
 							sendBuf[index++] = RCV_PREV_NEXT_CMD;
@@ -180,11 +184,12 @@ void app_uart_pro(void) {
 								sendBuf[index] += sendBuf[i + 1];
 							}
 							index++;
-							if (g_tWork.status.bits.DOME == 0) {
-								app_2d4_send(sendBuf, index);
-							}
+							app_2d4_send(sendBuf, index);
 							break;
 						case RCV_USB_PLAY_TIME_CMD:
+							if (g_tWork.status.bits.DOME) {
+								break;
+							}
 							sendBuf[index++] = LAMP2LCD_HEADER;
 							sendBuf[index++] = len;
 							sendBuf[index++] = RCV_USB_PLAY_TIME_CMD;
@@ -196,11 +201,12 @@ void app_uart_pro(void) {
 								sendBuf[index] += sendBuf[i + 1];
 							}
 							index++;
-							if (g_tWork.status.bits.DOME == 0) {
-								app_2d4_send(sendBuf, index);
-							}
+							app_2d4_send(sendBuf, index);
 							break;
 						case RCV_FM_HZ_CMD:
+							if (g_tWork.status.bits.DOME) {
+								break;
+							}
 							sendBuf[index++] = LAMP2LCD_HEADER;
 							sendBuf[index++] = len;
 							sendBuf[index++] = RCV_FM_HZ_CMD;
@@ -212,10 +218,7 @@ void app_uart_pro(void) {
 								sendBuf[index] += sendBuf[i + 1];
 							}
 							index++;
-
-							if (g_tWork.status.bits.DOME == 0) {
-								app_2d4_send(sendBuf, index);
-							}
+							app_2d4_send(sendBuf, index);
 							break;
 						case MODE_CHANGE_CMD:   //MODE
 							sendBuf[index++] = LAMP2LCD_HEADER;
@@ -232,6 +235,9 @@ void app_uart_pro(void) {
 							app_2d4_send(sendBuf, index);
 							break;
 						case RCV_PLAY_PAUSE_STATUS_CMD:
+							if (g_tWork.status.bits.DOME) {
+								break;
+							}
 							sendBuf[index++] = LAMP2LCD_HEADER;
 							sendBuf[index++] = len;
 							sendBuf[index++] =
@@ -244,28 +250,35 @@ void app_uart_pro(void) {
 								sendBuf[index] += sendBuf[i + 1];
 							}
 							index++;
-							if (g_tWork.status.bits.DOME == 0) {
-								app_2d4_send(sendBuf, index);
-							}
+							app_2d4_send(sendBuf, index);
+
 							break;
 							/// app --start
 						case KEY_CARD_POWER_CMD:
 							if (g_tWork.status.bits.blinkEnable == 0) {
-//								g_tWork.status.bits.pause = 0;
 								g_tWork.status.bits.blinkEnable = 1;
-								g_tWork.status.bits.DEMO = 1;
 								app_dome_start_current();
 							} else {
-//								g_tWork.status.bits.pause = 1;
 								g_tWork.status.bits.blinkEnable = 0;
-								g_tWork.status.bits.DEMO = 0;
 								app_dome_stop_current();
 							}
 							sendBuf[index++] = LAMP2LCD_HEADER;
 							sendBuf[index++] = 10;
 							sendBuf[index++] = KEY_POWER_SHORT_CMD;
-							sendBuf[index++] = g_tWork.status.bits.blinkEnable;
+							if (g_tWork.status.bits.blinkEnable) {
+								sendBuf[index++] = 0;
+							} else {
+								sendBuf[index++] = 1;
+							}
 							app_dome_get_current_Name(sendBuf + index, 8);
+#if 1
+							for (i = 0; i < 8; i++) {
+								if ((*(sendBuf + index + i) == 0)
+										|| (*(sendBuf + index + i) == 0xFF)) {
+									*(sendBuf + index + i) = ' ';
+								}
+							}
+#endif
 							index += 8;
 							for (i = 0; i < (sendBuf[1] + 1); i++) {
 								sendBuf[index] += sendBuf[i + 1];

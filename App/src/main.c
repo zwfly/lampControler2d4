@@ -92,25 +92,44 @@ void main(void) {
 
 		ucKeyCode = bsp_GetKey();
 		if (ucKeyCode != KEY_NONE) {
+			static uint8_t press_long_lock = 0;
 			switch (ucKeyCode) {
 			case KEY_UP_K1:   //
+				if (press_long_lock == 0) {
+//					g_tWork.status.bits.DEMO = 0;
+//					app_dome_start_current();
+					if (g_tWork.status.bits.blinkEnable) {
+						uint8_t index = 0, i = 0;
+						app_dome_next();
+						sendBuf[index++] = LAMP2LCD_HEADER;
+						sendBuf[index++] = 9;
+						sendBuf[index++] = KEY_DOWN_CMD;
+						app_dome_get_current_Name(sendBuf + index, 8);
+						index += 8;
+						for (i = 0; i < (sendBuf[1] + 1); i++) {
+							sendBuf[index] += sendBuf[i + 1];
+						}
+						index++;
+						app_2d4_send(sendBuf, index);
+					}
+
+				}
+				press_long_lock = 0;
 				break;
-			case KEY_DOWN_K1: {
+			case KEY_DOWN_K1:
+				break;
+			case KEY_LONG_K1:
+				press_long_lock = 1;
 				if (g_tWork.status.bits.blinkEnable) {
 					g_tWork.status.bits.blinkEnable = 0;
-					g_tWork.status.bits.DEMO = 0;
+//					g_tWork.status.bits.DEMO = 0;
 					app_dome_stop_current();
 				} else {
 					g_tWork.status.bits.blinkEnable = 1;
-					g_tWork.status.bits.DEMO = 1;
-
-					app_dome_start(0, 0);
-//					app_dome_start_current();
+					g_tWork.status.bits.DEMO = 0;
+//					app_dome_start(0, 0);
+					app_dome_start_current();
 				}
-
-			}
-				break;
-			case KEY_LONG_K1:
 				break;
 			case KEY_UP_K2:   //
 				break;

@@ -1,11 +1,11 @@
-C51 COMPILER V9.52.0.0   APP_UART                                                          11/20/2017 00:30:11 PAGE 1   
+C51 COMPILER V9.56.0.0   APP_UART                                                          12/05/2017 01:05:07 PAGE 1   
 
 
-C51 COMPILER V9.52.0.0, COMPILATION OF MODULE APP_UART
+C51 COMPILER V9.56.0.0, COMPILATION OF MODULE APP_UART
 OBJECT MODULE PLACED IN .\Out\Objects\app_uart.obj
 COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE ..\App\src\app_uart.c LARGE OPTIMIZE(8,SIZE) BROWSE INCDIR(..\Common\inc
-                    -;..\App\inc;..\Bsp\inc;..\Startup;..\Bsp) DEFINE(FOSC_160000) DEBUG OBJECTEXTEND PRINT(.\Out\Listings\app_uart.lst) TABS
-                    -(2) OBJECT(.\Out\Objects\app_uart.obj)
+                    -;..\App\inc;..\Bsp\inc;..\Startup;..\Bsp) DEFINE(FOSC_160000) DEBUG OBJECTEXTEND PRINT(.\Out\Listings\app_uart.lst) OBJE
+                    -CT(.\Out\Objects\app_uart.obj)
 
 line level    source
 
@@ -34,334 +34,347 @@ line level    source
   23          static uint8_t uart_sendBuf[16] = { 0 };
   24          
   25          void app_uart_Init(void) {
-  26   1        index = 0;
-  27   1        len = 0;
-  28   1        i = 0;
+  26   1              index = 0;
+  27   1              len = 0;
+  28   1              i = 0;
   29   1      
-  30   1        memset((uint8_t *) &rcv_T, 0, sizeof(RCV_T));
+  30   1              memset((uint8_t *) &rcv_T, 0, sizeof(RCV_T));
   31   1      }
   32          
   33          void app_uart_send(uint8_t cmd, uint8_t *ptr, uint8_t len) {
-  34   1        index = 0;
+  34   1              index = 0;
   35   1      
-  36   1        uart_sendBuf[index++] = 0x55;
-  37   1        uart_sendBuf[index++] = 0xAA;
-  38   1        uart_sendBuf[index++] = len + 1;
-  39   1        uart_sendBuf[index++] = cmd;
-  40   1        for (i = 0; i < len; i++) {
-  41   2          uart_sendBuf[index++] = *(ptr + i);
-  42   2        }
-  43   1        uart_sendBuf[index++] = app_CalcCRC8(uart_sendBuf, len + 4);
+  36   1              uart_sendBuf[index++] = 0x55;
+  37   1              uart_sendBuf[index++] = 0xAA;
+  38   1              uart_sendBuf[index++] = len + 1;
+  39   1              uart_sendBuf[index++] = cmd;
+  40   1              for (i = 0; i < len; i++) {
+  41   2                      uart_sendBuf[index++] = *(ptr + i);
+  42   2              }
+  43   1              uart_sendBuf[index++] = app_CalcCRC8(uart_sendBuf, len + 4);
   44   1      
-  45   1        for (i = 0; i < (len + 5); i++) {
-  46   2          Send_Data_To_UART0(uart_sendBuf[i]);
-  47   2        }
+  45   1              for (i = 0; i < (len + 5); i++) {
+  46   2                      Send_Data_To_UART0(uart_sendBuf[i]);
+  47   2              }
   48   1      }
   49          
   50          void app_uart_pro(void) {
-  51   1        while (riflag) {
-  52   2          riflag--;
-  53   2          if ((rcv_T.pWrite + RCV_BUFSIZE - rcv_T.pRead) % RCV_BUFSIZE >= 4) {
-C51 COMPILER V9.52.0.0   APP_UART                                                          11/20/2017 00:30:11 PAGE 2   
+  51   1              while (riflag) {
+  52   2                      riflag--;
+  53   2                      if ((rcv_T.pWrite + RCV_BUFSIZE - rcv_T.pRead) % RCV_BUFSIZE >= 4) {
+C51 COMPILER V9.56.0.0   APP_UART                                                          12/05/2017 01:05:07 PAGE 2   
 
-  54   3            if (((rcv_T.rxBuf[rcv_T.pRead]) == 0x55)
-  55   3                && ((rcv_T.rxBuf[(rcv_T.pRead + 1) % RCV_BUFSIZE]) == 0xAA)) {
-  56   4              len = rcv_T.rxBuf[(rcv_T.pRead + 2) % RCV_BUFSIZE];
-  57   4              if ((rcv_T.pWrite + RCV_BUFSIZE - rcv_T.pRead) % RCV_BUFSIZE
-  58   4                  >= (len + 4)) {
-  59   5                if (rcv_T.rxBuf[(rcv_T.pRead + len + 3) % RCV_BUFSIZE]
-  60   5                    != app_CalcCRC8_cycle(rcv_T.rxBuf + rcv_T.pRead,
-  61   5                        len + 3, rcv_T.pRead, RCV_BUFSIZE)) {
-  62   6                  rcv_T.pRead++;
-  63   6                } else {
-  64   6                  index = 0;
-  65   6                  memset(sendBuf, 0, PAYLOAD_WIDTH);
-  66   6                  switch (rcv_T.rxBuf[(rcv_T.pRead + 3) % RCV_BUFSIZE]) {
-  67   7                  case BLINK_METHOD_CMD:  //ÉÁ·¨
-  68   7                  {
-  69   8                    uint16_t index = 0;
-  70   8                    index =
-  71   8                        rcv_T.rxBuf[(rcv_T.pRead + 12) % RCV_BUFSIZE];
+  54   3                              if (((rcv_T.rxBuf[rcv_T.pRead]) == 0x55)
+  55   3                                              && ((rcv_T.rxBuf[(rcv_T.pRead + 1) % RCV_BUFSIZE]) == 0xAA)) {
+  56   4                                      len = rcv_T.rxBuf[(rcv_T.pRead + 2) % RCV_BUFSIZE];
+  57   4                                      if ((rcv_T.pWrite + RCV_BUFSIZE - rcv_T.pRead) % RCV_BUFSIZE
+  58   4                                                      >= (len + 4)) {
+  59   5                                              if (rcv_T.rxBuf[(rcv_T.pRead + len + 3) % RCV_BUFSIZE]
+  60   5                                                              != app_CalcCRC8_cycle(rcv_T.rxBuf + rcv_T.pRead,
+  61   5                                                                              len + 3, rcv_T.pRead, RCV_BUFSIZE)) {
+  62   6                                                      rcv_T.pRead++;
+  63   6                                              } else {
+  64   6                                                      index = 0;
+  65   6                                                      memset(sendBuf, 0, PAYLOAD_WIDTH);
+  66   6                                                      switch (rcv_T.rxBuf[(rcv_T.pRead + 3) % RCV_BUFSIZE]) {
+  67   7                                                      case BLINK_METHOD_CMD:  //ÉÁ·¨
+  68   7                                                      {
+  69   8                                                              uint16_t index = 0;
+  70   8                                                              index =
+  71   8                                                                              rcv_T.rxBuf[(rcv_T.pRead + 12) % RCV_BUFSIZE];
   72   8      
-  73   8                    if (index >= (DEFAULT_DOME_NUM - 1)) {
-  74   9                      break;
-  75   9                    }
-  76   8                    if (index == 0) {
-  77   9                      u8_tmp = (0x4800 - DOME_START_ADDR) / 128;
-  78   9                      for (i = 0; i < u8_tmp; i++) {
-  79  10                        app_eeprom_erase(i * 128);
-  80  10                      }
-  81   9                    }
+  73   8                                                              if (index >= (DEFAULT_DOME_NUM - 1)) {
+  74   9                                                                      break;
+  75   9                                                              }
+  76   8                                                              if (index == 0) {
+  77   9                                                                      u8_tmp = (0x4800 - DOME_START_ADDR) / 128;
+  78   9                                                                      for (i = 0; i < u8_tmp; i++) {
+  79  10                                                                              app_eeprom_erase(i * 128);
+  80  10                                                                      }
+  81   9                                                              }
   82   8      #if 0
-                            for (i = (index + 1); i < DEFAULT_DOME_NUM; i++) {
-                              uint16_t addr = i * sizeof(DOME_DEFAULT_T)
-                              + (&dome_blink.header.index
-                                  - &dome_blink);
-                              app_eeprom_write_byte(addr, 0);
-                              nop
-                            }
+                                                                      for (i = (index + 1); i < DEFAULT_DOME_NUM; i++) {
+                                                                              uint16_t addr = i * sizeof(DOME_DEFAULT_T)
+                                                                              + (&dome_blink.header.index
+                                                                                              - &dome_blink);
+                                                                              app_eeprom_write_byte(addr, 0);
+                                                                              nop
+                                                                      }
               #endif
   91   8      #if 1
-  92   8                    tmp = rcv_T.rxBuf[(rcv_T.pRead + 13) % RCV_BUFSIZE]
-  93   8                        & 0x0F;
-  94   8                    for (i = 0;
-  95   8                        i
-  96   8                            < (tmp * sizeof(SUBDOME_T)
-  97   8                                + sizeof(DOME_HEADER_T));
-  98   8                        i++) {
-  99   9                      uint16_t addr = index * sizeof(DOME_DEFAULT_T)
- 100   9                          + i;
- 101   9                      app_eeprom_write_byte(addr,
- 102   9                          rcv_T.rxBuf[(rcv_T.pRead + 4 + i)
- 103   9                              % RCV_BUFSIZE]);
- 104   9                    }
+  92   8                                                              tmp = rcv_T.rxBuf[(rcv_T.pRead + 13) % RCV_BUFSIZE]
+  93   8                                                                              & 0x0F;
+  94   8                                                              for (i = 0;
+  95   8                                                                              i
+  96   8                                                                                              < (tmp * sizeof(SUBDOME_T)
+  97   8                                                                                                              + sizeof(DOME_HEADER_T));
+  98   8                                                                              i++) {
+  99   9                                                                      uint16_t addr = index * sizeof(DOME_DEFAULT_T)
+ 100   9                                                                                      + i;
+ 101   9                                                                      app_eeprom_write_byte(addr,
+ 102   9                                                                                      rcv_T.rxBuf[(rcv_T.pRead + 4 + i)
+ 103   9                                                                                                      % RCV_BUFSIZE]);
+ 104   9                                                              }
  105   8      
  106   8      #endif
- 107   8                    u8_tmp = index & 0xFF;
- 108   8                    app_uart_send(BLINK_METHOD_CMD, &u8_tmp, 1);
- 109   8                  }
- 110   7                    break;
- 111   7                  case RCV_VOL_CMD:
- 112   7                    sendBuf[index++] = LAMP2LCD_HEADER;
- 113   7                    sendBuf[index++] = len;
- 114   7                    sendBuf[index++] = RCV_VOL_CMD;
- 115   7                    for (i = 0; i < (len - 1); i++) {
-C51 COMPILER V9.52.0.0   APP_UART                                                          11/20/2017 00:30:11 PAGE 3   
+ 107   8                                                              u8_tmp = index & 0xFF;
+ 108   8                                                              app_uart_send(BLINK_METHOD_CMD, &u8_tmp, 1);
+ 109   8                                                      }
+ 110   7                                                              break;
+ 111   7                                                      case RCV_VOL_CMD:
+ 112   7                                                              sendBuf[index++] = LAMP2LCD_HEADER;
+ 113   7                                                              sendBuf[index++] = len;
+ 114   7                                                              sendBuf[index++] = RCV_VOL_CMD;
+ 115   7                                                              for (i = 0; i < (len - 1); i++) {
+C51 COMPILER V9.56.0.0   APP_UART                                                          12/05/2017 01:05:07 PAGE 3   
 
- 116   8                      sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 4
- 117   8                          + i) % RCV_BUFSIZE];
- 118   8                    }
- 119   7                    for (i = 0; i < (sendBuf[1] + 1); i++) {
- 120   8                      sendBuf[index] += sendBuf[i + 1];
- 121   8                    }
- 122   7                    index++;
- 123   7                    app_2d4_send(sendBuf, index);
- 124   7                    break;
- 125   7                  case RCV_POWER_STATUS_CMD:
- 126   7                    sendBuf[index++] = LAMP2LCD_HEADER;
- 127   7                    sendBuf[index++] = len;
- 128   7                    sendBuf[index++] = RCV_POWER_STATUS_CMD;
- 129   7                    for (i = 0; i < (len - 1); i++) {
- 130   8                      sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 4
- 131   8                          + i) % RCV_BUFSIZE];
- 132   8                    }
- 133   7                    for (i = 0; i < (sendBuf[1] + 1); i++) {
- 134   8                      sendBuf[index] += sendBuf[i + 1];
- 135   8                    }
- 136   7                    index++;
- 137   7                    app_2d4_send(sendBuf, index);
- 138   7                    break;
+ 116   8                                                                      sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 4
+ 117   8                                                                                      + i) % RCV_BUFSIZE];
+ 118   8                                                              }
+ 119   7                                                              for (i = 0; i < (sendBuf[1] + 1); i++) {
+ 120   8                                                                      sendBuf[index] += sendBuf[i + 1];
+ 121   8                                                              }
+ 122   7                                                              index++;
+ 123   7                                                              app_2d4_send(sendBuf, index);
+ 124   7                                                              break;
+ 125   7                                                      case RCV_POWER_STATUS_CMD:
+ 126   7                                                              sendBuf[index++] = LAMP2LCD_HEADER;
+ 127   7                                                              sendBuf[index++] = len;
+ 128   7                                                              sendBuf[index++] = RCV_POWER_STATUS_CMD;
+ 129   7                                                              for (i = 0; i < (len - 1); i++) {
+ 130   8                                                                      sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 4
+ 131   8                                                                                      + i) % RCV_BUFSIZE];
+ 132   8                                                              }
+ 133   7                                                              for (i = 0; i < (sendBuf[1] + 1); i++) {
+ 134   8                                                                      sendBuf[index] += sendBuf[i + 1];
+ 135   8                                                              }
+ 136   7                                                              index++;
+ 137   7                                                              app_2d4_send(sendBuf, index);
+ 138   7                                                              break;
  139   7      #if 0
-                            case RCV_X_BOX_STATUS_CMD:
-                            sendBuf[index++] = LAMP2LCD_HEADER;
-                            sendBuf[index++] = len;
-                            sendBuf[index++] = RCV_X_BOX_STATUS_CMD;
-                            for (i = 0; i < (len - 1); i++) {
-                              sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 4
-                                  + i) % RCV_BUFSIZE];
-                            }
-                            for (i = 0; i < (sendBuf[1] + 1); i++) {
-                              sendBuf[index] += sendBuf[i + 1];
-                            }
-                            index++;
-                            app_2d4_send(sendBuf, index);
-                            break;
+                                                                      case RCV_X_BOX_STATUS_CMD:
+                                                                      sendBuf[index++] = LAMP2LCD_HEADER;
+                                                                      sendBuf[index++] = len;
+                                                                      sendBuf[index++] = RCV_X_BOX_STATUS_CMD;
+                                                                      for (i = 0; i < (len - 1); i++) {
+                                                                              sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 4
+                                                                                              + i) % RCV_BUFSIZE];
+                                                                      }
+                                                                      for (i = 0; i < (sendBuf[1] + 1); i++) {
+                                                                              sendBuf[index] += sendBuf[i + 1];
+                                                                      }
+                                                                      index++;
+                                                                      app_2d4_send(sendBuf, index);
+                                                                      break;
               #endif
- 155   7                  case RCV_BT_STATUS_CMD:
- 156   7                    sendBuf[index++] = LAMP2LCD_HEADER;
- 157   7                    sendBuf[index++] = len;
- 158   7                    sendBuf[index++] = RCV_BT_STATUS_CMD;
- 159   7                    for (i = 0; i < (len - 1); i++) {
- 160   8                      sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 4
- 161   8                          + i) % RCV_BUFSIZE];
- 162   8                    }
- 163   7                    for (i = 0; i < (sendBuf[1] + 1); i++) {
- 164   8                      sendBuf[index] += sendBuf[i + 1];
- 165   8                    }
- 166   7                    index++;
- 167   7                    if (g_tWork.status.bits.DOME == 0) {
- 168   8                      app_2d4_send(sendBuf, index);
- 169   8                    }
- 170   7                    break;
- 171   7                  case RCV_PREV_NEXT_CMD:
- 172   7                    sendBuf[index++] = LAMP2LCD_HEADER;
- 173   7                    sendBuf[index++] = len;
- 174   7                    sendBuf[index++] = RCV_PREV_NEXT_CMD;
- 175   7                    for (i = 0; i < (len - 1); i++) {
- 176   8                      sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 4
- 177   8                          + i) % RCV_BUFSIZE];
-C51 COMPILER V9.52.0.0   APP_UART                                                          11/20/2017 00:30:11 PAGE 4   
+ 155   7                                                      case RCV_BT_STATUS_CMD:
+ 156   7                                                              if (g_tWork.status.bits.DOME) {
+ 157   8                                                                      break;
+ 158   8                                                              }
+ 159   7                                                              sendBuf[index++] = LAMP2LCD_HEADER;
+ 160   7                                                              sendBuf[index++] = len;
+ 161   7                                                              sendBuf[index++] = RCV_BT_STATUS_CMD;
+ 162   7                                                              for (i = 0; i < (len - 1); i++) {
+ 163   8                                                                      sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 4
+ 164   8                                                                                      + i) % RCV_BUFSIZE];
+ 165   8                                                              }
+ 166   7                                                              for (i = 0; i < (sendBuf[1] + 1); i++) {
+ 167   8                                                                      sendBuf[index] += sendBuf[i + 1];
+ 168   8                                                              }
+ 169   7                                                              index++;
+ 170   7                                                              app_2d4_send(sendBuf, index);
+ 171   7                                                              break;
+ 172   7                                                      case RCV_PREV_NEXT_CMD:
+ 173   7                                                              if (g_tWork.status.bits.DOME) {
+ 174   8                                                                      break;
+ 175   8                                                              }
+ 176   7                                                              sendBuf[index++] = LAMP2LCD_HEADER;
+ 177   7                                                              sendBuf[index++] = len;
+C51 COMPILER V9.56.0.0   APP_UART                                                          12/05/2017 01:05:07 PAGE 4   
 
- 178   8                    }
- 179   7                    for (i = 0; i < (sendBuf[1] + 1); i++) {
- 180   8                      sendBuf[index] += sendBuf[i + 1];
- 181   8                    }
- 182   7                    index++;
- 183   7                    if (g_tWork.status.bits.DOME == 0) {
- 184   8                      app_2d4_send(sendBuf, index);
- 185   8                    }
- 186   7                    break;
- 187   7                  case RCV_USB_PLAY_TIME_CMD:
- 188   7                    sendBuf[index++] = LAMP2LCD_HEADER;
- 189   7                    sendBuf[index++] = len;
- 190   7                    sendBuf[index++] = RCV_USB_PLAY_TIME_CMD;
- 191   7                    for (i = 0; i < (len - 1); i++) {
- 192   8                      sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 4
- 193   8                          + i) % RCV_BUFSIZE];
- 194   8                    }
- 195   7                    for (i = 0; i < (sendBuf[1] + 1); i++) {
- 196   8                      sendBuf[index] += sendBuf[i + 1];
- 197   8                    }
- 198   7                    index++;
- 199   7                    if (g_tWork.status.bits.DOME == 0) {
- 200   8                      app_2d4_send(sendBuf, index);
- 201   8                    }
- 202   7                    break;
- 203   7                  case RCV_FM_HZ_CMD:
- 204   7                    sendBuf[index++] = LAMP2LCD_HEADER;
- 205   7                    sendBuf[index++] = len;
- 206   7                    sendBuf[index++] = RCV_FM_HZ_CMD;
- 207   7                    for (i = 0; i < (len - 1); i++) {
- 208   8                      sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 4
- 209   8                          + i) % RCV_BUFSIZE];
- 210   8                    }
- 211   7                    for (i = 0; i < (sendBuf[1] + 1); i++) {
- 212   8                      sendBuf[index] += sendBuf[i + 1];
- 213   8                    }
- 214   7                    index++;
- 215   7      
- 216   7                    if (g_tWork.status.bits.DOME == 0) {
- 217   8                      app_2d4_send(sendBuf, index);
- 218   8                    }
- 219   7                    break;
- 220   7                  case MODE_CHANGE_CMD:   //MODE
- 221   7                    sendBuf[index++] = LAMP2LCD_HEADER;
- 222   7                    sendBuf[index++] = len;
- 223   7                    sendBuf[index++] = MODE_CHANGE_CMD;
- 224   7                    for (i = 0; i < (len - 1); i++) {
- 225   8                      sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 4
- 226   8                          + i) % RCV_BUFSIZE];
- 227   8                    }
- 228   7                    for (i = 0; i < (sendBuf[1] + 1); i++) {
- 229   8                      sendBuf[index] += sendBuf[i + 1];
- 230   8                    }
- 231   7                    index++;
- 232   7                    app_2d4_send(sendBuf, index);
- 233   7                    break;
- 234   7                  case RCV_PLAY_PAUSE_STATUS_CMD:
- 235   7                    sendBuf[index++] = LAMP2LCD_HEADER;
- 236   7                    sendBuf[index++] = len;
- 237   7                    sendBuf[index++] =
- 238   7                    RCV_PLAY_PAUSE_STATUS_CMD;
- 239   7                    for (i = 0; i < (len - 1); i++) {
-C51 COMPILER V9.52.0.0   APP_UART                                                          11/20/2017 00:30:11 PAGE 5   
+ 178   7                                                              sendBuf[index++] = RCV_PREV_NEXT_CMD;
+ 179   7                                                              for (i = 0; i < (len - 1); i++) {
+ 180   8                                                                      sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 4
+ 181   8                                                                                      + i) % RCV_BUFSIZE];
+ 182   8                                                              }
+ 183   7                                                              for (i = 0; i < (sendBuf[1] + 1); i++) {
+ 184   8                                                                      sendBuf[index] += sendBuf[i + 1];
+ 185   8                                                              }
+ 186   7                                                              index++;
+ 187   7                                                              app_2d4_send(sendBuf, index);
+ 188   7                                                              break;
+ 189   7                                                      case RCV_USB_PLAY_TIME_CMD:
+ 190   7                                                              if (g_tWork.status.bits.DOME) {
+ 191   8                                                                      break;
+ 192   8                                                              }
+ 193   7                                                              sendBuf[index++] = LAMP2LCD_HEADER;
+ 194   7                                                              sendBuf[index++] = len;
+ 195   7                                                              sendBuf[index++] = RCV_USB_PLAY_TIME_CMD;
+ 196   7                                                              for (i = 0; i < (len - 1); i++) {
+ 197   8                                                                      sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 4
+ 198   8                                                                                      + i) % RCV_BUFSIZE];
+ 199   8                                                              }
+ 200   7                                                              for (i = 0; i < (sendBuf[1] + 1); i++) {
+ 201   8                                                                      sendBuf[index] += sendBuf[i + 1];
+ 202   8                                                              }
+ 203   7                                                              index++;
+ 204   7                                                              app_2d4_send(sendBuf, index);
+ 205   7                                                              break;
+ 206   7                                                      case RCV_FM_HZ_CMD:
+ 207   7                                                              if (g_tWork.status.bits.DOME) {
+ 208   8                                                                      break;
+ 209   8                                                              }
+ 210   7                                                              sendBuf[index++] = LAMP2LCD_HEADER;
+ 211   7                                                              sendBuf[index++] = len;
+ 212   7                                                              sendBuf[index++] = RCV_FM_HZ_CMD;
+ 213   7                                                              for (i = 0; i < (len - 1); i++) {
+ 214   8                                                                      sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 4
+ 215   8                                                                                      + i) % RCV_BUFSIZE];
+ 216   8                                                              }
+ 217   7                                                              for (i = 0; i < (sendBuf[1] + 1); i++) {
+ 218   8                                                                      sendBuf[index] += sendBuf[i + 1];
+ 219   8                                                              }
+ 220   7                                                              index++;
+ 221   7                                                              app_2d4_send(sendBuf, index);
+ 222   7                                                              break;
+ 223   7                                                      case MODE_CHANGE_CMD:   //MODE
+ 224   7                                                              sendBuf[index++] = LAMP2LCD_HEADER;
+ 225   7                                                              sendBuf[index++] = len;
+ 226   7                                                              sendBuf[index++] = MODE_CHANGE_CMD;
+ 227   7                                                              for (i = 0; i < (len - 1); i++) {
+ 228   8                                                                      sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 4
+ 229   8                                                                                      + i) % RCV_BUFSIZE];
+ 230   8                                                              }
+ 231   7                                                              for (i = 0; i < (sendBuf[1] + 1); i++) {
+ 232   8                                                                      sendBuf[index] += sendBuf[i + 1];
+ 233   8                                                              }
+ 234   7                                                              index++;
+ 235   7                                                              app_2d4_send(sendBuf, index);
+ 236   7                                                              break;
+ 237   7                                                      case RCV_PLAY_PAUSE_STATUS_CMD:
+ 238   7                                                              if (g_tWork.status.bits.DOME) {
+ 239   8                                                                      break;
+C51 COMPILER V9.56.0.0   APP_UART                                                          12/05/2017 01:05:07 PAGE 5   
 
- 240   8                      sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 4
- 241   8                          + i) % RCV_BUFSIZE];
- 242   8                    }
- 243   7                    for (i = 0; i < (sendBuf[1] + 1); i++) {
- 244   8                      sendBuf[index] += sendBuf[i + 1];
- 245   8                    }
- 246   7                    index++;
- 247   7                    if (g_tWork.status.bits.DOME == 0) {
- 248   8                      app_2d4_send(sendBuf, index);
- 249   8                    }
- 250   7                    break;
- 251   7                    /// app --start
- 252   7                  case KEY_CARD_POWER_CMD:
- 253   7                    if (g_tWork.status.bits.blinkEnable == 0) {
- 254   8      //                g_tWork.status.bits.pause = 0;
- 255   8                      g_tWork.status.bits.blinkEnable = 1;
- 256   8                      g_tWork.status.bits.DEMO = 1;
- 257   8                      app_dome_start_current();
- 258   8                    } else {
- 259   8      //                g_tWork.status.bits.pause = 1;
- 260   8                      g_tWork.status.bits.blinkEnable = 0;
- 261   8                      g_tWork.status.bits.DEMO = 0;
- 262   8                      app_dome_stop_current();
- 263   8                    }
- 264   7                    sendBuf[index++] = LAMP2LCD_HEADER;
- 265   7                    sendBuf[index++] = 10;
- 266   7                    sendBuf[index++] = KEY_POWER_SHORT_CMD;
- 267   7                    sendBuf[index++] = g_tWork.status.bits.blinkEnable;
- 268   7                    app_dome_get_current_Name(sendBuf + index, 8);
- 269   7                    index += 8;
- 270   7                    for (i = 0; i < (sendBuf[1] + 1); i++) {
- 271   8                      sendBuf[index] += sendBuf[i + 1];
- 272   8                    }
- 273   7                    index++;
- 274   7                    app_2d4_send(sendBuf, index);
- 275   7                    break;
- 276   7                  case KEY_CARD_DEMO_CMD:
- 277   7      //              if (g_tWork.status.bits.DEMO) {
- 278   7      //                g_tWork.status.bits.DEMO = 0;
- 279   7      //              } else {
- 280   7                    g_tWork.status.bits.DEMO = 1;
- 281   7      //              }
- 282   7                    app_dome_start(0, 0);
- 283   7      
- 284   7                    break;
- 285   7                  case APP_COLOR_ATLA_CMD:
- 286   7      #if 1
- 287   7                    app_dome_rgb(
- 288   7                        rcv_T.rxBuf[(rcv_T.pRead + 4) % RCV_BUFSIZE],
- 289   7                        rcv_T.rxBuf[(rcv_T.pRead + 5) % RCV_BUFSIZE],
- 290   7                        rcv_T.rxBuf[(rcv_T.pRead + 6) % RCV_BUFSIZE]);
- 291   7      #else
-                            app_dome_rgb(0xFFFF, 0xFFFF, 0xFFFF);
+ 240   8                                                              }
+ 241   7                                                              sendBuf[index++] = LAMP2LCD_HEADER;
+ 242   7                                                              sendBuf[index++] = len;
+ 243   7                                                              sendBuf[index++] =
+ 244   7                                                              RCV_PLAY_PAUSE_STATUS_CMD;
+ 245   7                                                              for (i = 0; i < (len - 1); i++) {
+ 246   8                                                                      sendBuf[index++] = rcv_T.rxBuf[(rcv_T.pRead + 4
+ 247   8                                                                                      + i) % RCV_BUFSIZE];
+ 248   8                                                              }
+ 249   7                                                              for (i = 0; i < (sendBuf[1] + 1); i++) {
+ 250   8                                                                      sendBuf[index] += sendBuf[i + 1];
+ 251   8                                                              }
+ 252   7                                                              index++;
+ 253   7                                                              app_2d4_send(sendBuf, index);
+ 254   7      
+ 255   7                                                              break;
+ 256   7                                                              /// app --start
+ 257   7                                                      case KEY_CARD_POWER_CMD:
+ 258   7                                                              if (g_tWork.status.bits.blinkEnable == 0) {
+ 259   8                                                                      g_tWork.status.bits.blinkEnable = 1;
+ 260   8                                                                      app_dome_start_current();
+ 261   8                                                              } else {
+ 262   8                                                                      g_tWork.status.bits.blinkEnable = 0;
+ 263   8                                                                      app_dome_stop_current();
+ 264   8                                                              }
+ 265   7                                                              sendBuf[index++] = LAMP2LCD_HEADER;
+ 266   7                                                              sendBuf[index++] = 10;
+ 267   7                                                              sendBuf[index++] = KEY_POWER_SHORT_CMD;
+ 268   7                                                              if (g_tWork.status.bits.blinkEnable) {
+ 269   8                                                                      sendBuf[index++] = 0;
+ 270   8                                                              } else {
+ 271   8                                                                      sendBuf[index++] = 1;
+ 272   8                                                              }
+ 273   7                                                              app_dome_get_current_Name(sendBuf + index, 8);
+ 274   7      #if 1
+ 275   7                                                              for (i = 0; i < 8; i++) {
+ 276   8                                                                      if ((*(sendBuf + index + i) == 0)
+ 277   8                                                                                      || (*(sendBuf + index + i) == 0xFF)) {
+ 278   9                                                                              *(sendBuf + index + i) = ' ';
+ 279   9                                                                      }
+ 280   8                                                              }
+ 281   7      #endif
+ 282   7                                                              index += 8;
+ 283   7                                                              for (i = 0; i < (sendBuf[1] + 1); i++) {
+ 284   8                                                                      sendBuf[index] += sendBuf[i + 1];
+ 285   8                                                              }
+ 286   7                                                              index++;
+ 287   7                                                              app_2d4_send(sendBuf, index);
+ 288   7                                                              break;
+ 289   7                                                      case KEY_CARD_DEMO_CMD:
+ 290   7      //                                                      if (g_tWork.status.bits.DEMO) {
+ 291   7      //                                                              g_tWork.status.bits.DEMO = 0;
+ 292   7      //                                                      } else {
+ 293   7                                                              g_tWork.status.bits.DEMO = 1;
+ 294   7      //                                                      }
+ 295   7                                                              app_dome_start(0, 0);
+ 296   7      
+ 297   7                                                              break;
+ 298   7                                                      case APP_COLOR_ATLA_CMD:
+ 299   7      #if 1
+ 300   7                                                              app_dome_rgb(
+ 301   7                                                                              rcv_T.rxBuf[(rcv_T.pRead + 4) % RCV_BUFSIZE],
+C51 COMPILER V9.56.0.0   APP_UART                                                          12/05/2017 01:05:07 PAGE 6   
+
+ 302   7                                                                              rcv_T.rxBuf[(rcv_T.pRead + 5) % RCV_BUFSIZE],
+ 303   7                                                                              rcv_T.rxBuf[(rcv_T.pRead + 6) % RCV_BUFSIZE]);
+ 304   7      #else
+                                                                      app_dome_rgb(0xFFFF, 0xFFFF, 0xFFFF);
               #endif
- 294   7                    break;
- 295   7                  case APP_BRIGHT_CMD:
- 296   7                    dome_running_param.bright = rcv_T.rxBuf[(rcv_T.pRead
- 297   7                        + 4) % RCV_BUFSIZE];
- 298   7                    Light_bright_set(
- 299   7                        rcv_T.rxBuf[(rcv_T.pRead + 4) % RCV_BUFSIZE]);
- 300   7                    break;
- 301   7                  case APP_SPEED_CMD:
-C51 COMPILER V9.52.0.0   APP_UART                                                          11/20/2017 00:30:11 PAGE 6   
-
- 302   7                    dome_running_param.speed = rcv_T.rxBuf[(rcv_T.pRead
- 303   7                        + 4) % RCV_BUFSIZE];
- 304   7                    break;
- 305   7                  case APP_FLASH_INDEX_CMD:
- 306   7                    g_tWork.status.bits.DEMO = 0;
- 307   7                    app_dome_start_current();
- 308   7                    app_dome_start(
- 309   7                        rcv_T.rxBuf[(rcv_T.pRead + 4) % RCV_BUFSIZE],
- 310   7                        0);
- 311   7                    break;
- 312   7                  case APP_SWITCH_INDEX_CMD: {
- 313   8                    uint8_t switchData = rcv_T.rxBuf[(rcv_T.pRead + 4)
- 314   8                        % RCV_BUFSIZE];
- 315   8                    if (((switchData >> 4) & 0x0F) == 0) {
- 316   9                      Relay_set(switchData & 0x0F);
- 317   9                    }
- 318   8                  }
- 319   7                    break;
- 320   7                    /// app --end
- 321   7                  default:
- 322   7                    break;
- 323   7                  }
- 324   6                  rcv_T.pRead += len + 4;
- 325   6      #if 1
- 326   6                  rcv_T.pRead = rcv_T.pRead % RCV_BUFSIZE;
- 327   6      //            break;
- 328   6                  return;
- 329   6      #endif
- 330   6                }
- 331   5              }
- 332   4            } else {
- 333   4              rcv_T.pRead++;
- 334   4            }
- 335   3            rcv_T.pRead = rcv_T.pRead % RCV_BUFSIZE;
- 336   3          }
- 337   2        }
- 338   1      
- 339   1      }
+ 307   7                                                              break;
+ 308   7                                                      case APP_BRIGHT_CMD:
+ 309   7                                                              dome_running_param.bright = rcv_T.rxBuf[(rcv_T.pRead
+ 310   7                                                                              + 4) % RCV_BUFSIZE];
+ 311   7                                                              Light_bright_set(
+ 312   7                                                                              rcv_T.rxBuf[(rcv_T.pRead + 4) % RCV_BUFSIZE]);
+ 313   7                                                              break;
+ 314   7                                                      case APP_SPEED_CMD:
+ 315   7                                                              dome_running_param.speed = rcv_T.rxBuf[(rcv_T.pRead
+ 316   7                                                                              + 4) % RCV_BUFSIZE];
+ 317   7                                                              break;
+ 318   7                                                      case APP_FLASH_INDEX_CMD:
+ 319   7                                                              g_tWork.status.bits.DEMO = 0;
+ 320   7                                                              app_dome_start_current();
+ 321   7                                                              app_dome_start(
+ 322   7                                                                              rcv_T.rxBuf[(rcv_T.pRead + 4) % RCV_BUFSIZE],
+ 323   7                                                                              0);
+ 324   7                                                              break;
+ 325   7                                                      case APP_SWITCH_INDEX_CMD: {
+ 326   8                                                              uint8_t switchData = rcv_T.rxBuf[(rcv_T.pRead + 4)
+ 327   8                                                                              % RCV_BUFSIZE];
+ 328   8                                                              if (((switchData >> 4) & 0x0F) == 0) {
+ 329   9                                                                      Relay_set(switchData & 0x0F);
+ 330   9                                                              }
+ 331   8                                                      }
+ 332   7                                                              break;
+ 333   7                                                              /// app --end
+ 334   7                                                      default:
+ 335   7                                                              break;
+ 336   7                                                      }
+ 337   6                                                      rcv_T.pRead += len + 4;
+ 338   6      #if 1
+ 339   6                                                      rcv_T.pRead = rcv_T.pRead % RCV_BUFSIZE;
+ 340   6      //                                              break;
+ 341   6                                                      return;
+ 342   6      #endif
+ 343   6                                              }
+ 344   5                                      }
+ 345   4                              } else {
+ 346   4                                      rcv_T.pRead++;
+ 347   4                              }
+ 348   3                              rcv_T.pRead = rcv_T.pRead % RCV_BUFSIZE;
+ 349   3                      }
+ 350   2              }
+ 351   1      
+ 352   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   3306    ----
+   CODE SIZE        =   3349    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =     23       9
    PDATA SIZE       =   ----    ----
@@ -369,6 +382,8 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
+
+C51 COMPILER V9.56.0.0   APP_UART                                                          12/05/2017 01:05:07 PAGE 7   
 
 
 C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
