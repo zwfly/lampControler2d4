@@ -69,12 +69,13 @@ void app_uart_pro(void) {
 							uint16_t index = 0;
 							index =
 									rcv_T.rxBuf[(rcv_T.pRead + 12) % RCV_BUFSIZE];
-
-							if (index >= (DEFAULT_DOME_NUM - 1)) {
+							u8_tmp = (0x4800 - DOME_START_ADDR)
+									/ sizeof(DOME_DEFAULT_T);
+							if (index >= (u8_tmp - 1)) {
 								break;
 							}
+							u8_tmp = (0x4800 - DOME_START_ADDR) / 128;
 							if (index == 0) {
-								u8_tmp = (0x4800 - DOME_START_ADDR) / 128;
 								for (i = 0; i < u8_tmp; i++) {
 									app_eeprom_erase(i * 128);
 								}
@@ -104,6 +105,19 @@ void app_uart_pro(void) {
 							}
 
 #endif
+
+							u8_tmp = (0x4800 - DOME_START_ADDR)
+									/ sizeof(DOME_DEFAULT_T);
+							blink_number = 0;
+							for (i = 0; i < u8_tmp; i++) {
+								if (0xFF != app_eeprom_read_byte(
+								DOME_START_ADDR + i * sizeof(DOME_DEFAULT_T))) {
+									blink_number++;
+								} else {
+									break;
+								}
+							}
+
 							u8_tmp = index & 0xFF;
 							app_uart_send(BLINK_METHOD_CMD, &u8_tmp, 1);
 						}
@@ -292,7 +306,7 @@ void app_uart_pro(void) {
 //							} else {
 							g_tWork.status.bits.DEMO = 1;
 //							}
-							app_dome_start(0, 0);
+							app_dome_start(0);
 
 							break;
 						case APP_COLOR_ATLA_CMD:
@@ -317,10 +331,9 @@ void app_uart_pro(void) {
 							break;
 						case APP_FLASH_INDEX_CMD:
 							g_tWork.status.bits.DEMO = 0;
-							app_dome_start_current();
+							g_tWork.status.bits.blinkEnable = 1;
 							app_dome_start(
-									rcv_T.rxBuf[(rcv_T.pRead + 4) % RCV_BUFSIZE],
-									0);
+									rcv_T.rxBuf[(rcv_T.pRead + 4) % RCV_BUFSIZE]);
 							break;
 						case APP_SWITCH_INDEX_CMD: {
 							uint8_t switchData = rcv_T.rxBuf[(rcv_T.pRead + 4)

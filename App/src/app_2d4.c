@@ -222,7 +222,7 @@ static void app_2d4_Rcv(uint8_t *buf) {
 		} else {
 			g_tWork.status.bits.DOME = 1;
 			g_tWork.status.bits.blinkEnable = 1;
-			app_dome_start(0, 0);
+			app_dome_start(0);
 		}
 #else
 		g_tWork.status.bits.DOME = 0;
@@ -342,7 +342,7 @@ static void app_2d4_Rcv(uint8_t *buf) {
 //		} else {
 		g_tWork.status.bits.DEMO = 1;
 //		}
-		app_dome_start(0, 0);
+		app_dome_start(0);
 		break;
 	case KEY_CARD_SPEED_MINUS_CMD:
 		if (dome_running_param.speed >= 10) {

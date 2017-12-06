@@ -63,12 +63,15 @@ void main(void) {
 			//////////////////
 			bsp_KeyScan();
 //			app_dome_interrupter();
+
+			app_uart_pro();
+			app_2d4_pro();
+
 		}
 		if (Task_time.flag_100ms) {
 			Task_time.flag_100ms = 0;
 			//////////////////
-			app_uart_pro();
-			app_2d4_pro();
+
 //			app_work_100ms_pro();
 //			Repeat_Pro();
 
@@ -85,7 +88,7 @@ void main(void) {
 			printf("I am alive\r\n");
 #endif
 
-//			app_work_1s_pro();
+			app_work_1s_pro();
 
 		}
 #if 1

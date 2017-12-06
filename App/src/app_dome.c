@@ -12,6 +12,8 @@ static SUBDOME_T subDome;
 static DOME_HEADER_T domeHeader;
 static SUBDOME_ASSIST_T subDome_Assist;
 static DOME_PRO_T domePro;
+uint8_t blink_number = 0; //闪法的总数量
+
 DOME_DEFAULT_T dome_blink;
 
 DOME_RUNNING_T dome_running_param;
@@ -374,9 +376,21 @@ code const DOME_DEFAULT_T dome_default[DEFAULT_DOME_NUM] = {  //
 //////////////////
 
 void app_dome_Init(void) {
-	color_blink_index = COLOR_BLINK_NUMBER - 1;
+	uint8_t i = 0;
+	uint8_t u8_tmp = 0;
 //	g_tWork.status.bits.blinkEnable = 1;
 
+	u8_tmp = (0x4800 - DOME_START_ADDR) / sizeof(DOME_DEFAULT_T);
+	blink_number = 0;
+	for (i = 0; i < u8_tmp; i++) {
+		if (0xFF != app_eeprom_read_byte(
+		DOME_START_ADDR + i * sizeof(DOME_DEFAULT_T))) {
+			blink_number++;
+		} else {
+			break;
+		}
+	}
+	color_blink_index = COLOR_BLINK_NUMBER - 1;
 	memset((uint8_t *) &subDome_Assist, 0, sizeof(subDome_Assist));
 
 	memset((uint8_t *) &domePro, 0, sizeof(domePro));
@@ -413,17 +427,18 @@ void app_dome_previous(void) {
 	if (domePro.currentDomeIndex) {
 		domePro.currentDomeIndex--;
 	} else {
-		domePro.currentDomeIndex = DEFAULT_DOME_NUM - 1;
+		domePro.currentDomeIndex = blink_number ? blink_number - 1 : 0;
 	}
-	app_dome_start(domePro.currentDomeIndex, 2);
+	app_dome_start(domePro.currentDomeIndex);
+
 }
 void app_dome_next(void) {
 	domePro.currentDomeIndex++;
-	if (domePro.currentDomeIndex >= DEFAULT_DOME_NUM) {
+	if (domePro.currentDomeIndex >= blink_number) {
 		domePro.currentDomeIndex = 0;
 	}
+	app_dome_start(domePro.currentDomeIndex);
 
-	app_dome_start(domePro.currentDomeIndex, 1);
 }
 
 void app_dome_get_current_Name(char *name, uint8_t len) {
@@ -437,7 +452,7 @@ void app_dome_start_current(void) {
 	color_blink_index = COLOR_BLINK_NUMBER - 1;
 
 	g_tWork.status.bits.blinkEnable = 1;
-	app_dome_start(domePro.currentDomeIndex, 0);
+	app_dome_start(domePro.currentDomeIndex);
 }
 void app_dome_stop_current(void) {
 	g_tWork.status.bits.blinkEnable = 0;
@@ -447,7 +462,7 @@ void app_dome_stop_current(void) {
 	Light_RGB_set(0, 0, 0);
 }
 void app_dome_single_cycle(uint8_t subIndex) {
-	if ((dome_blink.header.repeat_number & 0x0F) == (subIndex+1)) {
+	if ((dome_blink.header.repeat_number & 0x0F) == (subIndex + 1)) {
 		subIndex = 0;
 		memcpy((uint8_t*) &subDome, (uint8_t*) &dome_blink.subdome[subIndex],
 				sizeof(subDome));
@@ -462,18 +477,28 @@ void app_dome_single_cycle(uint8_t subIndex) {
 /*
  dir 方向，0：不变，1：向前next，2：后退prev
  */
-void app_dome_start(uint8_t domeIndex, uint8_t dir) {
+void app_dome_start(uint8_t domeIndex) {
 	subDome_Assist.switch_flag = 0;
 	subDome_Assist.msCnt = 0;
 	subDome_Assist.stopTime = 0;
 
+	if (blink_number == 0) {
+		Light_RGB_set(0, 0, 0);
+		return;
+	}
+
 //	app_dome_single_cycle(domeIndex);
-	if (domeIndex > (DEFAULT_DOME_NUM - 1)) {
-		domePro.currentDomeIndex = DEFAULT_DOME_NUM - 1;
-		domeIndex = DEFAULT_DOME_NUM - 1;
+	if (domeIndex > (blink_number - 1)) {
+		domePro.currentDomeIndex = blink_number - 1;
+		domeIndex = blink_number - 1;
 	} else {
 		domePro.currentDomeIndex = domeIndex;
 	}
+
+#if 1
+	app_eeprom_get_dome_with_index(&dome_blink, domeIndex);
+
+#else
 	if (dir == 0) {
 		app_eeprom_get_dome_with_index(&dome_blink, domeIndex);
 		if (*((uint8_t *) &dome_blink) == 0xFF) {
@@ -481,7 +506,7 @@ void app_dome_start(uint8_t domeIndex, uint8_t dir) {
 		}
 	} else if (dir == 1) {
 		uint8_t i = 0;
-		for (i = 0; i < DEFAULT_DOME_NUM; i++) {
+		for (i = 0; i < blink_number; i++) {
 			app_eeprom_get_dome_with_index(&dome_blink, domeIndex);
 			if (*((uint8_t *) &dome_blink) == 0xFF) {
 				if (domeIndex == 0) {
@@ -489,7 +514,7 @@ void app_dome_start(uint8_t domeIndex, uint8_t dir) {
 					break;
 				}
 				domeIndex++;
-				if (domeIndex >= DEFAULT_DOME_NUM) {
+				if (domeIndex >= blink_number) {
 					domeIndex = 0;
 //					break;
 				}
@@ -513,12 +538,14 @@ void app_dome_start(uint8_t domeIndex, uint8_t dir) {
 			}
 		}
 	}
+
+#endif
+
 //	domePro.currentDomeIndex = domeIndex;
 //	if (dome_blink.header.index == 0) {
 //		app_eeprom_get_dome_with_index(&dome_blink, 0);
 //		app_dome_stop_current();
 //	}
-
 
 	memcpy((uint8_t*) &subDome, (uint8_t*) &dome_blink.subdome[0],
 			sizeof(subDome));
