@@ -299,6 +299,9 @@ static void app_2d4_Rcv(uint8_t *buf) {
 			g_tWork.status.bits.blinkEnable = 0;
 			app_dome_stop_current();
 		}
+		if (g_tWork.status.bits.DOME==0) {
+			break;
+		}
 		sendBuf[index++] = LAMP2LCD_HEADER;
 		sendBuf[index++] = 10;
 		sendBuf[index++] = KEY_POWER_SHORT_CMD;
@@ -322,6 +325,7 @@ static void app_2d4_Rcv(uint8_t *buf) {
 		}
 		index++;
 		app_2d4_send(sendBuf, index);
+
 		break;
 	case KEY_CARD_MODE_ADD_CMD:
 		g_tWork.status.bits.DEMO = 0;

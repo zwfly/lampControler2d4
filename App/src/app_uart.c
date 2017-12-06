@@ -106,6 +106,7 @@ void app_uart_pro(void) {
 
 #endif
 
+#if 0
 							u8_tmp = (0x4800 - DOME_START_ADDR)
 									/ sizeof(DOME_DEFAULT_T);
 							blink_number = 0;
@@ -117,7 +118,7 @@ void app_uart_pro(void) {
 									break;
 								}
 							}
-
+#endif
 							u8_tmp = index & 0xFF;
 							app_uart_send(BLINK_METHOD_CMD, &u8_tmp, 1);
 						}

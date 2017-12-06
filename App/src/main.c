@@ -88,7 +88,7 @@ void main(void) {
 			printf("I am alive\r\n");
 #endif
 
-			app_work_1s_pro();
+			//		app_work_1s_pro();
 
 		}
 #if 1
@@ -136,9 +136,27 @@ void main(void) {
 				break;
 			case KEY_UP_K2:   //
 				break;
-			case KEY_DOWN_K2:
-
+			case KEY_DOWN_K2: {
+//				uint8_t index = 0, i = 0;
 				Relay_toggle();
+
+#if 0
+				sendBuf[index++] = LAMP2LCD_HEADER;
+				sendBuf[index++] = 0x02;
+				sendBuf[index++] = KEY_ACC_CMD;
+				if (Relay_IsOn()) {
+					sendBuf[index++] = 0x01;
+				} else {
+					sendBuf[index++] = 0x02;
+				}
+				for (i = 0; i < (sendBuf[1] + 1); i++) {
+					sendBuf[index] += sendBuf[i + 1];
+				}
+				index++;
+				app_2d4_send(sendBuf, index);
+#endif
+			}
+
 				break;
 			case KEY_LONG_K2:
 				break;
