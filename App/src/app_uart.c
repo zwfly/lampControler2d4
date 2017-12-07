@@ -108,11 +108,11 @@ void app_uart_pro(void) {
 
 #if 0
 							u8_tmp = (0x4800 - DOME_START_ADDR)
-									/ sizeof(DOME_DEFAULT_T);
+							/ sizeof(DOME_DEFAULT_T);
 							blink_number = 0;
 							for (i = 0; i < u8_tmp; i++) {
 								if (0xFF != app_eeprom_read_byte(
-								DOME_START_ADDR + i * sizeof(DOME_DEFAULT_T))) {
+												DOME_START_ADDR + i * sizeof(DOME_DEFAULT_T))) {
 									blink_number++;
 								} else {
 									break;
@@ -267,6 +267,16 @@ void app_uart_pro(void) {
 							index++;
 							app_2d4_send(sendBuf, index);
 
+							break;
+						case DEVICE_STA_CMD: {
+							uint8_t sta[2] = 0;
+							memset(sta, 0, sizeof(sta));
+							sta[0] |=
+									g_tWork.status.bits.blinkEnable ? 0x80 : 0;
+							sta[0] |= g_tWork.status.bits.DEMO ? 0x40 : 0;
+							sta[1] |= Relay_IsOn() ? 0x01 : 0;
+							app_uart_send(DEVICE_STA_CMD, sta, sizeof(sta));
+						}
 							break;
 							/// app --start
 						case KEY_CARD_POWER_CMD:

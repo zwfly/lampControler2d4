@@ -16,6 +16,7 @@ void app_work_Init(void) {
 }
 
 void app_work_1s_pro(void) {
+#if 0	
 	static uint8_t cnt = 0;
 	uint8_t index = 0, i = 0;
 
@@ -32,7 +33,7 @@ void app_work_1s_pro(void) {
 		index++;
 		app_2d4_send(sendBuf, index);
 	}
-
+#endif
 }
 void app_work_100ms_pro(void) {
 

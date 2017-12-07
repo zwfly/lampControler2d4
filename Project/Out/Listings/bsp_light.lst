@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   BSP_LIGHT                                                         12/06/2017 22:51:18 PAGE 1   
+C51 COMPILER V9.56.0.0   BSP_LIGHT                                                         12/07/2017 20:58:09 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE BSP_LIGHT
@@ -62,7 +62,7 @@ line level    source
   51   1              //-------- PWM start run--------------
   52   1      //      set_LOAD;
   53   1              set_PWMRUN;
-C51 COMPILER V9.56.0.0   BSP_LIGHT                                                         12/06/2017 22:51:18 PAGE 2   
+C51 COMPILER V9.56.0.0   BSP_LIGHT                                                         12/07/2017 20:58:09 PAGE 2   
 
   54   1      
   55   1              Light_RGB_set(0, 0, 0);
@@ -126,7 +126,7 @@ line level    source
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
    CODE SIZE        =    434    ----
-C51 COMPILER V9.56.0.0   BSP_LIGHT                                                         12/06/2017 22:51:18 PAGE 3   
+C51 COMPILER V9.56.0.0   BSP_LIGHT                                                         12/07/2017 20:58:09 PAGE 3   
 
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----      10
